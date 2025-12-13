@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Training Feedback – Admin Dashboard</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f5f5f7;
+      margin: 0;
+      padding: 0;
+      color: #222;
+    }
+    main {
+      max-width: 1100px;
+      margin: 32px auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+      padding: 24px 28px 32px;
+    }
+    h1 {
+      margin-top: 0;
+      font-size: 20px;
+      color: #1f3b70;
+    }
+    .small-note {
+      font-size: 11px;
+      color: #999;
+      margin-top: 4px;
+    }
+    .section-title {
+      margin-top: 24px;
+      font-size: 15px;
+      font-weight: 600;
+      border-bottom: 1px solid #e2e2e8;
+      padding-bottom: 6px;
+      color: #333;
+    }
+    .filter-row {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+      margin-bottom: 16px;
+      align-items: flex-end;
+    }
+    label {
+      display: block;
+      font-size: 12px;
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
+    input[type="text"],
+    input[type="month"] {
+      width: 190px;
+      box-sizing: border-box;
+      padding: 6px 8px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 12px;
+      background: #fafafa;
+    }
+    input:focus {
+      border-color: #1f3b70;
+      box-shadow: 0 0 0 2px rgba(31,59,112,0.15);
+      background: #fff;
+    }
+    button.primary {
+      background: #1f3b70;
+      color: #fff;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .stat-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-top: 12px;
+      margin-bottom: 20px;
+    }
+    .stat-card {
+      background: #f8f9fc;
+      border-radius: 10px;
+      padding: 12px 14px;
+      border: 1px solid #e2e2f0;
+    }
+    .stat-label {
+      font-size: 12px;
+      color: #666;
+    }
+    .stat-value {
+      font-size: 20px;
+      font-weight: 700;
+      margin-top: 4px;
+      color: #1f3b70;
+    }
+    .stat-sub {
+      font-size: 11px;
+      color: #888;
+      margin-top: 2px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      font-size: 12px;
+    }
+    th, td {
+      border: 1px solid #e1e1e8;
+      padding: 6px 8px;
+      text-align: left;
+    }
+    th {
+      background: #f0f2fa;
+      font-weight: 600;
+    }
+    tr:nth-child(even) td {
+      background: #fafbff;
+    }
+    .trend-badge {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .trend-down {
+      background: #fdecea;
+      color: #c0392b;
+    }
+    .trend-up {
+      background: #e6f4ea;
+      color: #1e7e34;
+    }
+    .no-data {
+      font-size: 13px;
+      color: #777;
+      margin-top: 12px;
+    }
+    ul {
+      font-size: 13px;
+      padding-left: 18px;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Training Feedback – Admin Dashboard</h1>
+  <div class="small-note">
+    Data source: Google Sheet connected via Apps Script. View by training name and month. Downward trends are highlighted.
+  </div>
+
+  <div class="section-title">Filters</div>
+  <div class="filter-row">
+    <div>
+      <label for="filterTraining">Training Name Contains</label>
+      <input type="text" id="filterTraining" placeholder="e.g. Email" />
+    </div>
+    <div>
+      <label for="filterMonth">Month (YYYY-MM)</label>
+      <input type="month" id="filterMonth" />
+    </div>
+    <div>
+      <button class="primary" id="refreshBtn">Refresh Dashboard</button>
+    </div>
+  </div>
+
+  <div id="dashboardContent"></div>
+</main>
+
+<script>
+  const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycby3CHQ3XW9TUYFttp0_LB98gndBpb2ARkKWxIg82D85AQqIIderWO71u7fFFBVmH6XdEA/exec'; //
+
+  const filterTraining = document.getElementById('filterTraining');
+  const filterMonth = document.getElementById('filterMonth');
+  const refreshBtn = document.getElementById('refreshBtn');
+  const dashboardContent = document.getElementById('dashboardContent');
+
+  refreshBtn.addEventListener('click', loadAndRender);
+  window.addEventListener('load', loadAndRender);
+
+  async function loadAndRender() {
+    dashboardContent.innerHTML = 'Loading data...';
+
+    try {
+      const res = await fetch(WEB_APP_URL);
+      const data = await res.json();
+      renderDashboard(data);
+    } catch (err) {
+      console.error(err);
+      dashboardContent.innerHTML = '<div class="no-data">Error loading data. Please check the backend.</div>';
+    }
+  }
+
+  function formatMonthYear(dateStr) {
+    const d = new Date(dateStr);
+    if (isNaN(d)) return '';
+    const year = d.getFullYear();
+    const month = d.getMonth() + 1;
+    return year + '-' + month.toString().padStart(2, '0');
+  }
+
+  function renderDashboard(data) {
+    dashboardContent.innerHTML = '';
+
+    if (!data || !data.length) {
+      const div = document.createElement('div');
+      div.className = 'no-data';
+      div.textContent = 'No feedback records found.';
+      dashboardContent.appendChild(div);
+      return;
+    }
+
+    const trainingFilter = filterTraining.value.trim().toLowerCase();
+    const monthFilter = filterMonth.value;
+
+    const filtered = data.filter(function(rec) {
+      const topic = (rec.trainingTopic || '').toString();
+      const d = (rec.trainingDate || '').toString();
+      let ok = true;
+
+      if (trainingFilter) {
+        ok = ok && topic.toLowerCase().includes(trainingFilter);
+      }
+      if (monthFilter) {
+        ok = ok && formatMonthYear(d) === monthFilter;
+      }
+      return ok;
+    });
+
+    if (!filtered.length) {
+      const div = document.createElement('div');
+      div.className = 'no-data';
+      div.textContent = 'No records match the selected filters.';
+      dashboardContent.appendChild(div);
+      return;
+    }
+
+    const total = filtered.length;
+    const avgRating = (filtered.reduce(function(s, r) {
+      return s + Number(r.overallRating || 0);
+    }, 0) / total).toFixed(2);
+    const avgNps = (filtered.reduce(function(s, r) {
+      return s + Number(r.npsScore || 0);
+    }, 0) / total).toFixed(2);
+
+    const statWrapper = document.createElement('div');
+    statWrapper.className = 'stat-cards';
+
+    statWrapper.innerHTML = ''
+      + '<div class="stat-card">'
+      + '  <div class="stat-label">Total Feedback Entries</div>'
+      + '  <div class="stat-value">' + total + '</div>'
+      + '  <div class="stat-sub">Across selected filters</div>'
+      + '</div>'
+      + '<div class="stat-card">'
+      + '  <div class="stat-label">Average Overall Session Rating</div>'
+      + '  <div class="stat-value">' + avgRating + '</div>'
+      + '  <div class="stat-sub">1 = Poor, 5 = Excellent</div>'
+      + '</div>'
+      + '<div class="stat-card">'
+      + '  <div class="stat-label">Average NPS</div>'
+      + '  <div class="stat-value">' + avgNps + '</div>'
+      + '  <div class="stat-sub">0 to 10 scale</div>'
+      + '</div>';
+
+    dashboardContent.appendChild(statWrapper);
+
+    const groups = {};
+    filtered.forEach(function(r) {
+      const topic = (r.trainingTopic || '').toString();
+      const month = formatMonthYear((r.trainingDate || '').toString());
+      const key = topic + '|' + month;
+      if (!groups[key]) {
+        groups[key] = {
+          trainingTopic: topic,
+          month: month,
+          count: 0,
+          ratingSum: 0,
+          npsSum: 0
+        };
+      }
+      groups[key].count += 1;
+      groups[key].ratingSum += Number(r.overallRating || 0);
+      groups[key].npsSum += Number(r.npsScore || 0);
+    });
+
+    const groupArray = Object.keys(groups).map(function(k) {
+      const g = groups[k];
+      return {
+        trainingTopic: g.trainingTopic,
+        month: g.month,
+        count: g.count,
+        avgRating: (g.ratingSum / g.count).toFixed(2),
+        avgNps: (g.npsSum / g.count).toFixed(2)
+      };
+    });
+
+    const trends = {};
+    const byTraining = {};
+    groupArray.forEach(function(g) {
+      if (!byTraining[g.trainingTopic]) byTraining[g.trainingTopic] = [];
+      byTraining[g.trainingTopic].push(g);
+    });
+
+    Object.keys(byTraining).forEach(function(training) {
+      const arr = byTraining[training].slice().sort(function(a, b) {
+        return a.month.localeCompare(b.month);
+      });
+      if (arr.length >= 2) {
+        const prev = arr[arr.length - 2];
+        const last = arr[arr.length - 1];
+        const prevR = parseFloat(prev.avgRating);
+        const lastR = parseFloat(last.avgRating);
+        if (lastR < prevR) {
+          trends[training] = { type: 'down', from: prev, to: last };
+        } else if (lastR > prevR) {
+          trends[training] = { type: 'up', from: prev, to: last };
+        }
+      }
+    });
+
+    const tableTitle = document.createElement('div');
+    tableTitle.className = 'section-title';
+    tableTitle.textContent = 'Training & Month Summary';
+    dashboardContent.appendChild(tableTitle);
+
+    const table = document.createElement('table');
+    table.innerHTML = ''
+      + '<thead>'
+      + '  <tr>'
+      + '    <th>Training Name</th>'
+      + '    <th>Month</th>'
+      + '    <th>Feedback Count</th>'
+      + '    <th>Avg Overall Rating</th>'
+      + '    <th>Avg NPS</th>'
+      + '    <th>Trend</th>'
+      + '  </tr>'
+      + '</thead>'
+      + '<tbody></tbody>';
+
+    const tbody = table.querySelector('tbody');
+
+    groupArray
+      .sort(function(a, b) {
+        return a.trainingTopic.localeCompare(b.trainingTopic) || a.month.localeCompare(b.month);
+      })
+      .forEach(function(g) {
+        const tr = document.createElement('tr');
+        let trendHtml = '<span class="trend-badge">–</span>';
+        const t = trends[g.trainingTopic];
+        if (t && t.to.month === g.month) {
+          if (t.type === 'down') {
+            trendHtml = '<span class="trend-badge trend-down">↓ Down vs previous month</span>';
+          } else if (t.type === 'up') {
+            trendHtml = '<span class="trend-badge trend-up">↑ Up vs previous month</span>';
+          }
+        }
+        tr.innerHTML = ''
+          + '<td>' + g.trainingTopic + '</td>'
+          + '<td>' + g.month + '</td>'
+          + '<td>' + g.count + '</td>'
+          + '<td>' + g.avgRating + '</td>'
+          + '<td>' + g.avgNps + '</td>'
+          + '<td>' + trendHtml + '</td>';
+        tbody.appendChild(tr);
+      });
+
+    dashboardContent.appendChild(table);
+
+    const trendTitle = document.createElement('div');
+    trendTitle.className = 'section-title';
+    trendTitle.textContent = 'Trend Highlights';
+    dashboardContent.appendChild(trendTitle);
+
+    const trendDiv = document.createElement('div');
+    if (Object.keys(trends).length === 0) {
+      trendDiv.className = 'no-data';
+      trendDiv.textContent = 'No clear upward or downward trends yet. Need multiple months per training.';
+    } else {
+      const ul = document.createElement('ul');
+      Object.keys(trends).forEach(function(training) {
+        const info = trends[training];
+        const li = document.createElement('li');
+        if (info.type === 'down') {
+          li.innerHTML = ''
+            + '<span class="trend-badge trend-down">DOWN</span> '
+            + '"' + training + '" rating decreased from ' + info.from.avgRating
+            + ' in ' + info.from.month + ' to ' + info.to.avgRating
+            + ' in ' + info.to.month + '.';
+        } else {
+          li.innerHTML = ''
+            + '<span class="trend-badge trend-up">UP</span> '
+            + '"' + training + '" rating improved from ' + info.from.avgRating
+            + ' in ' + info.from.month + ' to ' + info.to.avgRating
+            + ' in ' + info.to.month + '.';
+        }
+        ul.appendChild(li);
+      });
+      trendDiv.appendChild(ul);
+    }
+    dashboardContent.appendChild(trendDiv);
+  }
+</script>
+</body>
+</html>

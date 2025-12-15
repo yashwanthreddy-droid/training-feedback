@@ -1,415 +1,754 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Training Feedback – Admin Dashboard</title>
-  <style>
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #f5f5f7;
-      margin: 0;
-      padding: 0;
-      color: #222;
-    }
-    main {
-      max-width: 1100px;
-      margin: 32px auto;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-      padding: 24px 28px 32px;
-    }
-    h1 {
-      margin-top: 0;
-      font-size: 20px;
-      color: #1f3b70;
-    }
-    .small-note {
-      font-size: 11px;
-      color: #999;
-      margin-top: 4px;
-    }
-    .section-title {
-      margin-top: 24px;
-      font-size: 15px;
-      font-weight: 600;
-      border-bottom: 1px solid #e2e2e8;
-      padding-bottom: 6px;
-      color: #333;
-    }
-    .filter-row {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-      margin-top: 12px;
-      margin-bottom: 16px;
-      align-items: flex-end;
-    }
-    label {
-      display: block;
-      font-size: 12px;
-      margin-bottom: 4px;
-      font-weight: 500;
-    }
-    input[type="text"],
-    input[type="month"] {
-      width: 190px;
-      box-sizing: border-box;
-      padding: 6px 8px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 12px;
-      background: #fafafa;
-    }
-    input:focus {
-      border-color: #1f3b70;
-      box-shadow: 0 0 0 2px rgba(31,59,112,0.15);
-      background: #fff;
-    }
-    button.primary {
-      background: #1f3b70;
-      color: #fff;
-      border: none;
-      padding: 8px 18px;
-      border-radius: 999px;
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: 600;
-    }
-    .stat-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 16px;
-      margin-top: 12px;
-      margin-bottom: 20px;
-    }
-    .stat-card {
-      background: #f8f9fc;
-      border-radius: 10px;
-      padding: 12px 14px;
-      border: 1px solid #e2e2f0;
-    }
-    .stat-label {
-      font-size: 12px;
-      color: #666;
-    }
-    .stat-value {
-      font-size: 20px;
-      font-weight: 700;
-      margin-top: 4px;
-      color: #1f3b70;
-    }
-    .stat-sub {
-      font-size: 11px;
-      color: #888;
-      margin-top: 2px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 14px;
-      font-size: 12px;
-    }
-    th, td {
-      border: 1px solid #e1e1e8;
-      padding: 6px 8px;
-      text-align: left;
-    }
-    th {
-      background: #f0f2fa;
-      font-weight: 600;
-    }
-    tr:nth-child(even) td {
-      background: #fafbff;
-    }
-    .trend-badge {
-      display: inline-block;
-      padding: 2px 6px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 600;
-    }
-    .trend-down {
-      background: #fdecea;
-      color: #c0392b;
-    }
-    .trend-up {
-      background: #e6f4ea;
-      color: #1e7e34;
-    }
-    .no-data {
-      font-size: 13px;
-      color: #777;
-      margin-top: 12px;
-    }
-    ul {
-      font-size: 13px;
-      padding-left: 18px;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Training Feedback Analytics | HGS</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+  :root{
+    --bg:#f4f6f9;
+    --card:#ffffff;
+    --text:#1b2430;
+    --muted:#5d6b7a;
+    --border:#e4e9f0;
+    --primary:#005bab;
+    --primary2:#0b7dda;
+    --good:#0a6b38;
+    --warn:#b25d00;
+    --bad:#b42318;
+    --shadow: 0 10px 28px rgba(0,0,0,.08);
+    --radius: 16px;
+  }
+
+  /* Dark theme */
+  body.dark{
+    --bg:#0b1220;
+    --card:#111a2e;
+    --text:#e8eef7;
+    --muted:#a9b6c7;
+    --border:#223252;
+    --shadow: 0 12px 30px rgba(0,0,0,.35);
+  }
+
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+  }
+
+  .topbar{
+    position: sticky;
+    top:0;
+    z-index:10;
+    background: linear-gradient(90deg, var(--primary), var(--primary2));
+    padding: 16px 18px;
+    box-shadow: 0 10px 24px rgba(0,0,0,.15);
+  }
+  .topbar-inner{
+    max-width: 1200px;
+    margin: 0 auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap: 12px;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap: 12px;
+    color:#fff;
+  }
+  .brand img{
+    height: 34px;
+    background: rgba(255,255,255,.95);
+    border-radius: 10px;
+    padding: 6px 10px;
+  }
+  .brand .title{
+    display:flex; flex-direction:column;
+    line-height: 1.15;
+  }
+  .brand .title strong{ font-size: 16px; }
+  .brand .title span{ font-size: 12px; opacity:.9; }
+
+  .actions{
+    display:flex;
+    align-items:center;
+    gap: 10px;
+  }
+  .btn{
+    border:none;
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-weight: 700;
+    cursor:pointer;
+    transition: .15s ease;
+    white-space: nowrap;
+  }
+  .btn:active{ transform: translateY(1px); }
+  .btn-light{
+    background: rgba(255,255,255,.92);
+    color: #0b2b4a;
+  }
+  .btn-ghost{
+    background: rgba(255,255,255,.18);
+    color:#fff;
+    border: 1px solid rgba(255,255,255,.28);
+  }
+
+  .wrap{
+    max-width: 1200px;
+    margin: 22px auto 50px;
+    padding: 0 18px;
+  }
+
+  .grid{
+    display:grid;
+    gap: 16px;
+  }
+  .grid.kpis{ grid-template-columns: repeat(4, 1fr); }
+  .grid.two{ grid-template-columns: 1.25fr .75fr; }
+  .grid.charts{ grid-template-columns: 1fr 1fr; }
+
+  @media (max-width: 1060px){
+    .grid.kpis{ grid-template-columns: repeat(2, 1fr); }
+    .grid.two{ grid-template-columns: 1fr; }
+    .grid.charts{ grid-template-columns: 1fr; }
+  }
+
+  .card{
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 16px;
+  }
+
+  .kpi{
+    padding: 16px;
+  }
+  .kpi .label{
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: .2px;
+  }
+  .kpi .value{
+    font-size: 28px;
+    font-weight: 800;
+    margin-top: 8px;
+  }
+  .kpi .sub{
+    margin-top: 6px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .section-title{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .section-title h3{
+    margin: 0;
+    font-size: 16px;
+  }
+  .section-title p{
+    margin: 0;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .filters{
+    display:grid;
+    grid-template-columns: 1.2fr 0.8fr auto;
+    gap: 12px;
+    align-items:end;
+  }
+  @media (max-width: 760px){
+    .filters{ grid-template-columns: 1fr; }
+  }
+
+  label{
+    display:block;
+    font-weight: 700;
+    font-size: 12px;
+    margin-bottom: 6px;
+    color: var(--muted);
+  }
+  input, select{
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text);
+    outline: none;
+  }
+  input:focus, select:focus{
+    border-color: rgba(0,91,171,.55);
+    box-shadow: 0 0 0 3px rgba(0,91,171,.12);
+  }
+
+  .hint{
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 10px;
+  }
+
+  .alert{
+    display:none;
+    margin-top: 12px;
+    padding: 12px;
+    border-radius: 12px;
+    font-weight: 700;
+    border: 1px solid var(--border);
+  }
+  .alert.error{ color: var(--bad); background: rgba(180,35,24,.08); border-color: rgba(180,35,24,.25); }
+  .alert.info{ color: var(--muted); background: rgba(93,107,122,.10); }
+
+  table{
+    width: 100%;
+    border-collapse: collapse;
+    overflow: hidden;
+    border-radius: 12px;
+  }
+  th, td{
+    text-align:left;
+    padding: 12px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    vertical-align: top;
+  }
+  th{
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 800;
+    letter-spacing: .2px;
+  }
+
+  .tag{
+    display:inline-flex;
+    align-items:center;
+    gap: 6px;
+    font-weight: 800;
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+  }
+  .tag.up{ color: var(--good); background: rgba(10,107,56,.08); border-color: rgba(10,107,56,.25); }
+  .tag.flat{ color: var(--muted); background: rgba(93,107,122,.08); }
+  .tag.down{ color: var(--bad); background: rgba(180,35,24,.08); border-color: rgba(180,35,24,.25); }
+
+  .row-attn{
+    background: rgba(180,35,24,.06);
+  }
+
+  .footer{
+    margin-top: 18px;
+    text-align:center;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  canvas{ max-height: 320px; }
+</style>
 </head>
+
 <body>
-<main>
-  <h1>Training Feedback – Admin Dashboard</h1>
-  <div class="small-note">
-    Data source: Google Sheet connected via Apps Script. View by training name and month. Downward trends are highlighted.
-  </div>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <img src="hgs-logo.png" alt="HGS Logo">
+        <div class="title">
+          <strong>Training Feedback – Admin Analytics</strong>
+          <span>View by training name and month. Downward trends are highlighted.</span>
+        </div>
+      </div>
 
-  <div class="section-title">Filters</div>
-  <div class="filter-row">
-    <div>
-      <label for="filterTraining">Training Name Contains</label>
-      <input type="text" id="filterTraining" placeholder="e.g. Email" />
-    </div>
-    <div>
-      <label for="filterMonth">Month (YYYY-MM)</label>
-      <input type="month" id="filterMonth" />
-    </div>
-    <div>
-      <button class="primary" id="refreshBtn">Refresh Dashboard</button>
+      <div class="actions">
+        <button class="btn btn-ghost" id="themeBtn">Dark theme</button>
+        <button class="btn btn-light" id="refreshBtn">Refresh Dashboard</button>
+      </div>
     </div>
   </div>
 
-  <div id="dashboardContent"></div>
-</main>
+  <div class="wrap">
+
+    <!-- KPI Cards -->
+    <div class="grid kpis">
+      <div class="card kpi">
+        <div class="label">Total Feedback Entries</div>
+        <div class="value" id="kpiTotal">–</div>
+        <div class="sub" id="kpiTotalSub">Across all trainings</div>
+      </div>
+      <div class="card kpi">
+        <div class="label">Avg Overall Rating</div>
+        <div class="value" id="kpiAvgRating">–</div>
+        <div class="sub">Scale 1–5</div>
+      </div>
+      <div class="card kpi">
+        <div class="label">Avg NPS</div>
+        <div class="value" id="kpiAvgNps">–</div>
+        <div class="sub">Scale 0–10</div>
+      </div>
+      <div class="card kpi">
+        <div class="label">Needs Attention</div>
+        <div class="value" id="kpiAttention">–</div>
+        <div class="sub">Trainings with rating drop</div>
+      </div>
+    </div>
+
+    <div class="grid two" style="margin-top:16px;">
+      <!-- Filters -->
+      <div class="card">
+        <div class="section-title">
+          <h3>Filters</h3>
+          <p>Filter the dataset and refresh</p>
+        </div>
+
+        <div class="filters">
+          <div>
+            <label>Training Name Contains</label>
+            <input id="filterTraining" placeholder="e.g., Email, Power Query, POSH">
+          </div>
+
+          <div>
+            <label>Month (YYYY-MM)</label>
+            <input id="filterMonth" type="month">
+          </div>
+
+          <div>
+            <button class="btn btn-light" style="width:100%;" id="applyBtn">Apply</button>
+          </div>
+        </div>
+
+        <div class="hint">
+          Trend logic: compares Avg Overall Rating for a training between consecutive months.
+          Thresholds: ≥ +0.10 = Up, between -0.10 and +0.10 = Stable, ≤ -0.10 = Down.
+        </div>
+
+        <div class="alert error" id="errorBox">Error loading data. Please check the backend.</div>
+        <div class="alert info" id="infoBox">No feedback records found.</div>
+      </div>
+
+      <!-- Quick Notes / Latest -->
+      <div class="card">
+        <div class="section-title">
+          <h3>Quick View</h3>
+          <p>Latest dataset snapshot</p>
+        </div>
+        <div style="display:grid; gap:10px;">
+          <div class="tag flat" id="lastSync">Last sync: –</div>
+          <div class="tag flat" id="dataSource">Data source: Apps Script (GET)</div>
+          <div class="tag flat" id="activeFilters">Filters: None</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="grid charts" style="margin-top:16px;">
+      <div class="card">
+        <div class="section-title">
+          <h3>Avg Overall Rating by Training</h3>
+          <p>Based on filtered records</p>
+        </div>
+        <canvas id="chartTraining"></canvas>
+      </div>
+
+      <div class="card">
+        <div class="section-title">
+          <h3>Monthly Avg Rating Trend</h3>
+          <p>Across all trainings (filtered)</p>
+        </div>
+        <canvas id="chartMonthly"></canvas>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="card" style="margin-top:16px;">
+      <div class="section-title">
+        <h3>Training x Month Summary</h3>
+        <p>Includes responses, avg rating, avg NPS, and month-over-month trend</p>
+      </div>
+
+      <div style="overflow:auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>Training</th>
+              <th>Month</th>
+              <th>Responses</th>
+              <th>Avg Overall</th>
+              <th>Avg NPS</th>
+              <th>Trend</th>
+            </tr>
+          </thead>
+          <tbody id="summaryBody"></tbody>
+        </table>
+      </div>
+
+      <div class="footer">© 2025 HGS | L&D Feedback Analytics</div>
+    </div>
+
+  </div>
 
 <script>
-  const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxfaK3udVG9WBAUz-L4HqgLAj_QRnkhyeicqg688iUAH5xMq58pvtjuJryYtNzSEaE5xQ/exec'; //
+  // IMPORTANT: Replace with your Apps Script Web App URL (the one that shows [] on direct open)
+  const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxfaK3udVG9WBAUz-L4HqgLAj_QRnkhyeicqg688iUAH5xMq58pvtjuJryYtNzSEaE5xQ/exec';
 
-  const filterTraining = document.getElementById('filterTraining');
-  const filterMonth = document.getElementById('filterMonth');
-  const refreshBtn = document.getElementById('refreshBtn');
-  const dashboardContent = document.getElementById('dashboardContent');
+  // Trend thresholds
+  const UP_T = 0.10;
+  const DOWN_T = -0.10;
 
-  refreshBtn.addEventListener('click', loadAndRender);
-  window.addEventListener('load', loadAndRender);
+  let allRecords = [];
+  let chartTraining = null;
+  let chartMonthly = null;
 
-  async function loadAndRender() {
-    dashboardContent.innerHTML = 'Loading data...';
+  const el = (id) => document.getElementById(id);
 
-    try {
-      const res = await fetch(WEB_APP_URL);
-      const data = await res.json();
-      renderDashboard(data);
-    } catch (err) {
-      console.error(err);
-      dashboardContent.innerHTML = '<div class="no-data">Error loading data. Please check the backend.</div>';
-    }
+  function num(v){
+    const n = Number(v);
+    return Number.isFinite(n) ? n : null;
   }
 
-  function formatMonthYear(dateStr) {
+  function monthKeyFromDate(dateStr){
+    if(!dateStr) return null;
+    // Accept YYYY-MM-DD (from date input) or ISO
     const d = new Date(dateStr);
-    if (isNaN(d)) return '';
-    const year = d.getFullYear();
-    const month = d.getMonth() + 1;
-    return year + '-' + month.toString().padStart(2, '0');
+    if(isNaN(d.getTime())) return null;
+    const y = d.getFullYear();
+    const m = String(d.getMonth()+1).padStart(2,'0');
+    return `${y}-${m}`;
   }
 
-  function renderDashboard(data) {
-    dashboardContent.innerHTML = '';
+  function applyFilters(records){
+    const q = (el('filterTraining').value || '').trim().toLowerCase();
+    const m = (el('filterMonth').value || '').trim(); // yyyy-mm
 
-    if (!data || !data.length) {
-      const div = document.createElement('div');
-      div.className = 'no-data';
-      div.textContent = 'No feedback records found.';
-      dashboardContent.appendChild(div);
-      return;
+    let out = records;
+
+    if(q){
+      out = out.filter(r => String(r.trainingTopic || '').toLowerCase().includes(q));
+    }
+    if(m){
+      out = out.filter(r => monthKeyFromDate(r.trainingDate) === m);
     }
 
-    const trainingFilter = filterTraining.value.trim().toLowerCase();
-    const monthFilter = filterMonth.value;
+    // update active filter chip
+    let filtersText = [];
+    if(q) filtersText.push(`Training contains "${q}"`);
+    if(m) filtersText.push(`Month = ${m}`);
+    el('activeFilters').textContent = 'Filters: ' + (filtersText.length ? filtersText.join(' | ') : 'None');
 
-    const filtered = data.filter(function(rec) {
-      const topic = (rec.trainingTopic || '').toString();
-      const d = (rec.trainingDate || '').toString();
-      let ok = true;
+    return out;
+  }
 
-      if (trainingFilter) {
-        ok = ok && topic.toLowerCase().includes(trainingFilter);
-      }
-      if (monthFilter) {
-        ok = ok && formatMonthYear(d) === monthFilter;
-      }
-      return ok;
-    });
+  function summarize(records){
+    // Group by training + month
+    const map = new Map(); // key: training|month -> agg
+    for(const r of records){
+      const training = (r.trainingTopic || '').trim() || '(No training name)';
+      const month = monthKeyFromDate(r.trainingDate) || '(No date)';
+      const key = `${training}|||${month}`;
 
-    if (!filtered.length) {
-      const div = document.createElement('div');
-      div.className = 'no-data';
-      div.textContent = 'No records match the selected filters.';
-      dashboardContent.appendChild(div);
-      return;
-    }
-
-    const total = filtered.length;
-    const avgRating = (filtered.reduce(function(s, r) {
-      return s + Number(r.overallRating || 0);
-    }, 0) / total).toFixed(2);
-    const avgNps = (filtered.reduce(function(s, r) {
-      return s + Number(r.npsScore || 0);
-    }, 0) / total).toFixed(2);
-
-    const statWrapper = document.createElement('div');
-    statWrapper.className = 'stat-cards';
-
-    statWrapper.innerHTML = ''
-      + '<div class="stat-card">'
-      + '  <div class="stat-label">Total Feedback Entries</div>'
-      + '  <div class="stat-value">' + total + '</div>'
-      + '  <div class="stat-sub">Across selected filters</div>'
-      + '</div>'
-      + '<div class="stat-card">'
-      + '  <div class="stat-label">Average Overall Session Rating</div>'
-      + '  <div class="stat-value">' + avgRating + '</div>'
-      + '  <div class="stat-sub">1 = Poor, 5 = Excellent</div>'
-      + '</div>'
-      + '<div class="stat-card">'
-      + '  <div class="stat-label">Average NPS</div>'
-      + '  <div class="stat-value">' + avgNps + '</div>'
-      + '  <div class="stat-sub">0 to 10 scale</div>'
-      + '</div>';
-
-    dashboardContent.appendChild(statWrapper);
-
-    const groups = {};
-    filtered.forEach(function(r) {
-      const topic = (r.trainingTopic || '').toString();
-      const month = formatMonthYear((r.trainingDate || '').toString());
-      const key = topic + '|' + month;
-      if (!groups[key]) {
-        groups[key] = {
-          trainingTopic: topic,
-          month: month,
+      if(!map.has(key)){
+        map.set(key, {
+          training, month,
           count: 0,
-          ratingSum: 0,
-          npsSum: 0
-        };
+          sumRating: 0, ratingN: 0,
+          sumNps: 0, npsN: 0
+        });
       }
-      groups[key].count += 1;
-      groups[key].ratingSum += Number(r.overallRating || 0);
-      groups[key].npsSum += Number(r.npsScore || 0);
+      const agg = map.get(key);
+      agg.count += 1;
+
+      const or = num(r.overallRating);
+      if(or !== null){ agg.sumRating += or; agg.ratingN += 1; }
+
+      const nps = num(r.npsScore);
+      if(nps !== null){ agg.sumNps += nps; agg.npsN += 1; }
+    }
+
+    // Convert to array
+    const rows = [...map.values()].map(x => ({
+      training: x.training,
+      month: x.month,
+      responses: x.count,
+      avgOverall: x.ratingN ? (x.sumRating / x.ratingN) : null,
+      avgNps: x.npsN ? (x.sumNps / x.npsN) : null
+    }));
+
+    // Sort by training then month
+    rows.sort((a,b) => {
+      if(a.training !== b.training) return a.training.localeCompare(b.training);
+      // month can be "(No date)" -> push bottom
+      if(a.month.includes('No')) return 1;
+      if(b.month.includes('No')) return -1;
+      return a.month.localeCompare(b.month);
     });
 
-    const groupArray = Object.keys(groups).map(function(k) {
-      const g = groups[k];
-      return {
-        trainingTopic: g.trainingTopic,
-        month: g.month,
-        count: g.count,
-        avgRating: (g.ratingSum / g.count).toFixed(2),
-        avgNps: (g.npsSum / g.count).toFixed(2)
-      };
-    });
+    // Compute MoM trend for each training based on avgOverall
+    const byTraining = new Map();
+    for(const row of rows){
+      if(!byTraining.has(row.training)) byTraining.set(row.training, []);
+      byTraining.get(row.training).push(row);
+    }
 
-    const trends = {};
-    const byTraining = {};
-    groupArray.forEach(function(g) {
-      if (!byTraining[g.trainingTopic]) byTraining[g.trainingTopic] = [];
-      byTraining[g.trainingTopic].push(g);
-    });
+    let needsAttentionCount = 0;
+    for(const [training, list] of byTraining.entries()){
+      // list already sorted by month due to global sort, but ensure:
+      const sorted = list.slice().sort((a,b) => a.month.localeCompare(b.month));
+      for(let i=0;i<sorted.length;i++){
+        const cur = sorted[i];
+        cur.trend = null;
+        cur.trendLabel = '–';
+        cur.trendClass = 'flat';
+        cur.attn = false;
 
-    Object.keys(byTraining).forEach(function(training) {
-      const arr = byTraining[training].slice().sort(function(a, b) {
-        return a.month.localeCompare(b.month);
-      });
-      if (arr.length >= 2) {
-        const prev = arr[arr.length - 2];
-        const last = arr[arr.length - 1];
-        const prevR = parseFloat(prev.avgRating);
-        const lastR = parseFloat(last.avgRating);
-        if (lastR < prevR) {
-          trends[training] = { type: 'down', from: prev, to: last };
-        } else if (lastR > prevR) {
-          trends[training] = { type: 'up', from: prev, to: last };
-        }
-      }
-    });
+        if(i === 0 || cur.month.includes('No')) continue;
 
-    const tableTitle = document.createElement('div');
-    tableTitle.className = 'section-title';
-    tableTitle.textContent = 'Training & Month Summary';
-    dashboardContent.appendChild(tableTitle);
+        const prev = sorted[i-1];
+        if(prev.month.includes('No')) continue;
 
-    const table = document.createElement('table');
-    table.innerHTML = ''
-      + '<thead>'
-      + '  <tr>'
-      + '    <th>Training Name</th>'
-      + '    <th>Month</th>'
-      + '    <th>Feedback Count</th>'
-      + '    <th>Avg Overall Rating</th>'
-      + '    <th>Avg NPS</th>'
-      + '    <th>Trend</th>'
-      + '  </tr>'
-      + '</thead>'
-      + '<tbody></tbody>';
+        if(cur.avgOverall !== null && prev.avgOverall !== null){
+          const delta = cur.avgOverall - prev.avgOverall;
+          cur.trend = delta;
 
-    const tbody = table.querySelector('tbody');
-
-    groupArray
-      .sort(function(a, b) {
-        return a.trainingTopic.localeCompare(b.trainingTopic) || a.month.localeCompare(b.month);
-      })
-      .forEach(function(g) {
-        const tr = document.createElement('tr');
-        let trendHtml = '<span class="trend-badge">–</span>';
-        const t = trends[g.trainingTopic];
-        if (t && t.to.month === g.month) {
-          if (t.type === 'down') {
-            trendHtml = '<span class="trend-badge trend-down">↓ Down vs previous month</span>';
-          } else if (t.type === 'up') {
-            trendHtml = '<span class="trend-badge trend-up">↑ Up vs previous month</span>';
+          if(delta >= UP_T){
+            cur.trendLabel = `▲ +${delta.toFixed(2)}`;
+            cur.trendClass = 'up';
+          } else if(delta <= DOWN_T){
+            cur.trendLabel = `▼ ${delta.toFixed(2)}`;
+            cur.trendClass = 'down';
+            cur.attn = true;
+            needsAttentionCount += 1;
+          } else {
+            cur.trendLabel = `▬ ${delta.toFixed(2)}`;
+            cur.trendClass = 'flat';
           }
         }
-        tr.innerHTML = ''
-          + '<td>' + g.trainingTopic + '</td>'
-          + '<td>' + g.month + '</td>'
-          + '<td>' + g.count + '</td>'
-          + '<td>' + g.avgRating + '</td>'
-          + '<td>' + g.avgNps + '</td>'
-          + '<td>' + trendHtml + '</td>';
-        tbody.appendChild(tr);
-      });
-
-    dashboardContent.appendChild(table);
-
-    const trendTitle = document.createElement('div');
-    trendTitle.className = 'section-title';
-    trendTitle.textContent = 'Trend Highlights';
-    dashboardContent.appendChild(trendTitle);
-
-    const trendDiv = document.createElement('div');
-    if (Object.keys(trends).length === 0) {
-      trendDiv.className = 'no-data';
-      trendDiv.textContent = 'No clear upward or downward trends yet. Need multiple months per training.';
-    } else {
-      const ul = document.createElement('ul');
-      Object.keys(trends).forEach(function(training) {
-        const info = trends[training];
-        const li = document.createElement('li');
-        if (info.type === 'down') {
-          li.innerHTML = ''
-            + '<span class="trend-badge trend-down">DOWN</span> '
-            + '"' + training + '" rating decreased from ' + info.from.avgRating
-            + ' in ' + info.from.month + ' to ' + info.to.avgRating
-            + ' in ' + info.to.month + '.';
-        } else {
-          li.innerHTML = ''
-            + '<span class="trend-badge trend-up">UP</span> '
-            + '"' + training + '" rating improved from ' + info.from.avgRating
-            + ' in ' + info.from.month + ' to ' + info.to.avgRating
-            + ' in ' + info.to.month + '.';
-        }
-        ul.appendChild(li);
-      });
-      trendDiv.appendChild(ul);
+      }
     }
-    dashboardContent.appendChild(trendDiv);
+
+    return { rows, needsAttentionCount };
   }
+
+  function setKpis(records, needsAttentionCount){
+    el('kpiTotal').textContent = records.length.toString();
+
+    // avg overall across records (raw)
+    let sumR=0, nR=0, sumN=0, nN=0;
+    for(const r of records){
+      const or = num(r.overallRating);
+      if(or !== null){ sumR += or; nR++; }
+      const nps = num(r.npsScore);
+      if(nps !== null){ sumN += nps; nN++; }
+    }
+    el('kpiAvgRating').textContent = nR ? (sumR/nR).toFixed(2) : '–';
+    el('kpiAvgNps').textContent = nN ? (sumN/nN).toFixed(1) : '–';
+    el('kpiAttention').textContent = needsAttentionCount.toString();
+
+    el('kpiTotalSub').textContent = `Across ${new Set(records.map(r => (r.trainingTopic||'').trim()||'(No training)')).size} trainings`;
+  }
+
+  function renderTable(summaryRows){
+    const body = el('summaryBody');
+    body.innerHTML = '';
+
+    for(const r of summaryRows){
+      const tr = document.createElement('tr');
+      if(r.attn) tr.classList.add('row-attn');
+
+      tr.innerHTML = `
+        <td><strong>${escapeHtml(r.training)}</strong></td>
+        <td>${escapeHtml(r.month)}</td>
+        <td>${r.responses}</td>
+        <td>${r.avgOverall !== null ? r.avgOverall.toFixed(2) : '–'}</td>
+        <td>${r.avgNps !== null ? r.avgNps.toFixed(1) : '–'}</td>
+        <td><span class="tag ${r.trendClass}">${r.trendLabel}</span></td>
+      `;
+      body.appendChild(tr);
+    }
+  }
+
+  function escapeHtml(str){
+    return String(str).replace(/[&<>"']/g, (m) => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'
+    }[m]));
+  }
+
+  function buildCharts(records){
+    // Chart 1: avg overall by training (top 10 by responses)
+    const byTraining = new Map();
+    for(const r of records){
+      const t = (r.trainingTopic||'').trim() || '(No training)';
+      if(!byTraining.has(t)) byTraining.set(t, { count:0, sum:0, n:0 });
+      const agg = byTraining.get(t);
+      agg.count++;
+      const or = num(r.overallRating);
+      if(or !== null){ agg.sum += or; agg.n++; }
+    }
+
+    const trainingArr = [...byTraining.entries()].map(([k,v]) => ({
+      training: k,
+      responses: v.count,
+      avg: v.n ? (v.sum/v.n) : null
+    }))
+    .filter(x => x.avg !== null)
+    .sort((a,b) => b.responses - a.responses)
+    .slice(0, 10);
+
+    const labelsT = trainingArr.map(x => x.training);
+    const dataT = trainingArr.map(x => Number(x.avg.toFixed(2)));
+
+    // Chart 2: monthly avg overall across all records
+    const byMonth = new Map();
+    for(const r of records){
+      const mk = monthKeyFromDate(r.trainingDate);
+      if(!mk) continue;
+      if(!byMonth.has(mk)) byMonth.set(mk, { sum:0, n:0 });
+      const agg = byMonth.get(mk);
+      const or = num(r.overallRating);
+      if(or !== null){ agg.sum += or; agg.n++; }
+    }
+    const months = [...byMonth.keys()].sort();
+    const dataM = months.map(m => {
+      const a = byMonth.get(m);
+      return a.n ? Number((a.sum/a.n).toFixed(2)) : null;
+    });
+
+    // Destroy existing charts to avoid overlay
+    if(chartTraining) chartTraining.destroy();
+    if(chartMonthly) chartMonthly.destroy();
+
+    const commonOpts = {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { enabled: true }
+      },
+      scales: {
+        x: { ticks: { color: getComputedStyle(document.body).getPropertyValue('--muted') } },
+        y: { ticks: { color: getComputedStyle(document.body).getPropertyValue('--muted') } }
+      }
+    };
+
+    chartTraining = new Chart(document.getElementById('chartTraining'), {
+      type: 'bar',
+      data: {
+        labels: labelsT,
+        datasets: [{
+          label: 'Avg Overall Rating',
+          data: dataT,
+          // no explicit colors to keep it theme-neutral; Chart.js will use default
+        }]
+      },
+      options: {
+        ...commonOpts,
+        scales: {
+          ...commonOpts.scales,
+          y: { suggestedMin: 1, suggestedMax: 5, ticks: { color: getComputedStyle(document.body).getPropertyValue('--muted') } }
+        }
+      }
+    });
+
+    chartMonthly = new Chart(document.getElementById('chartMonthly'), {
+      type: 'line',
+      data: {
+        labels: months,
+        datasets: [{
+          label: 'Monthly Avg Overall',
+          data: dataM,
+          tension: 0.25
+        }]
+      },
+      options: {
+        ...commonOpts,
+        scales: {
+          ...commonOpts.scales,
+          y: { suggestedMin: 1, suggestedMax: 5, ticks: { color: getComputedStyle(document.body).getPropertyValue('--muted') } }
+        }
+      }
+    });
+  }
+
+  async function loadData(){
+    el('errorBox').style.display = 'none';
+    el('infoBox').style.display = 'none';
+
+    try{
+      const res = await fetch(WEB_APP_URL, { method: 'GET' });
+      if(!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+
+      // If your sheet headers differ, the objects may not have expected keys.
+      // We handle that gracefully and still show what we can.
+      allRecords = Array.isArray(data) ? data : [];
+
+      const filtered = applyFilters(allRecords);
+
+      el('lastSync').textContent = `Last sync: ${new Date().toLocaleString()}`;
+
+      if(filtered.length === 0){
+        setKpis(filtered, 0);
+        el('infoBox').style.display = 'block';
+        renderTable([]);
+        buildCharts([]); // clears charts
+        return;
+      }
+
+      const { rows, needsAttentionCount } = summarize(filtered);
+      setKpis(filtered, needsAttentionCount);
+      renderTable(rows);
+      buildCharts(filtered);
+
+    } catch(err){
+      console.error(err);
+      el('errorBox').style.display = 'block';
+      setKpis([], 0);
+      renderTable([]);
+    }
+  }
+
+  // Theme toggle
+  const THEME_KEY = 'hgs_admin_theme';
+  function applyTheme(){
+    const saved = localStorage.getItem(THEME_KEY);
+    if(saved === 'dark'){
+      document.body.classList.add('dark');
+      el('themeBtn').textContent = 'Light theme';
+    } else {
+      document.body.classList.remove('dark');
+      el('themeBtn').textContent = 'Dark theme';
+    }
+    // Rebuild charts so tick colors match theme variables
+    const filtered = applyFilters(allRecords);
+    if(filtered.length) buildCharts(filtered);
+  }
+
+  el('themeBtn').addEventListener('click', () => {
+    const isDark = document.body.classList.contains('dark');
+    localStorage.setItem(THEME_KEY, isDark ? 'light' : 'dark');
+    applyTheme();
+  });
+
+  el('refreshBtn').addEventListener('click', loadData);
+  el('applyBtn').addEventListener('click', loadData);
+
+  // First load
+  applyTheme();
+  loadData();
 </script>
+
 </body>
 </html>
-
-
-
-

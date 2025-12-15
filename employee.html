@@ -1,463 +1,267 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Training Feedback Form</title>
-  <style>
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #f5f5f7;
-      margin: 0;
-      padding: 0;
-      color: #222;
-    }
-    main {
-      max-width: 800px;
-      margin: 32px auto;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-      padding: 24px 28px 32px;
-    }
-    h1 {
-      margin-top: 0;
-      font-size: 20px;
-      color: #1f3b70;
-    }
-    .section-title {
-      margin-top: 24px;
-      font-size: 15px;
-      font-weight: 600;
-      border-bottom: 1px solid #e2e2e8;
-      padding-bottom: 6px;
-      color: #333;
-    }
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 16px 20px;
-      margin-top: 16px;
-    }
-    label {
-      display: block;
-      font-size: 13px;
-      margin-bottom: 4px;
-      font-weight: 500;
-    }
-    input[type="text"],
-    input[type="number"],
-    input[type="date"],
-    select,
-    textarea {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 8px 10px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 13px;
-      outline: none;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease;
-      background: #fafafa;
-    }
-    input:focus,
-    select:focus,
-    textarea:focus {
-      border-color: #1f3b70;
-      box-shadow: 0 0 0 2px rgba(31,59,112,0.15);
-      background: #fff;
-    }
-    textarea {
-      resize: vertical;
-      min-height: 60px;
-    }
-    .rating-scale {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      margin-top: 4px;
-    }
-    .rating-scale button {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      border: 1px solid #ccc;
-      background: #f5f5f7;
-      cursor: pointer;
-      font-size: 13px;
-    }
-    .rating-scale button.selected {
-      background: #1f3b70;
-      color: #fff;
-      border-color: #1f3b70;
-      font-weight: 600;
-    }
-    .help-text {
-      font-size: 11px;
-      color: #777;
-      margin-top: 2px;
-    }
-    .actions {
-      margin-top: 24px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    button.primary {
-      background: #1f3b70;
-      color: #fff;
-      border: none;
-      padding: 10px 22px;
-      border-radius: 999px;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 600;
-      opacity: 0.7;
-    }
-    button.primary.enabled {
-      opacity: 1;
-    }
-    button.primary:disabled {
-      cursor: not-allowed;
-    }
-    .success-msg {
-      font-size: 13px;
-      color: #1f7a3a;
-      display: none;
-    }
-    .error-msg {
-      font-size: 13px;
-      color: #c0392b;
-      display: none;
-    }
-    .small-note {
-      font-size: 11px;
-      color: #999;
-      margin-top: 4px;
-    }
-  </style>
+<meta charset="UTF-8" />
+<title>Training Feedback | HGS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body {
+  margin: 0;
+  background: #f4f6f9;
+  font-family: 'Inter', sans-serif;
+}
+
+.container {
+  max-width: 820px;
+  margin: 40px auto;
+  background: #ffffff;
+  padding: 36px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.header img {
+  height: 48px;
+  margin-bottom: 12px;
+}
+
+.header h2 {
+  margin: 0;
+  color: #003a63;
+}
+
+.section {
+  margin-top: 28px;
+}
+
+label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+  margin-top: 18px;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #005bab;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0,91,171,0.15);
+}
+
+.rating-row {
+  margin-top: 12px;
+}
+
+.rating-buttons button {
+  margin: 4px 6px 4px 0;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: none;
+  background: #e7edf4;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.rating-buttons button.selected {
+  background: #005bab;
+  color: #fff;
+}
+
+.submit-btn {
+  margin-top: 36px;
+  width: 100%;
+  padding: 16px;
+  font-size: 18px;
+  border-radius: 14px;
+  border: none;
+  background: #005bab;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.submit-btn:disabled {
+  background: #9bbad1;
+  cursor: not-allowed;
+}
+
+.success {
+  margin-top: 20px;
+  background: #e8f7ee;
+  color: #0a6b38;
+  padding: 14px;
+  border-radius: 12px;
+  font-weight: 600;
+  display: none;
+  text-align: center;
+}
+</style>
 </head>
+
 <body>
-<main>
-  <h1>Training Feedback Form</h1>
-  <div class="small-note">
-    Please provide your feedback for the training session you attended in the last 60 days.
+
+<div class="container">
+  <div class="header">
+    <img src="hgs-logo.png" alt="HGS Logo">
+    <h2>Training Feedback Form</h2>
+    <p>Please share your honest feedback to help us improve learning experiences.</p>
   </div>
 
-  <div class="section-title">Session Details</div>
-  <div class="form-grid">
-    <div>
-      <label for="trainingTopic">Training Topic Attended *</label>
-      <input type="text" id="trainingTopic" placeholder="e.g. Email Skills 101" required />
-    </div>
-    <div>
-      <label for="trainingDate">Training Date (last 60 days only) *</label>
-      <input type="date" id="trainingDate" required />
-      <div class="help-text" id="dateHelpText"></div>
-    </div>
-    <div>
-      <label for="location">Location Attended At *</label>
-      <select id="location" required>
-        <option value="">Select location</option>
-        <option>OIC</option>
-        <option>BSEL</option>
-        <option>SV & PK</option>
-        <option>IRIS</option>
-        <option>Bangalore</option>
-        <option>Virtual</option>
-      </select>
-    </div>
+  <!-- BASIC DETAILS -->
+  <div class="section">
+    <label>Training Topic *</label>
+    <input id="trainingTopic">
+
+    <label>Training Date *</label>
+    <input type="date" id="trainingDate">
+
+    <label>Location *</label>
+    <select id="location">
+      <option value="">Select</option>
+      <option>OIC</option>
+      <option>BSEL</option>
+      <option>SV & PK</option>
+      <option>IRIS</option>
+      <option>Bangalore</option>
+      <option>Virtual</option>
+    </select>
+
+    <label>Employee Code *</label>
+    <input id="employeeCode">
+
+    <label>Department *</label>
+    <input id="department">
   </div>
 
-  <div class="section-title">Session Ratings</div>
-  <div class="form-grid">
-    <div>
-      <label>Overall Session Rating (1 = Poor, 5 = Excellent) *</label>
-      <div class="rating-scale" id="overallRatingButtons"></div>
-      <input type="hidden" id="overallRating" />
-    </div>
-    <div>
-      <label>Content relevance to your work (1 = Poor, 5 = Excellent) *</label>
-      <div class="rating-scale" id="contentRatingButtons"></div>
-      <input type="hidden" id="contentRelevanceRating" />
-    </div>
-  </div>
+  <!-- RATINGS -->
+  <div class="section">
+    <h3>Session Ratings (1 = Poor, 5 = Excellent)</h3>
 
-  <div class="form-grid">
-    <div>
-      <label>Trainer clarity & delivery (1 = Poor, 5 = Excellent) *</label>
-      <div class="rating-scale" id="trainerRatingButtons"></div>
-      <input type="hidden" id="trainerDeliveryRating" />
+    <div class="rating-row">
+      <label>Overall Session Rating *</label>
+      <div class="rating-buttons" data-field="overallRating"></div>
     </div>
-    <div>
-      <label>Session pace (1 = Poor, 5 = Excellent) *</label>
-      <div class="rating-scale" id="paceRatingButtons"></div>
-      <input type="hidden" id="sessionPaceRating" />
-    </div>
-  </div>
 
-  <div class="form-grid">
-    <div>
-      <label>Usefulness for your current role (1 = Poor, 5 = Excellent) *</label>
-      <div class="rating-scale" id="usefulnessRatingButtons"></div>
-      <input type="hidden" id="usefulnessRating" />
+    <div class="rating-row">
+      <label>Content relevance to your work *</label>
+      <div class="rating-buttons" data-field="contentRelevanceRating"></div>
+    </div>
+
+    <div class="rating-row">
+      <label>Trainer clarity & delivery *</label>
+      <div class="rating-buttons" data-field="trainerDeliveryRating"></div>
+    </div>
+
+    <div class="rating-row">
+      <label>Session pace *</label>
+      <div class="rating-buttons" data-field="sessionPaceRating"></div>
+    </div>
+
+    <div class="rating-row">
+      <label>Usefulness for your current role *</label>
+      <div class="rating-buttons" data-field="usefulnessRating"></div>
     </div>
   </div>
 
-  <div class="section-title">Participant & Feedback Details</div>
-  <div class="form-grid">
-    <div>
-      <label for="employeeCode">Employee Code *</label>
-      <input type="text" id="employeeCode" placeholder="e.g. E12345" required />
-    </div>
-    <div>
-      <label for="department">Department *</label>
-      <input type="text" id="department" placeholder="e.g. Payroll Operations" required />
-    </div>
-    <div>
-      <label for="npsScore">How likely are you to recommend this session to a colleague? (0–10) *</label>
-      <input type="number" id="npsScore" min="0" max="10" placeholder="0 - 10" required />
-    </div>
+  <!-- QUALITATIVE -->
+  <div class="section">
+    <label>NPS (0–10) *</label>
+    <input type="number" min="0" max="10" id="npsScore">
+
+    <label>What did you like most? *</label>
+    <textarea id="likedMost"></textarea>
+
+    <label>What could be improved? *</label>
+    <textarea id="toImprove"></textarea>
+
+    <label>Any other suggestions or topics?</label>
+    <textarea id="suggestions"></textarea>
   </div>
 
-  <div class="form-grid" style="margin-top: 12px;">
-    <div style="grid-column: 1 / -1;">
-      <label for="likedMost">What did you like most about the session? *</label>
-      <textarea id="likedMost" required></textarea>
-    </div>
-    <div style="grid-column: 1 / -1;">
-      <label for="toImprove">What could be improved? *</label>
-      <textarea id="toImprove" required></textarea>
-    </div>
-    <div style="grid-column: 1 / -1;">
-      <label for="suggestions">Any other suggestions or topics you’d like us to cover next? *</label>
-      <textarea id="suggestions" required></textarea>
-    </div>
-  </div>
-
-  <div class="actions">
-    <button id="submitBtn" class="primary" disabled>Submit Feedback</button>
-    <span class="success-msg" id="successMsg">Thank you! Your feedback has been recorded.</span>
-    <span class="error-msg" id="errorMsg"></span>
-  </div>
-</main>
+  <button class="submit-btn" id="submitBtn" disabled>Submit Feedback</button>
+  <div class="success" id="successMsg">Thank you! Your feedback has been recorded.</div>
+</div>
 
 <script>
-  const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxfaK3udVG9WBAUz-L4HqgLAj_QRnkhyeicqg688iUAH5xMq58pvtjuJryYtNzSEaE5xQ/exec'; // 
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxfaK3udVG9WBAUz-L4HqgLAj_QRnkhyeicqg688iUAH5xMq58pvtjuJryYtNzSEaE5xQ/exec';
+const ratings = {};
 
-  const trainingDateInput = document.getElementById('trainingDate');
-  const dateHelpText = document.getElementById('dateHelpText');
-
-  function setDateLimits() {
-    const today = new Date();
-    const maxDate = today.toISOString().split('T')[0];
-    const minDateObj = new Date();
-    minDateObj.setDate(minDateObj.getDate() - 60);
-    const minDate = minDateObj.toISOString().split('T')[0];
-
-    trainingDateInput.max = maxDate;
-    trainingDateInput.min = minDate;
-    dateHelpText.textContent = 'You can select a date between ' + minDate + ' and ' + maxDate + '.';
-  }
-
-  setDateLimits();
-
-  function setupRatingGroup(containerId, hiddenInputId) {
-    const container = document.getElementById(containerId);
-    const hidden = document.getElementById(hiddenInputId);
-    for (let i = 1; i <= 5; i++) {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.textContent = i;
-      btn.addEventListener('click', function() {
-        hidden.value = i;
-        Array.prototype.forEach.call(container.children, function(b) {
-          b.classList.remove('selected');
-        });
-        btn.classList.add('selected');
-        updateSubmitState();
-      });
-      container.appendChild(btn);
-    }
-  }
-
-  setupRatingGroup('overallRatingButtons', 'overallRating');
-  setupRatingGroup('contentRatingButtons', 'contentRelevanceRating');
-  setupRatingGroup('trainerRatingButtons', 'trainerDeliveryRating');
-  setupRatingGroup('paceRatingButtons', 'sessionPaceRating');
-  setupRatingGroup('usefulnessRatingButtons', 'usefulnessRating');
-
-  const requiredFields = [
-    'trainingTopic',
-    'trainingDate',
-    'location',
-    'employeeCode',
-    'department',
-    'npsScore',
-    'likedMost',
-    'toImprove',
-    'suggestions'
-  ];
-
-  const submitBtn = document.getElementById('submitBtn');
-  const successMsg = document.getElementById('successMsg');
-  const errorMsg = document.getElementById('errorMsg');
-
-  requiredFields.forEach(function(id) {
-    const el = document.getElementById(id);
-    el.addEventListener('input', updateSubmitState);
-    el.addEventListener('change', updateSubmitState);
-  });
-
-  function isDateWithin60Days(value) {
-    if (!value) return false;
-    const selected = new Date(value);
-    const today = new Date();
-    const diff = (today - selected) / (1000 * 60 * 60 * 24);
-    return diff >= 0 && diff <= 60;
-  }
-
-  function updateSubmitState() {
-    errorMsg.style.display = 'none';
-    successMsg.style.display = 'none';
-
-    let allFilled = true;
-
-    for (let i = 0; i < requiredFields.length; i++) {
-      const id = requiredFields[i];
-      const el = document.getElementById(id);
-      if (!el.value || el.value.toString().trim() === '') {
-        allFilled = false;
-        break;
-      }
-    }
-
-    const ratingFields = [
-      'overallRating',
-      'contentRelevanceRating',
-      'trainerDeliveryRating',
-      'sessionPaceRating',
-      'usefulnessRating'
-    ];
-    for (let j = 0; j < ratingFields.length; j++) {
-      const rId = ratingFields[j];
-      const val = document.getElementById(rId).value;
-      if (!val || val.toString().trim() === '') {
-        allFilled = false;
-        break;
-      }
-    }
-
-    const npsVal = parseInt(document.getElementById('npsScore').value, 10);
-    if (isNaN(npsVal) || npsVal < 0 || npsVal > 10) {
-      allFilled = false;
-    }
-
-    if (!isDateWithin60Days(trainingDateInput.value)) {
-      allFilled = false;
-    }
-
-    submitBtn.disabled = !allFilled;
-    if (allFilled) {
-      submitBtn.classList.add('enabled');
-    } else {
-      submitBtn.classList.remove('enabled');
-    }
-  }
-
-  submitBtn.addEventListener('click', function() {
-    errorMsg.style.display = 'none';
-    successMsg.style.display = 'none';
-
-    if (submitBtn.disabled) {
-      errorMsg.textContent = 'Please complete all fields correctly before submitting.';
-      errorMsg.style.display = 'inline';
-      return;
-    }
-
-    const npsVal = parseInt(document.getElementById('npsScore').value, 10);
-    if (isNaN(npsVal) || npsVal < 0 || npsVal > 10) {
-      errorMsg.textContent = 'NPS must be between 0 and 10.';
-      errorMsg.style.display = 'inline';
-      return;
-    }
-
-    if (!isDateWithin60Days(trainingDateInput.value)) {
-      errorMsg.textContent = 'Training date must be within the last 60 days.';
-      errorMsg.style.display = 'inline';
-      return;
-    }
-
-    const payload = {
-      trainingTopic: document.getElementById('trainingTopic').value.trim(),
-      trainingDate: document.getElementById('trainingDate').value,
-      location: document.getElementById('location').value,
-      employeeCode: document.getElementById('employeeCode').value.trim(),
-      department: document.getElementById('department').value.trim(),
-
-      overallRating: parseInt(document.getElementById('overallRating').value, 10),
-      contentRelevanceRating: parseInt(document.getElementById('contentRelevanceRating').value, 10),
-      trainerDeliveryRating: parseInt(document.getElementById('trainerDeliveryRating').value, 10),
-      sessionPaceRating: parseInt(document.getElementById('sessionPaceRating').value, 10),
-      usefulnessRating: parseInt(document.getElementById('usefulnessRating').value, 10),
-
-      npsScore: npsVal,
-      likedMost: document.getElementById('likedMost').value.trim(),
-      toImprove: document.getElementById('toImprove').value.trim(),
-      suggestions: document.getElementById('suggestions').value.trim()
+document.querySelectorAll('.rating-buttons').forEach(group => {
+  const field = group.dataset.field;
+  ratings[field] = null;
+  for (let i = 1; i <= 5; i++) {
+    const btn = document.createElement('button');
+    btn.textContent = i;
+    btn.onclick = () => {
+      ratings[field] = i;
+      [...group.children].forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      validate();
     };
+    group.appendChild(btn);
+  }
+});
 
-    submitBtn.disabled = true;
-    submitBtn.classList.remove('enabled');
-    submitBtn.textContent = 'Submitting...';
+function validate() {
+  const requiredFilled =
+    trainingTopic.value &&
+    trainingDate.value &&
+    location.value &&
+    employeeCode.value &&
+    department.value &&
+    npsScore.value >= 0 &&
+    Object.values(ratings).every(v => v !== null) &&
+    likedMost.value &&
+    toImprove.value;
 
-    fetch(WEB_APP_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    })
-      .then(function() {
-        successMsg.style.display = 'inline';
-        clearForm();
-        updateSubmitState();
-      })
-      .catch(function(err) {
-        console.error(err);
-        errorMsg.textContent = 'Something went wrong while submitting. Please try again.';
-        errorMsg.style.display = 'inline';
-      })
-      .finally(function() {
-        submitBtn.textContent = 'Submit Feedback';
-      });
+  submitBtn.disabled = !requiredFilled;
+}
+
+document.querySelectorAll('input, select, textarea').forEach(el =>
+  el.addEventListener('input', validate)
+);
+
+submitBtn.onclick = async () => {
+  submitBtn.textContent = 'Submitting...';
+
+  const payload = {
+    trainingTopic: trainingTopic.value,
+    trainingDate: trainingDate.value,
+    location: location.value,
+    employeeCode: employeeCode.value,
+    department: department.value,
+    ...ratings,
+    npsScore: npsScore.value,
+    likedMost: likedMost.value,
+    toImprove: toImprove.value,
+    suggestions: suggestions.value
+  };
+
+  await fetch(WEB_APP_URL, {
+    method: 'POST',
+    body: JSON.stringify(payload)
   });
 
-  function clearForm() {
-    document.getElementById('trainingTopic').value = '';
-    document.getElementById('trainingDate').value = '';
-    document.getElementById('location').value = '';
-    document.getElementById('employeeCode').value = '';
-    document.getElementById('department').value = '';
-    document.getElementById('npsScore').value = '';
-    document.getElementById('likedMost').value = '';
-    document.getElementById('toImprove').value = '';
-    document.getElementById('suggestions').value = '';
-
-    ['overallRating','contentRelevanceRating','trainerDeliveryRating','sessionPaceRating','usefulnessRating']
-      .forEach(function(id) {
-        document.getElementById(id).value = '';
-      });
-
-    ['overallRatingButtons','contentRatingButtons','trainerRatingButtons','paceRatingButtons','usefulnessRatingButtons']
-      .forEach(function(cid) {
-        Array.prototype.forEach.call(document.getElementById(cid).children, function(b) {
-          b.classList.remove('selected');
-        });
-      });
-  }
-
-  updateSubmitState();
+  successMsg.style.display = 'block';
+  submitBtn.textContent = 'Submitted';
+  submitBtn.disabled = true;
+};
 </script>
+
 </body>
 </html>
-
-

@@ -313,7 +313,7 @@ submitBtn.onclick = async () => {
     trainingTopic: trainingTopic.value,
     trainingDate: trainingDate.value,
     location: location.value,
-    employeeCode: employeeCode.value,
+    employeeCode: `${empPrefix.value}-${employeeCode.value}`.trim(),
     department: department.value,
     ...ratings,
     npsScore: npsScore.value,
@@ -335,6 +335,7 @@ submitBtn.onclick = async () => {
 
 </body>
 </html>
+
 
 
 

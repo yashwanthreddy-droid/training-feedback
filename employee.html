@@ -217,9 +217,12 @@ input:focus, select:focus, textarea:focus {
 
   <!-- QUALITATIVE -->
   <div class="section">
-    <label>NPS (0–10) *</label>
-    <input type="number" min="0" max="10" id="npsScore">
-
+    <label>Recommendation Score (NPS) *</label>
+<div style="color:#5d6b7a; font-size:13px; margin-top:6px; line-height:1.4;">
+  On a scale of <strong>0 to 10</strong>, how likely are you to recommend this session to a colleague?
+  <br><span style="font-weight:700;">0</span> = Not at all likely, <span style="font-weight:700;">10</span> = Extremely likely
+</div>
+<input type="number" min="0" max="10" id="npsScore" placeholder="Enter 0–10" style="margin-top:10px;">
     <label>What did you like most? *</label>
     <textarea id="likedMost"></textarea>
 
@@ -335,6 +338,7 @@ submitBtn.onclick = async () => {
 
 </body>
 </html>
+
 
 
 

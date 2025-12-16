@@ -236,13 +236,31 @@ document.querySelectorAll('.rating-buttons').forEach(group => {
 });
 
 function validate() {
+  const dateEl = document.getElementById('trainingDate');
+  const dateVal = dateEl.value;
+
+  // validate date range (last 60 days, no future)
+  let dateOk = false;
+  if (dateVal) {
+    const picked = new Date(dateVal + "T00:00:00");
+    const today = new Date(); today.setHours(0,0,0,0);
+    const minDate = new Date(today); minDate.setDate(minDate.getDate() - 60);
+
+    dateOk = picked >= minDate && picked <= today;
+  }
+
+  document.getElementById('dateError').style.display = dateVal && !dateOk ? 'block' : 'none';
+
+  const npsVal = document.getElementById('npsScore').value;
+  const npsOk = npsVal !== '' && Number(npsVal) >= 0 && Number(npsVal) <= 10;
+
   const requiredFilled =
     trainingTopic.value &&
-    trainingDate.value &&
+    dateOk &&
     location.value &&
     employeeCode.value &&
     department.value &&
-    npsScore.value >= 0 &&
+    npsOk &&
     Object.values(ratings).every(v => v !== null) &&
     likedMost.value &&
     toImprove.value;
@@ -283,6 +301,7 @@ submitBtn.onclick = async () => {
 
 </body>
 </html>
+
 
 
 

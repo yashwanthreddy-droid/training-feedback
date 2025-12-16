@@ -118,7 +118,7 @@
     font-size: 12px;
   }
 
-  /* Ratings */
+  /* Ratings (always visible because buttons are in HTML) */
   .rating-row { margin-top: 14px; }
 
   .rating-buttons{
@@ -199,7 +199,6 @@
 
 <div class="container">
   <div class="header">
-    <!-- Make sure this image exists in your repo root -->
     <img src="hgs-logo.png" alt="HGS Logo">
     <h2>Training Feedback Form</h2>
     <p>Please share your honest feedback to help us improve learning experiences.</p>
@@ -213,7 +212,8 @@
     <input id="trainingTopic" placeholder="e.g., Email Skills, Power Query, POSH">
 
     <label>Training Date *</label>
-    <input type="date" id="trainingDate" required>
+    <!-- Readonly prevents manual typing of future/older dates -->
+    <input type="date" id="trainingDate" readonly>
     <div class="helper">Allowed range: last 60 days only (no future dates).</div>
     <div id="dateError" class="error">
       Please select a date within the last 60 days (and not a future date).
@@ -251,27 +251,57 @@
 
     <div class="rating-row">
       <label>Overall Session Rating *</label>
-      <div class="rating-buttons" data-field="overallRating"></div>
+      <div class="rating-buttons" data-field="overallRating">
+        <button type="button" data-value="1">1</button>
+        <button type="button" data-value="2">2</button>
+        <button type="button" data-value="3">3</button>
+        <button type="button" data-value="4">4</button>
+        <button type="button" data-value="5">5</button>
+      </div>
     </div>
 
     <div class="rating-row">
       <label>Content relevance to your work *</label>
-      <div class="rating-buttons" data-field="contentRelevanceRating"></div>
+      <div class="rating-buttons" data-field="contentRelevanceRating">
+        <button type="button" data-value="1">1</button>
+        <button type="button" data-value="2">2</button>
+        <button type="button" data-value="3">3</button>
+        <button type="button" data-value="4">4</button>
+        <button type="button" data-value="5">5</button>
+      </div>
     </div>
 
     <div class="rating-row">
       <label>Trainer clarity & delivery *</label>
-      <div class="rating-buttons" data-field="trainerDeliveryRating"></div>
+      <div class="rating-buttons" data-field="trainerDeliveryRating">
+        <button type="button" data-value="1">1</button>
+        <button type="button" data-value="2">2</button>
+        <button type="button" data-value="3">3</button>
+        <button type="button" data-value="4">4</button>
+        <button type="button" data-value="5">5</button>
+      </div>
     </div>
 
     <div class="rating-row">
       <label>Session pace *</label>
-      <div class="rating-buttons" data-field="sessionPaceRating"></div>
+      <div class="rating-buttons" data-field="sessionPaceRating">
+        <button type="button" data-value="1">1</button>
+        <button type="button" data-value="2">2</button>
+        <button type="button" data-value="3">3</button>
+        <button type="button" data-value="4">4</button>
+        <button type="button" data-value="5">5</button>
+      </div>
     </div>
 
     <div class="rating-row">
       <label>Usefulness for your current role *</label>
-      <div class="rating-buttons" data-field="usefulnessRating"></div>
+      <div class="rating-buttons" data-field="usefulnessRating">
+        <button type="button" data-value="1">1</button>
+        <button type="button" data-value="2">2</button>
+        <button type="button" data-value="3">3</button>
+        <button type="button" data-value="4">4</button>
+        <button type="button" data-value="5">5</button>
+      </div>
     </div>
   </div>
 
@@ -302,10 +332,16 @@
 </div>
 
 <script>
-  // ✅ Replace this with your Apps Script Web App URL (ends with /exec)
+  // ✅ Replace with your Apps Script Web App URL (ends with /exec)
   const WEB_APP_URL = https://script.google.com/macros/s/AKfycbxfaK3udVG9WBAUz-L4HqgLAj_QRnkhyeicqg688iUAH5xMq58pvtjuJryYtNzSEaE5xQ/exec;
 
-  const ratings = {};
+  const ratings = {
+    overallRating: null,
+    contentRelevanceRating: null,
+    trainerDeliveryRating: null,
+    sessionPaceRating: null,
+    usefulnessRating: null
+  };
 
   const trainingTopic = document.getElementById('trainingTopic');
   const trainingDate = document.getElementById('trainingDate');
@@ -321,63 +357,69 @@
 
   const submitBtn = document.getElementById('submitBtn');
   const successMsg = document.getElementById('successMsg');
-
   const dateError = document.getElementById('dateError');
 
-  // ✅ Create rating buttons 1–5 (visible circular)
-  document.querySelectorAll('.rating-buttons').forEach(group => {
-    const field = group.dataset.field;
-    ratings[field] = null;
+  // ---------- DATE ENFORCEMENT (HARD) ----------
+  function iso(d){ return d.toISOString().slice(0,10); }
 
-    for (let i = 1; i <= 5; i++) {
-      const btn = document.createElement('button');
-      btn.type = 'button'; // IMPORTANT
-      btn.textContent = i;
+  const today = new Date(); today.setHours(0,0,0,0);
+  const minDate = new Date(today); minDate.setDate(minDate.getDate() - 60);
 
-      btn.onclick = () => {
-        ratings[field] = i;
-        [...group.children].forEach(b => b.classList.remove('selected'));
-        btn.classList.add('selected');
-        validate();
-      };
+  // These help most native pickers
+  trainingDate.min = iso(minDate);
+  trainingDate.max = iso(today);
 
-      group.appendChild(btn);
-    }
+  // Allow opening picker even though readonly (some browsers)
+  trainingDate.addEventListener('click', () => {
+    if (trainingDate.showPicker) trainingDate.showPicker();
   });
 
-  // ✅ Strong date enforcement: last 60 days only + no future
-  (function enforceTrainingDate(){
-    function iso(d){ return d.toISOString().slice(0,10); }
+  function isValidPickedDate(val){
+    if(!val) return false;
+    const picked = new Date(val + "T00:00:00");
+    return picked >= minDate && picked <= today;
+  }
 
-    const today = new Date(); today.setHours(0,0,0,0);
-    const minDate = new Date(today); minDate.setDate(minDate.getDate() - 60);
-
-    trainingDate.min = iso(minDate);
-    trainingDate.max = iso(today);
-
-    function isValidPickedDate(){
-      if(!trainingDate.value) return false;
-      const picked = new Date(trainingDate.value + "T00:00:00");
-      return picked >= minDate && picked <= today;
+  function enforceDateNow(){
+    const val = trainingDate.value;
+    if(!val){
+      dateError.style.display = 'none';
+      return;
     }
+    if(!isValidPickedDate(val)){
+      dateError.style.display = 'block';
+      trainingDate.value = ''; // hard clear invalid values
+    } else {
+      dateError.style.display = 'none';
+    }
+  }
 
-    // Validate on change/input; if invalid, clear value
-    trainingDate.addEventListener('input', () => {
-      if (trainingDate.value && !isValidPickedDate()) {
-        dateError.style.display = 'block';
-        trainingDate.value = '';
-      } else {
-        dateError.style.display = 'none';
-      }
-      validate();
+  // Catch all ways the value could be changed
+  trainingDate.addEventListener('input', () => { enforceDateNow(); validate(); });
+  trainingDate.addEventListener('change', () => { enforceDateNow(); validate(); });
+  trainingDate.addEventListener('blur',  () => { enforceDateNow(); validate(); });
+
+  // ---------- RATING BUTTONS LOGIC ----------
+  document.querySelectorAll('.rating-buttons').forEach(group => {
+    const field = group.dataset.field;
+
+    group.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const val = Number(btn.dataset.value);
+        ratings[field] = val;
+
+        group.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+
+        validate();
+      });
     });
-  })();
+  });
 
   function validate() {
-    // Date must exist (invalid ones are cleared)
+    // training date is valid if it has a value (invalid ones are cleared)
     const dateOk = !!trainingDate.value;
 
-    // NPS must be 0–10
     const npsVal = npsScore.value;
     const npsOk = npsVal !== '' && Number(npsVal) >= 0 && Number(npsVal) <= 10;
 
@@ -400,7 +442,7 @@
     el.addEventListener('input', validate)
   );
 
-  submitBtn.onclick = async () => {
+  submitBtn.addEventListener('click', async () => {
     submitBtn.textContent = 'Submitting...';
     submitBtn.disabled = true;
 
@@ -410,13 +452,11 @@
       location: location.value,
       employeeCode: `${empPrefix.value}-${employeeCode.value.trim()}`,
       department: department.value.trim(),
-
       overallRating: ratings.overallRating,
       contentRelevanceRating: ratings.contentRelevanceRating,
       trainerDeliveryRating: ratings.trainerDeliveryRating,
       sessionPaceRating: ratings.sessionPaceRating,
       usefulnessRating: ratings.usefulnessRating,
-
       npsScore: Number(npsScore.value),
       likedMost: likedMost.value.trim(),
       toImprove: toImprove.value.trim(),
@@ -426,25 +466,26 @@
     try {
       const res = await fetch(WEB_APP_URL, {
         method: 'POST',
-        // Apps Script often handles plain text bodies most reliably
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(payload)
       });
 
       const out = await res.json().catch(() => ({}));
-
       if (!res.ok || out.status !== 'ok') {
         throw new Error(out.message || `HTTP ${res.status}`);
       }
 
       successMsg.style.display = 'block';
       submitBtn.textContent = 'Submitted';
-    } catch (err) {
+    } catch (e) {
       alert('Submission failed. Please try again. If it persists, contact HR.');
       submitBtn.textContent = 'Submit Feedback';
       submitBtn.disabled = false;
     }
-  };
+  });
+
+  // Initial validate
+  validate();
 </script>
 
 </body>

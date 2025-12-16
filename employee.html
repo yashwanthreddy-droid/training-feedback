@@ -273,6 +273,7 @@
 
     // Save selection
     ratings[field] = val;
+group.dataset.selected = "true";
 
     // Update UI selection
     group.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
@@ -306,10 +307,16 @@
   }
 
   // Validate on input changes
-  document.querySelectorAll('input, select, textarea').forEach(el => {
+  // Only listen to real form fields, NOT rating buttons
+['trainingTopic','trainingDate','location','empPrefix','employeeCode','department',
+ 'npsScore','likedMost','toImprove','suggestions']
+.forEach(id => {
+  const el = document.getElementById(id);
+  if (el) {
     el.addEventListener('input', validate);
     el.addEventListener('change', validate);
-  });
+  }
+});
 
   // ---------------- Submit ----------------
   submitBtn.addEventListener('click', async () => {
@@ -369,4 +376,5 @@
 
 </body>
 </html>
+
 

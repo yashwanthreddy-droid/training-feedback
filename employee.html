@@ -128,7 +128,10 @@ input:focus, select:focus, textarea:focus {
     <input id="trainingTopic">
 
     <label>Training Date *</label>
-    <input type="date" id="trainingDate">
+<input type="date" id="trainingDate">
+<div id="dateError" style="display:none; margin-top:8px; color:#b42318; font-weight:600; font-size:12px;">
+  Please select a date within the last 60 days.
+</div>
 
     <label>Location *</label>
     <select id="location">
@@ -280,6 +283,7 @@ submitBtn.onclick = async () => {
 
 </body>
 </html>
+
 
 
 

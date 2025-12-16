@@ -1,375 +1,253 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8">
 <title>Training Feedback | HGS</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
-<!-- Flatpickr Calendar -->
+<!-- Flatpickr -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 <style>
-  body { margin:0; background:#f4f6f9; font-family:Inter, sans-serif; color:#1b2430; }
-  .container { max-width:860px; margin:40px auto; background:#fff; padding:36px; border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,0.08); }
-  .header { text-align:center; margin-bottom:30px; }
-  .header img { height:48px; margin-bottom:12px; }
-  .header h2 { margin:0; color:#003a63; font-weight:800; }
-  .header p { margin:10px 0 0; color:#5d6b7a; font-weight:600; font-size:13px; line-height:1.45; }
+body {
+  background:#f4f6f9;
+  font-family:Inter,sans-serif;
+  margin:0;
+}
+.container {
+  max-width:820px;
+  margin:40px auto;
+  background:#fff;
+  padding:36px;
+  border-radius:16px;
+  box-shadow:0 8px 30px rgba(0,0,0,.08);
+}
+h2 {
+  text-align:center;
+  color:#003a63;
+  margin-bottom:6px;
+}
+p.sub {
+  text-align:center;
+  color:#6b7280;
+  font-size:13px;
+}
+label {
+  display:block;
+  margin-top:18px;
+  font-weight:700;
+  font-size:13px;
+}
+input, select, textarea {
+  width:100%;
+  padding:12px;
+  border-radius:10px;
+  border:1px solid #cfd8e3;
+  margin-top:6px;
+}
+textarea { min-height:90px; }
 
-  .section { margin-top:28px; }
-  .section h3 { margin:0 0 10px; color:#0b2b4a; font-size:16px; font-weight:800; }
+.rating-block {
+  margin-top:22px;
+}
+.rating-title {
+  display:flex;
+  justify-content:space-between;
+  font-weight:700;
+}
+.rating-buttons {
+  display:flex;
+  gap:10px;
+  margin-top:10px;
+}
+.rating-buttons button {
+  width:44px;
+  height:44px;
+  border-radius:50%;
+  border:2px solid #cfd8e3;
+  background:#f7f9fc;
+  font-weight:800;
+  cursor:pointer;
+}
+.rating-buttons button.selected {
+  background:#005bab;
+  color:#fff;
+  border-color:#005bab;
+}
 
-  label { font-weight:700; display:block; margin:16px 0 6px; color:#2b3a4a; font-size:13px; }
+.submit-btn {
+  margin-top:32px;
+  width:100%;
+  padding:16px;
+  border-radius:14px;
+  background:#005bab;
+  color:#fff;
+  font-size:16px;
+  font-weight:800;
+  border:none;
+  cursor:pointer;
+}
+.submit-btn:disabled {
+  background:#9bbad1;
+}
 
-  input, select, textarea {
-    width:100%; padding:12px; border-radius:12px; border:1px solid #cfd8e3;
-    font-size:14px; background:#fff; color:#1b2430; box-sizing:border-box;
-  }
-
-  input:focus, select:focus, textarea:focus {
-    border-color:#005bab; outline:none; box-shadow:0 0 0 3px rgba(0,91,171,0.12);
-  }
-
-  textarea { min-height:92px; resize:vertical; }
-
-  .row { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
-  .row > * { flex:1; min-width:220px; }
-
-  .helper { margin-top:8px; color:#5d6b7a; font-weight:600; font-size:12px; line-height:1.4; }
-  .error { display:none; margin-top:8px; color:#b42318; font-weight:800; font-size:12px; }
-
-  /* Ratings */
-  .rating-row { margin-top:14px; }
-  .rating-head { display:flex; align-items:baseline; justify-content:space-between; gap:12px; }
-  .rating-selected { font-size:12px; font-weight:800; color:#5d6b7a; }
-  .rating-selected strong { color:#0b2b4a; }
-
-  .rating-buttons { display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
-
-  .rating-buttons button {
-    width:46px; height:46px; border-radius:999px;
-    border:2px solid #c7d2e0; background:#f7f9fc; color:#1b2430;
-    font-weight:800; cursor:pointer;
-    display:inline-flex; align-items:center; justify-content:center;
-    transition:.15s ease;
-    user-select:none;
-    touch-action: manipulation; /* ✅ helps mobile/trackpads register taps cleanly */
-  }
-  .rating-buttons button:hover { border-color:#005bab; box-shadow:0 10px 20px rgba(0,0,0,.10); transform:translateY(-1px); }
-  .rating-buttons button.selected { background:#005bab; border-color:#005bab; color:#fff; }
-
-  .submit-btn {
-    margin-top:30px; width:100%; padding:16px; font-size:17px;
-    border-radius:14px; border:none; background:#005bab; color:#fff;
-    font-weight:800; cursor:pointer; transition:.15s ease;
-  }
-  .submit-btn:disabled { background:#9bbad1; cursor:not-allowed; }
-
-  .success { margin-top:18px; background:#e8f7ee; color:#0a6b38; padding:14px; border-radius:12px; font-weight:800; display:none; text-align:center; }
-  .footer-note { margin-top:14px; text-align:center; color:#7b8796; font-size:12px; font-weight:600; }
-
-  /* Flatpickr brand touch */
-  .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange {
-    background:#005bab; border-color:#005bab;
-  }
+.success {
+  display:none;
+  margin-top:18px;
+  background:#e8f7ee;
+  color:#0a6b38;
+  padding:14px;
+  border-radius:12px;
+  font-weight:800;
+  text-align:center;
+}
 </style>
 </head>
 
 <body>
 <div class="container">
 
-  <div class="header">
-    <img src="hgs-logo.png" alt="HGS Logo">
-    <h2>Training Feedback Form</h2>
-    <p>Please share your honest feedback to help us improve learning experiences.</p>
+<h2>Training Feedback Form</h2>
+<p class="sub">Please share your honest feedback to help us improve learning experiences.</p>
+
+<label>Training Topic *</label>
+<input id="trainingTopic">
+
+<label>Training Date *</label>
+<input id="trainingDate" placeholder="Select training date">
+
+<label>Location *</label>
+<select id="location">
+  <option value="">Select</option>
+  <option>OIC</option>
+  <option>BSEL</option>
+  <option>SV & PK</option>
+  <option>IRIS</option>
+  <option>Bangalore</option>
+  <option>Virtual</option>
+</select>
+
+<label>Employee Code *</label>
+<div style="display:flex;gap:10px;">
+  <select id="empPrefix">
+    <option value="">Select</option>
+    <option>BS</option>
+    <option>HGSI</option>
+  </select>
+  <input id="employeeCode" placeholder="12345">
+</div>
+
+<label>Department *</label>
+<input id="department">
+
+<!-- RATINGS -->
+<div class="rating-block" data-field="overall">
+  <div class="rating-title">Overall Session Rating <span id="overallVal">—</span></div>
+  <div class="rating-buttons">
+    <button data-v="1">1</button><button data-v="2">2</button>
+    <button data-v="3">3</button><button data-v="4">4</button>
+    <button data-v="5">5</button>
   </div>
+</div>
 
-  <!-- Session Details -->
-  <div class="section">
-    <h3>Session Details</h3>
-
-    <label>Training Topic *</label>
-    <input id="trainingTopic" placeholder="e.g., Email Skills, Power Query, POSH">
-
-    <label>Training Date *</label>
-    <!-- ✅ No readonly needed; Flatpickr blocks manual input with allowInput:false -->
-    <input type="text" id="trainingDate" placeholder="Select training date">
-    <div class="helper">Allowed range: last 60 days only (no future dates).</div>
-    <div id="dateError" class="error">Please select a valid training date (within the last 60 days).</div>
-
-    <label>Location *</label>
-    <select id="location">
-      <option value="">Select</option>
-      <option>OIC</option>
-      <option>BSEL</option>
-      <option>SV & PK</option>
-      <option>IRIS</option>
-      <option>Bangalore</option>
-      <option>Virtual</option>
-    </select>
-
-    <label>Employee Code *</label>
-    <div class="row">
-      <select id="empPrefix" style="max-width:160px;">
-        <option value="">Select</option>
-        <option value="BS">BS</option>
-        <option value="HGSI">HGSI</option>
-      </select>
-      <input id="employeeCode" placeholder="Enter employee code (e.g., 12345)">
-    </div>
-    <div class="helper">Example: BS-12345 or HGSI-67890</div>
-
-    <label>Department *</label>
-    <input id="department" placeholder="e.g., Payroll Operations">
+<div class="rating-block" data-field="content">
+  <div class="rating-title">Content relevance <span id="contentVal">—</span></div>
+  <div class="rating-buttons">
+    <button data-v="1">1</button><button data-v="2">2</button>
+    <button data-v="3">3</button><button data-v="4">4</button>
+    <button data-v="5">5</button>
   </div>
+</div>
 
-  <!-- Ratings -->
-  <div class="section">
-    <h3>Session Ratings (1 = Poor, 5 = Excellent)</h3>
-
-    <div class="rating-row">
-      <div class="rating-head">
-        <label style="margin:0;">Overall Session Rating *</label>
-        <div class="rating-selected" data-selected-for="overallRating">Selected: <strong>—</strong>/5</div>
-      </div>
-      <div class="rating-buttons" data-field="overallRating">
-        <button type="button" data-value="1">1</button><button type="button" data-value="2">2</button>
-        <button type="button" data-value="3">3</button><button type="button" data-value="4">4</button>
-        <button type="button" data-value="5">5</button>
-      </div>
-    </div>
-
-    <div class="rating-row">
-      <div class="rating-head">
-        <label style="margin:0;">Content relevance to your work *</label>
-        <div class="rating-selected" data-selected-for="contentRelevanceRating">Selected: <strong>—</strong>/5</div>
-      </div>
-      <div class="rating-buttons" data-field="contentRelevanceRating">
-        <button type="button" data-value="1">1</button><button type="button" data-value="2">2</button>
-        <button type="button" data-value="3">3</button><button type="button" data-value="4">4</button>
-        <button type="button" data-value="5">5</button>
-      </div>
-    </div>
-
-    <div class="rating-row">
-      <div class="rating-head">
-        <label style="margin:0;">Trainer clarity & delivery *</label>
-        <div class="rating-selected" data-selected-for="trainerDeliveryRating">Selected: <strong>—</strong>/5</div>
-      </div>
-      <div class="rating-buttons" data-field="trainerDeliveryRating">
-        <button type="button" data-value="1">1</button><button type="button" data-value="2">2</button>
-        <button type="button" data-value="3">3</button><button type="button" data-value="4">4</button>
-        <button type="button" data-value="5">5</button>
-      </div>
-    </div>
-
-    <div class="rating-row">
-      <div class="rating-head">
-        <label style="margin:0;">Session pace *</label>
-        <div class="rating-selected" data-selected-for="sessionPaceRating">Selected: <strong>—</strong>/5</div>
-      </div>
-      <div class="rating-buttons" data-field="sessionPaceRating">
-        <button type="button" data-value="1">1</button><button type="button" data-value="2">2</button>
-        <button type="button" data-value="3">3</button><button type="button" data-value="4">4</button>
-        <button type="button" data-value="5">5</button>
-      </div>
-    </div>
-
-    <div class="rating-row">
-      <div class="rating-head">
-        <label style="margin:0;">Usefulness for your current role *</label>
-        <div class="rating-selected" data-selected-for="usefulnessRating">Selected: <strong>—</strong>/5</div>
-      </div>
-      <div class="rating-buttons" data-field="usefulnessRating">
-        <button type="button" data-value="1">1</button><button type="button" data-value="2">2</button>
-        <button type="button" data-value="3">3</button><button type="button" data-value="4">4</button>
-        <button type="button" data-value="5">5</button>
-      </div>
-    </div>
+<div class="rating-block" data-field="trainer">
+  <div class="rating-title">Trainer delivery <span id="trainerVal">—</span></div>
+  <div class="rating-buttons">
+    <button data-v="1">1</button><button data-v="2">2</button>
+    <button data-v="3">3</button><button data-v="4">4</button>
+    <button data-v="5">5</button>
   </div>
+</div>
 
-  <!-- Feedback -->
-  <div class="section">
-    <h3>Feedback & Suggestions</h3>
+<label>NPS (0–10) *</label>
+<input type="number" id="nps" min="0" max="10">
 
-    <label>Recommendation Score (NPS) *</label>
-    <div class="helper" style="margin-top:0;">
-      On a scale of <strong>0 to 10</strong>, how likely are you to recommend this session to a colleague?
-      <br><strong>0</strong> = Not at all likely, <strong>10</strong> = Extremely likely
-    </div>
-    <input type="number" min="0" max="10" id="npsScore" placeholder="Enter 0–10" style="margin-top:10px;">
+<label>What did you like most? *</label>
+<textarea id="liked"></textarea>
 
-    <label>What did you like most about the session? *</label>
-    <textarea id="likedMost" placeholder="Share key positives…"></textarea>
+<label>What could be improved? *</label>
+<textarea id="improve"></textarea>
 
-    <label>What could be improved? *</label>
-    <textarea id="toImprove" placeholder="Share suggestions to improve…"></textarea>
-
-    <label>Any other suggestions or topics you’d like us to cover next?</label>
-    <textarea id="suggestions" placeholder="Optional…"></textarea>
-  </div>
-
-  <button class="submit-btn" id="submitBtn" disabled>Submit Feedback</button>
-  <div class="success" id="successMsg">Thank you! Your feedback has been recorded.</div>
-  <div class="footer-note">© 2025 HGS | L&D Feedback Platform</div>
+<button class="submit-btn" id="submitBtn" disabled>Submit Feedback</button>
+<div class="success" id="success">Thank you! Your feedback has been recorded.</div>
 
 </div>
 
 <script>
-  const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxfaK3udVG9WBAUz-L4HqgLAj_QRnkhyeicqg688iUAH5xMq58pvtjuJryYtNzSEaE5xQ/exec';
+const WEB_APP_URL = 'PASTE_YOUR_APPS_SCRIPT_URL_HERE';
 
-  // rating state
-  const ratings = {
-    overallRating: null,
-    contentRelevanceRating: null,
-    trainerDeliveryRating: null,
-    sessionPaceRating: null,
-    usefulnessRating: null
-  };
+const ratings = { overall:null, content:null, trainer:null };
 
-  // Elements
-  const trainingTopic = document.getElementById('trainingTopic');
-  const trainingDate  = document.getElementById('trainingDate');
-  const dateError     = document.getElementById('dateError');
-  const location      = document.getElementById('location');
-  const empPrefix     = document.getElementById('empPrefix');
-  const employeeCode  = document.getElementById('employeeCode');
-  const department    = document.getElementById('department');
-  const npsScore      = document.getElementById('npsScore');
-  const likedMost     = document.getElementById('likedMost');
-  const toImprove     = document.getElementById('toImprove');
-  const suggestions   = document.getElementById('suggestions');
-  const submitBtn     = document.getElementById('submitBtn');
-  const successMsg    = document.getElementById('successMsg');
+flatpickr("#trainingDate", {
+  maxDate:"today",
+  minDate:new Date().fp_incr(-60),
+  allowInput:false
+});
 
-  // Calendar: last 60 days only, no future
-  flatpickr("#trainingDate", {
-    dateFormat: "Y-m-d",
-    maxDate: "today",
-    minDate: new Date().fp_incr(-60),
-    disableMobile: true,
-    allowInput: false,
-    onChange: function() {
-      dateError.style.display = "none";
+document.querySelectorAll('.rating-block').forEach(block => {
+  const field = block.dataset.field;
+  block.querySelectorAll('button').forEach(btn => {
+    btn.onclick = () => {
+      ratings[field] = btn.dataset.v;
+      block.querySelectorAll('button').forEach(b=>b.classList.remove('selected'));
+      btn.classList.add('selected');
+      document.getElementById(field+'Val').innerText = btn.dataset.v;
       validate();
-    }
-  });
-
-  // ✅ Ratings: direct binding (reliable on GitHub Pages + mobile)
-  document.querySelectorAll('.rating-buttons').forEach(group => {
-    const field = group.dataset.field;
-
-    group.querySelectorAll('button').forEach(btn => {
-      const handler = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-
-        const val = Number(btn.dataset.value);
-        if (!field || !(field in ratings) || ![1,2,3,4,5].includes(val)) return;
-
-        ratings[field] = val;
-
-        // UI update
-        group.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
-        btn.classList.add('selected');
-
-        // Indicator update
-        const indicator = document.querySelector(`.rating-selected[data-selected-for="${field}"] strong`);
-        if (indicator) indicator.textContent = String(val);
-
-        validate();
-      };
-
-      // pointerdown + click = best compatibility
-      btn.addEventListener('pointerdown', handler);
-      btn.addEventListener('click', handler);
-    });
-  });
-
-  function validate() {
-    const dateOk = !!trainingDate.value;
-
-    const npsVal = npsScore.value;
-    const npsOk = npsVal !== '' && Number(npsVal) >= 0 && Number(npsVal) <= 10;
-
-    const requiredFilled =
-      trainingTopic.value.trim() &&
-      dateOk &&
-      location.value &&
-      empPrefix.value && employeeCode.value.trim() &&
-      department.value.trim() &&
-      npsOk &&
-      Object.values(ratings).every(v => v !== null) &&
-      likedMost.value.trim() &&
-      toImprove.value.trim();
-
-    submitBtn.disabled = !requiredFilled;
-  }
-
-  // Only listen to real form fields (not rating buttons)
-  ['trainingTopic','trainingDate','location','empPrefix','employeeCode','department',
-   'npsScore','likedMost','toImprove','suggestions']
-  .forEach(id => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.addEventListener('input', validate);
-    el.addEventListener('change', validate);
-  });
-
-  // Submit
-  submitBtn.addEventListener('click', async () => {
-    submitBtn.textContent = 'Submitting...';
-    submitBtn.disabled = true;
-
-    if (!trainingDate.value) {
-      dateError.style.display = "block";
-      submitBtn.textContent = 'Submit Feedback';
-      submitBtn.disabled = false;
-      return;
-    }
-
-    const payload = {
-      trainingTopic: trainingTopic.value.trim(),
-      trainingDate: trainingDate.value,
-      location: location.value,
-      employeeCode: `${empPrefix.value}-${employeeCode.value.trim()}`,
-      department: department.value.trim(),
-
-      overallRating: ratings.overallRating,
-      contentRelevanceRating: ratings.contentRelevanceRating,
-      trainerDeliveryRating: ratings.trainerDeliveryRating,
-      sessionPaceRating: ratings.sessionPaceRating,
-      usefulnessRating: ratings.usefulnessRating,
-
-      npsScore: Number(npsScore.value),
-      likedMost: likedMost.value.trim(),
-      toImprove: toImprove.value.trim(),
-      suggestions: suggestions.value.trim()
     };
-
-    try {
-      const res = await fetch(WEB_APP_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(payload)
-      });
-
-      const out = await res.json().catch(() => ({}));
-      if (!res.ok || out.status !== 'ok') throw new Error(out.message || `HTTP ${res.status}`);
-
-      successMsg.style.display = 'block';
-      submitBtn.textContent = 'Submitted';
-    } catch (err) {
-      alert('Submission failed. Please try again. If it persists, contact HR.');
-      submitBtn.textContent = 'Submit Feedback';
-      submitBtn.disabled = false;
-    }
   });
+});
 
-  validate();
+function validate(){
+  const ok =
+    trainingTopic.value &&
+    trainingDate.value &&
+    location.value &&
+    empPrefix.value &&
+    employeeCode.value &&
+    department.value &&
+    Object.values(ratings).every(v=>v) &&
+    nps.value !== '' &&
+    liked.value &&
+    improve.value;
+  submitBtn.disabled = !ok;
+}
+
+document.querySelectorAll('input,select,textarea').forEach(el=>{
+  el.oninput = validate;
+  el.onchange = validate;
+});
+
+submitBtn.onclick = async () => {
+  submitBtn.disabled = true;
+  await fetch(WEB_APP_URL,{
+    method:'POST',
+    headers:{'Content-Type':'text/plain'},
+    body:JSON.stringify({
+      trainingTopic:trainingTopic.value,
+      trainingDate:trainingDate.value,
+      location:location.value,
+      employeeCode:`${empPrefix.value}-${employeeCode.value}`,
+      department:department.value,
+      ratings,
+      nps:nps.value,
+      liked:liked.value,
+      improve:improve.value
+    })
+  });
+  success.style.display='block';
+};
 </script>
 
 </body>

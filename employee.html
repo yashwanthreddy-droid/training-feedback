@@ -7,7 +7,6 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
-<!-- Flatpickr -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
@@ -25,6 +24,16 @@ body {
   border-radius:16px;
   box-shadow:0 8px 30px rgba(0,0,0,.08);
 }
+
+.logo {
+  display:flex;
+  justify-content:center;
+  margin-bottom:14px;
+}
+.logo img {
+  height:46px;
+}
+
 h2 {
   text-align:center;
   color:#003a63;
@@ -35,12 +44,14 @@ p.sub {
   color:#6b7280;
   font-size:13px;
 }
+
 label {
   display:block;
   margin-top:18px;
   font-weight:700;
   font-size:13px;
 }
+
 input, select, textarea {
   width:100%;
   padding:12px;
@@ -110,6 +121,10 @@ textarea { min-height:90px; }
 <body>
 <div class="container">
 
+<div class="logo">
+  <img src="hgs-logo.png" alt="HGS Logo">
+</div>
+
 <h2>Training Feedback Form</h2>
 <p class="sub">Please share your honest feedback to help us improve learning experiences.</p>
 
@@ -143,7 +158,6 @@ textarea { min-height:90px; }
 <label>Department *</label>
 <input id="department">
 
-<!-- RATINGS -->
 <div class="rating-block" data-field="overall">
   <div class="rating-title">Overall Session Rating <span id="overallVal">—</span></div>
   <div class="rating-buttons">
@@ -187,7 +201,6 @@ textarea { min-height:90px; }
 
 <script>
 const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxfaK3udVG9WBAUz-L4HqgLAj_QRnkhyeicqg688iUAH5xMq58pvtjuJryYtNzSEaE5xQ/exec';
-
 const ratings = { overall:null, content:null, trainer:null };
 
 flatpickr("#trainingDate", {
@@ -210,7 +223,7 @@ document.querySelectorAll('.rating-block').forEach(block => {
 });
 
 function validate(){
-  const ok =
+  submitBtn.disabled = !(
     trainingTopic.value &&
     trainingDate.value &&
     location.value &&
@@ -220,8 +233,8 @@ function validate(){
     Object.values(ratings).every(v=>v) &&
     nps.value !== '' &&
     liked.value &&
-    improve.value;
-  submitBtn.disabled = !ok;
+    improve.value
+  );
 }
 
 document.querySelectorAll('input,select,textarea').forEach(el=>{
@@ -252,4 +265,3 @@ submitBtn.onclick = async () => {
 
 </body>
 </html>
-

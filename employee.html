@@ -67,14 +67,35 @@ input:focus, select:focus, textarea:focus {
   margin-top: 12px;
 }
 
-.rating-buttons button {
-  margin: 4px 6px 4px 0;
-  padding: 10px 16px;
-  border-radius: 10px;
-  border: none;
-  background: #e7edf4;
-  font-weight: 600;
-  cursor: pointer;
+.rating-buttons{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.rating-buttons button{
+  width:44px;
+  height:44px;
+  border-radius:999px;  /* ✅ circular */
+  border: 1px solid #cfd8e3;
+  background:#ffffff;
+  font-weight:800;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  transition: .15s ease;
+}
+
+.rating-buttons button:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(0,0,0,.08);
+}
+
+.rating-buttons button.selected{
+  background:#005bab;
+  border-color:#005bab;
+  color:#fff;
 }
 
 .rating-buttons button.selected {
@@ -301,6 +322,7 @@ submitBtn.onclick = async () => {
 
 </body>
 </html>
+
 
 
 

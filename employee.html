@@ -200,7 +200,22 @@ input:focus, select:focus, textarea:focus {
 <script>
 const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxfaK3udVG9WBAUz-L4HqgLAj_QRnkhyeicqg688iUAH5xMq58pvtjuJryYtNzSEaE5xQ/exec';
 const ratings = {};
+<script>
+const WEB_APP_URL = 'PASTE_YOUR_APPS_SCRIPT_URL_HERE';
+const ratings = {};
 
+// ✅ Enforce training date range: last 60 days only (no future dates)
+(function limitTrainingDate(){
+  const today = new Date();
+  const max = today.toISOString().slice(0,10);
+  const minDate = new Date(today);
+  minDate.setDate(minDate.getDate() - 60);
+  const min = minDate.toISOString().slice(0,10);
+
+  const dateEl = document.getElementById('trainingDate');
+  dateEl.setAttribute('max', max);
+  dateEl.setAttribute('min', min);
+})();
 document.querySelectorAll('.rating-buttons').forEach(group => {
   const field = group.dataset.field;
   ratings[field] = null;
@@ -265,6 +280,7 @@ submitBtn.onclick = async () => {
 
 </body>
 </html>
+
 
 
 

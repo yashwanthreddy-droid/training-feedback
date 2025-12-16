@@ -70,7 +70,6 @@
   .success { margin-top:18px; background:#e8f7ee; color:#0a6b38; padding:14px; border-radius:12px; font-weight:800; display:none; text-align:center; }
   .footer-note { margin-top:14px; text-align:center; color:#7b8796; font-size:12px; font-weight:600; }
 
-  /* Flatpickr brand touch */
   .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange {
     background:#005bab; border-color:#005bab;
   }
@@ -94,7 +93,8 @@
     <input id="trainingTopic" placeholder="e.g., Email Skills, Power Query, POSH">
 
     <label>Training Date *</label>
-    <input type="text" id="trainingDate" placeholder="Select training date" readonly>
+    <!-- ✅ Removed readonly (Flatpickr already blocks typing with allowInput:false) -->
+    <input type="text" id="trainingDate" placeholder="Select training date">
     <div class="helper">Allowed range: last 60 days only (no future dates).</div>
     <div id="dateError" class="error">Please select a valid training date (within the last 60 days).</div>
 
@@ -128,7 +128,13 @@
   <div class="section">
     <h3>Session Ratings (1 = Poor, 5 = Excellent)</h3>
 
-    <!-- Each block has: data-field + selected indicator span -->
+    <!-- ✅ Hidden inputs store the selected rating reliably -->
+    <input type="hidden" id="overallRating">
+    <input type="hidden" id="contentRelevanceRating">
+    <input type="hidden" id="trainerDeliveryRating">
+    <input type="hidden" id="sessionPaceRating">
+    <input type="hidden" id="usefulnessRating">
+
     <div class="rating-row">
       <div class="rating-head">
         <label style="margin:0;">Overall Session Rating *</label>
@@ -218,10 +224,8 @@
 </div>
 
 <script>
-  // ✅ Replace with your Apps Script Web App URL (ends with /exec)
   const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxfaK3udVG9WBAUz-L4HqgLAj_QRnkhyeicqg688iUAH5xMq58pvtjuJryYtNzSEaE5xQ/exec';
 
-  // Rating state (this is what gets submitted)
   const ratings = {
     overallRating: null,
     contentRelevanceRating: null,
@@ -230,7 +234,6 @@
     usefulnessRating: null
   };
 
-  // Elements
   const trainingTopic = document.getElementById('trainingTopic');
   const trainingDate  = document.getElementById('trainingDate');
   const dateError     = document.getElementById('dateError');
@@ -245,7 +248,7 @@
   const submitBtn     = document.getElementById('submitBtn');
   const successMsg    = document.getElementById('successMsg');
 
-  // ---------------- Calendar: last 60 days only, no future ----------------
+  // ✅ Flatpickr: last 60 days only, no future
   flatpickr("#trainingDate", {
     dateFormat: "Y-m-d",
     maxDate: "today",
@@ -258,7 +261,7 @@
     }
   });
 
-  // ---------------- Ratings: Reliable event delegation ----------------
+  // ✅ Ratings: write value into hidden input + ratings object + UI
   document.addEventListener('click', (e) => {
     const btn = e.target.closest('.rating-buttons button');
     if (!btn) return;
@@ -271,15 +274,15 @@
 
     if (!field || !(field in ratings) || ![1,2,3,4,5].includes(val)) return;
 
-    // Save selection
     ratings[field] = val;
-group.dataset.selected = "true";
 
-    // Update UI selection
+    // Store value in hidden input (this prevents "not registering" issues)
+    const hidden = document.getElementById(field);
+    if (hidden) hidden.value = String(val);
+
     group.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
     btn.classList.add('selected');
 
-    // Update "Selected: X/5" indicator
     const indicator = document.querySelector(`.rating-selected[data-selected-for="${field}"] strong`);
     if (indicator) indicator.textContent = String(val);
 
@@ -306,19 +309,17 @@ group.dataset.selected = "true";
     submitBtn.disabled = !requiredFilled;
   }
 
-  // Validate on input changes
-  // Only listen to real form fields, NOT rating buttons
-['trainingTopic','trainingDate','location','empPrefix','employeeCode','department',
- 'npsScore','likedMost','toImprove','suggestions']
-.forEach(id => {
-  const el = document.getElementById(id);
-  if (el) {
+  // ✅ Only listen to real form fields (not rating buttons)
+  ['trainingTopic','trainingDate','location','empPrefix','employeeCode','department',
+   'npsScore','likedMost','toImprove','suggestions']
+  .forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
     el.addEventListener('input', validate);
     el.addEventListener('change', validate);
-  }
-});
+  });
 
-  // ---------------- Submit ----------------
+  // Submit
   submitBtn.addEventListener('click', async () => {
     submitBtn.textContent = 'Submitting...';
     submitBtn.disabled = true;
@@ -357,9 +358,7 @@ group.dataset.selected = "true";
       });
 
       const out = await res.json().catch(() => ({}));
-      if (!res.ok || out.status !== 'ok') {
-        throw new Error(out.message || `HTTP ${res.status}`);
-      }
+      if (!res.ok || out.status !== 'ok') throw new Error(out.message || `HTTP ${res.status}`);
 
       successMsg.style.display = 'block';
       submitBtn.textContent = 'Submitted';
@@ -370,11 +369,7 @@ group.dataset.selected = "true";
     }
   });
 
-  // Initial state
   validate();
 </script>
-
 </body>
 </html>
-
-

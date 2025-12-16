@@ -8,129 +8,190 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
-body {
-  margin: 0;
-  background: #f4f6f9;
-  font-family: 'Inter', sans-serif;
-}
+  body {
+    margin: 0;
+    background: #f4f6f9;
+    font-family: 'Inter', sans-serif;
+    color: #1b2430;
+  }
 
-.container {
-  max-width: 820px;
-  margin: 40px auto;
-  background: #ffffff;
-  padding: 36px;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-}
+  .container {
+    max-width: 860px;
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 36px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  }
 
-.header {
-  text-align: center;
-  margin-bottom: 30px;
-}
+  .header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
 
-.header img {
-  height: 48px;
-  margin-bottom: 12px;
-}
+  .header img {
+    height: 48px;
+    margin-bottom: 12px;
+  }
 
-.header h2 {
-  margin: 0;
-  color: #003a63;
-}
+  .header h2 {
+    margin: 0;
+    color: #003a63;
+    font-weight: 800;
+  }
 
-.section {
-  margin-top: 28px;
-}
+  .header p {
+    margin: 10px 0 0;
+    color: #5d6b7a;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 1.45;
+  }
 
-label {
-  font-weight: 600;
-  display: block;
-  margin-bottom: 6px;
-  margin-top: 18px;
-}
+  .section {
+    margin-top: 28px;
+  }
 
-input, select, textarea {
-  width: 100%;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-}
+  .section h3 {
+    margin: 0 0 10px;
+    color: #0b2b4a;
+    font-size: 16px;
+    font-weight: 800;
+  }
 
-input:focus, select:focus, textarea:focus {
-  border-color: #005bab;
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(0,91,171,0.15);
-}
+  label {
+    font-weight: 700;
+    display: block;
+    margin-bottom: 6px;
+    margin-top: 16px;
+    color: #2b3a4a;
+    font-size: 13px;
+  }
 
-.rating-row {
-  margin-top: 12px;
-}
+  input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid #cfd8e3;
+    font-size: 14px;
+    background: #fff;
+    color: #1b2430;
+    box-sizing: border-box;
+  }
 
-.rating-buttons{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-}
+  input:focus, select:focus, textarea:focus {
+    border-color: #005bab;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0,91,171,0.12);
+  }
 
-.rating-buttons button{
-  width:44px;
-  height:44px;
-  border-radius:999px;  /* ✅ circular */
-  border: 1px solid #cfd8e3;
-  background:#ffffff;
-  font-weight:800;
-  cursor:pointer;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  transition: .15s ease;
-}
+  textarea {
+    min-height: 92px;
+    resize: vertical;
+  }
 
-.rating-buttons button:hover{
-  transform: translateY(-1px);
-  box-shadow: 0 8px 18px rgba(0,0,0,.08);
-}
+  .row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
 
-.rating-buttons button.selected{
-  background:#005bab;
-  border-color:#005bab;
-  color:#fff;
-}
+  .row > * {
+    flex: 1;
+    min-width: 220px;
+  }
 
-.rating-buttons button.selected {
-  background: #005bab;
-  color: #fff;
-}
+  .helper {
+    margin-top: 8px;
+    color: #5d6b7a;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 1.4;
+  }
 
-.submit-btn {
-  margin-top: 36px;
-  width: 100%;
-  padding: 16px;
-  font-size: 18px;
-  border-radius: 14px;
-  border: none;
-  background: #005bab;
-  color: white;
-  font-weight: 700;
-  cursor: pointer;
-}
+  .error {
+    display: none;
+    margin-top: 8px;
+    color: #b42318;
+    font-weight: 800;
+    font-size: 12px;
+  }
 
-.submit-btn:disabled {
-  background: #9bbad1;
-  cursor: not-allowed;
-}
+  /* Ratings */
+  .rating-row { margin-top: 14px; }
 
-.success {
-  margin-top: 20px;
-  background: #e8f7ee;
-  color: #0a6b38;
-  padding: 14px;
-  border-radius: 12px;
-  font-weight: 600;
-  display: none;
-  text-align: center;
-}
+  .rating-buttons{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top: 10px;
+  }
+
+  .rating-buttons button{
+    width:46px;
+    height:46px;
+    border-radius:999px;
+    border: 2px solid #c7d2e0;
+    background:#f7f9fc;
+    color:#1b2430;
+    font-weight:800;
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    transition: .15s ease;
+  }
+
+  .rating-buttons button:hover{
+    border-color:#005bab;
+    box-shadow: 0 10px 20px rgba(0,0,0,.10);
+    transform: translateY(-1px);
+  }
+
+  .rating-buttons button.selected{
+    background:#005bab;
+    border-color:#005bab;
+    color:#fff;
+  }
+
+  .submit-btn {
+    margin-top: 30px;
+    width: 100%;
+    padding: 16px;
+    font-size: 17px;
+    border-radius: 14px;
+    border: none;
+    background: #005bab;
+    color: white;
+    font-weight: 800;
+    cursor: pointer;
+    transition: .15s ease;
+  }
+
+  .submit-btn:disabled {
+    background: #9bbad1;
+    cursor: not-allowed;
+  }
+
+  .success {
+    margin-top: 18px;
+    background: #e8f7ee;
+    color: #0a6b38;
+    padding: 14px;
+    border-radius: 12px;
+    font-weight: 800;
+    display: none;
+    text-align: center;
+  }
+
+  .footer-note {
+    margin-top: 14px;
+    text-align: center;
+    color: #7b8796;
+    font-size: 12px;
+    font-weight: 600;
+  }
 </style>
 </head>
 
@@ -138,6 +199,7 @@ input:focus, select:focus, textarea:focus {
 
 <div class="container">
   <div class="header">
+    <!-- Make sure this image exists in your repo root -->
     <img src="hgs-logo.png" alt="HGS Logo">
     <h2>Training Feedback Form</h2>
     <p>Please share your honest feedback to help us improve learning experiences.</p>
@@ -145,17 +207,17 @@ input:focus, select:focus, textarea:focus {
 
   <!-- BASIC DETAILS -->
   <div class="section">
+    <h3>Session Details</h3>
+
     <label>Training Topic *</label>
-    <input id="trainingTopic">
+    <input id="trainingTopic" placeholder="e.g., Email Skills, Power Query, POSH">
 
     <label>Training Date *</label>
-<input type="date" id="trainingDate" required>
-<div id="dateHelp" style="margin-top:8px; color:#5d6b7a; font-weight:600; font-size:12px;">
-  Allowed range: last 60 days only (no future dates).
-</div>
-<div id="dateError" style="display:none; margin-top:8px; color:#b42318; font-weight:700; font-size:12px;">
-  Please select a date within the last 60 days (and not a future date).
-</div>
+    <input type="date" id="trainingDate" required>
+    <div class="helper">Allowed range: last 60 days only (no future dates).</div>
+    <div id="dateError" class="error">
+      Please select a date within the last 60 days (and not a future date).
+    </div>
 
     <label>Location *</label>
     <select id="location">
@@ -169,23 +231,18 @@ input:focus, select:focus, textarea:focus {
     </select>
 
     <label>Employee Code *</label>
-
-<div style="display:flex; gap:10px; align-items:center;">
-  <select id="empPrefix" style="width:140px;">
-    <option value="">Select</option>
-    <option value="BS">BS</option>
-    <option value="HGSI">HGSI</option>
-  </select>
-
-  <input id="employeeCode" placeholder="Enter employee code (numbers/ID)">
-</div>
-
-<div style="margin-top:8px; color:#5d6b7a; font-size:12px;">
-  Example: BS 12345 or HGSI 67890
-</div>
+    <div class="row">
+      <select id="empPrefix" style="max-width:160px;">
+        <option value="">Select</option>
+        <option value="BS">BS</option>
+        <option value="HGSI">HGSI</option>
+      </select>
+      <input id="employeeCode" placeholder="Enter employee code (e.g., 12345)">
+    </div>
+    <div class="helper">Example: BS-12345 or HGSI-67890</div>
 
     <label>Department *</label>
-    <input id="department">
+    <input id="department" placeholder="e.g., Payroll Operations">
   </div>
 
   <!-- RATINGS -->
@@ -220,136 +277,175 @@ input:focus, select:focus, textarea:focus {
 
   <!-- QUALITATIVE -->
   <div class="section">
+    <h3>Feedback & Suggestions</h3>
+
     <label>Recommendation Score (NPS) *</label>
-<div style="color:#5d6b7a; font-size:13px; margin-top:6px; line-height:1.4;">
-  On a scale of <strong>0 to 10</strong>, how likely are you to recommend this session to a colleague?
-  <br><span style="font-weight:700;">0</span> = Not at all likely, <span style="font-weight:700;">10</span> = Extremely likely
-</div>
-<input type="number" min="0" max="10" id="npsScore" placeholder="Enter 0–10" style="margin-top:10px;">
-    <label>What did you like most? *</label>
-    <textarea id="likedMost"></textarea>
+    <div class="helper" style="margin-top:0;">
+      On a scale of <strong>0 to 10</strong>, how likely are you to recommend this session to a colleague?
+      <br><strong>0</strong> = Not at all likely, <strong>10</strong> = Extremely likely
+    </div>
+    <input type="number" min="0" max="10" id="npsScore" placeholder="Enter 0–10" style="margin-top:10px;">
+
+    <label>What did you like most about the session? *</label>
+    <textarea id="likedMost" placeholder="Share key positives…"></textarea>
 
     <label>What could be improved? *</label>
-    <textarea id="toImprove"></textarea>
+    <textarea id="toImprove" placeholder="Share suggestions to improve…"></textarea>
 
-    <label>Any other suggestions or topics?</label>
-    <textarea id="suggestions"></textarea>
+    <label>Any other suggestions or topics you’d like us to cover next?</label>
+    <textarea id="suggestions" placeholder="Optional…"></textarea>
   </div>
 
   <button class="submit-btn" id="submitBtn" disabled>Submit Feedback</button>
   <div class="success" id="successMsg">Thank you! Your feedback has been recorded.</div>
+  <div class="footer-note">© 2025 HGS | L&D Feedback Platform</div>
 </div>
 
 <script>
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxfaK3udVG9WBAUz-L4HqgLAj_QRnkhyeicqg688iUAH5xMq58pvtjuJryYtNzSEaE5xQ/exec';
-const ratings = {};
-<script>
-const WEB_APP_URL = 'PASTE_YOUR_APPS_SCRIPT_URL_HERE';
-const ratings = {};
+  // ✅ Replace this with your Apps Script Web App URL (ends with /exec)
+  const WEB_APP_URL = https://script.google.com/macros/s/AKfycbxfaK3udVG9WBAUz-L4HqgLAj_QRnkhyeicqg688iUAH5xMq58pvtjuJryYtNzSEaE5xQ/exec;
 
-// ✅ Enforce training date range: last 60 days only (no future dates)
-(function limitTrainingDate(){
-  const today = new Date();
-  const max = today.toISOString().slice(0,10);
-  const minDate = new Date(today);
-  minDate.setDate(minDate.getDate() - 60);
-  const min = minDate.toISOString().slice(0,10);
+  const ratings = {};
 
-  const dateEl = document.getElementById('trainingDate');
-  dateEl.setAttribute('max', max);
-  dateEl.setAttribute('min', min);
-})();
-document.querySelectorAll('.rating-buttons').forEach(group => {
-  const field = group.dataset.field;
-  ratings[field] = null;
-  for (let i = 1; i <= 5; i++) {
-    const btn = document.createElement('button');
-    btn.textContent = i;
-    btn.onclick = () => {
-      ratings[field] = i;
-      [...group.children].forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
-      validate();
-    };
-    group.appendChild(btn);
-  }
-});
+  const trainingTopic = document.getElementById('trainingTopic');
+  const trainingDate = document.getElementById('trainingDate');
+  const location = document.getElementById('location');
+  const empPrefix = document.getElementById('empPrefix');
+  const employeeCode = document.getElementById('employeeCode');
+  const department = document.getElementById('department');
 
-function validate() {
-  const dateEl = document.getElementById('trainingDate');
-  const dateVal = dateEl.value;
+  const npsScore = document.getElementById('npsScore');
+  const likedMost = document.getElementById('likedMost');
+  const toImprove = document.getElementById('toImprove');
+  const suggestions = document.getElementById('suggestions');
 
-  // validate date range (last 60 days, no future)
-  let dateOk = false;
-  if (dateVal) {
-    const picked = new Date(dateVal + "T00:00:00");
+  const submitBtn = document.getElementById('submitBtn');
+  const successMsg = document.getElementById('successMsg');
+
+  const dateError = document.getElementById('dateError');
+
+  // ✅ Create rating buttons 1–5 (visible circular)
+  document.querySelectorAll('.rating-buttons').forEach(group => {
+    const field = group.dataset.field;
+    ratings[field] = null;
+
+    for (let i = 1; i <= 5; i++) {
+      const btn = document.createElement('button');
+      btn.type = 'button'; // IMPORTANT
+      btn.textContent = i;
+
+      btn.onclick = () => {
+        ratings[field] = i;
+        [...group.children].forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        validate();
+      };
+
+      group.appendChild(btn);
+    }
+  });
+
+  // ✅ Strong date enforcement: last 60 days only + no future
+  (function enforceTrainingDate(){
+    function iso(d){ return d.toISOString().slice(0,10); }
+
     const today = new Date(); today.setHours(0,0,0,0);
     const minDate = new Date(today); minDate.setDate(minDate.getDate() - 60);
 
-    dateOk = picked >= minDate && picked <= today;
+    trainingDate.min = iso(minDate);
+    trainingDate.max = iso(today);
+
+    function isValidPickedDate(){
+      if(!trainingDate.value) return false;
+      const picked = new Date(trainingDate.value + "T00:00:00");
+      return picked >= minDate && picked <= today;
+    }
+
+    // Validate on change/input; if invalid, clear value
+    trainingDate.addEventListener('input', () => {
+      if (trainingDate.value && !isValidPickedDate()) {
+        dateError.style.display = 'block';
+        trainingDate.value = '';
+      } else {
+        dateError.style.display = 'none';
+      }
+      validate();
+    });
+  })();
+
+  function validate() {
+    // Date must exist (invalid ones are cleared)
+    const dateOk = !!trainingDate.value;
+
+    // NPS must be 0–10
+    const npsVal = npsScore.value;
+    const npsOk = npsVal !== '' && Number(npsVal) >= 0 && Number(npsVal) <= 10;
+
+    const requiredFilled =
+      trainingTopic.value.trim() &&
+      dateOk &&
+      location.value &&
+      empPrefix.value && employeeCode.value.trim() &&
+      department.value.trim() &&
+      npsOk &&
+      Object.values(ratings).every(v => v !== null) &&
+      likedMost.value.trim() &&
+      toImprove.value.trim();
+
+    submitBtn.disabled = !requiredFilled;
   }
 
-  document.getElementById('dateError').style.display = dateVal && !dateOk ? 'block' : 'none';
+  // Validate on any input
+  document.querySelectorAll('input, select, textarea').forEach(el =>
+    el.addEventListener('input', validate)
+  );
 
-  const npsVal = document.getElementById('npsScore').value;
-  const npsOk = npsVal !== '' && Number(npsVal) >= 0 && Number(npsVal) <= 10;
+  submitBtn.onclick = async () => {
+    submitBtn.textContent = 'Submitting...';
+    submitBtn.disabled = true;
 
-  const requiredFilled =
-    trainingTopic.value &&
-    dateOk &&
-    location.value &&
-    empPrefix.value && employeeCode.value &&
-    department.value &&
-    npsOk &&
-    Object.values(ratings).every(v => v !== null) &&
-    likedMost.value &&
-    toImprove.value;
+    const payload = {
+      trainingTopic: trainingTopic.value.trim(),
+      trainingDate: trainingDate.value,
+      location: location.value,
+      employeeCode: `${empPrefix.value}-${employeeCode.value.trim()}`,
+      department: department.value.trim(),
 
-  submitBtn.disabled = !requiredFilled;
-}
+      overallRating: ratings.overallRating,
+      contentRelevanceRating: ratings.contentRelevanceRating,
+      trainerDeliveryRating: ratings.trainerDeliveryRating,
+      sessionPaceRating: ratings.sessionPaceRating,
+      usefulnessRating: ratings.usefulnessRating,
 
-document.querySelectorAll('input, select, textarea').forEach(el =>
-  el.addEventListener('input', validate)
-);
+      npsScore: Number(npsScore.value),
+      likedMost: likedMost.value.trim(),
+      toImprove: toImprove.value.trim(),
+      suggestions: suggestions.value.trim()
+    };
 
-submitBtn.onclick = async () => {
-  submitBtn.textContent = 'Submitting...';
+    try {
+      const res = await fetch(WEB_APP_URL, {
+        method: 'POST',
+        // Apps Script often handles plain text bodies most reliably
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      });
 
-  const payload = {
-    trainingTopic: trainingTopic.value,
-    trainingDate: trainingDate.value,
-    location: location.value,
-    employeeCode: `${empPrefix.value}-${employeeCode.value}`.trim(),
-    department: department.value,
-    ...ratings,
-    npsScore: npsScore.value,
-    likedMost: likedMost.value,
-    toImprove: toImprove.value,
-    suggestions: suggestions.value
+      const out = await res.json().catch(() => ({}));
+
+      if (!res.ok || out.status !== 'ok') {
+        throw new Error(out.message || `HTTP ${res.status}`);
+      }
+
+      successMsg.style.display = 'block';
+      submitBtn.textContent = 'Submitted';
+    } catch (err) {
+      alert('Submission failed. Please try again. If it persists, contact HR.');
+      submitBtn.textContent = 'Submit Feedback';
+      submitBtn.disabled = false;
+    }
   };
-
-  await fetch(WEB_APP_URL, {
-    method: 'POST',
-    body: JSON.stringify(payload)
-  });
-
-  successMsg.style.display = 'block';
-  submitBtn.textContent = 'Submitted';
-  submitBtn.disabled = true;
-};
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-

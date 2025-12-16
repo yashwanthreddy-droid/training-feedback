@@ -12,204 +12,81 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 <style>
-  body {
-    margin: 0;
-    background: #f4f6f9;
-    font-family: 'Inter', sans-serif;
-    color: #1b2430;
-  }
+  body { margin:0; background:#f4f6f9; font-family:Inter, sans-serif; color:#1b2430; }
+  .container { max-width:860px; margin:40px auto; background:#fff; padding:36px; border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,0.08); }
+  .header { text-align:center; margin-bottom:30px; }
+  .header img { height:48px; margin-bottom:12px; }
+  .header h2 { margin:0; color:#003a63; font-weight:800; }
+  .header p { margin:10px 0 0; color:#5d6b7a; font-weight:600; font-size:13px; line-height:1.45; }
 
-  .container {
-    max-width: 860px;
-    margin: 40px auto;
-    background: #ffffff;
-    padding: 36px;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-  }
+  .section { margin-top:28px; }
+  .section h3 { margin:0 0 10px; color:#0b2b4a; font-size:16px; font-weight:800; }
 
-  .header {
-    text-align: center;
-    margin-bottom: 30px;
-  }
-
-  .header img {
-    height: 48px;
-    margin-bottom: 12px;
-  }
-
-  .header h2 {
-    margin: 0;
-    color: #003a63;
-    font-weight: 800;
-  }
-
-  .header p {
-    margin: 10px 0 0;
-    color: #5d6b7a;
-    font-weight: 600;
-    font-size: 13px;
-    line-height: 1.45;
-  }
-
-  .section { margin-top: 28px; }
-
-  .section h3 {
-    margin: 0 0 10px;
-    color: #0b2b4a;
-    font-size: 16px;
-    font-weight: 800;
-  }
-
-  label {
-    font-weight: 700;
-    display: block;
-    margin-bottom: 6px;
-    margin-top: 16px;
-    color: #2b3a4a;
-    font-size: 13px;
-  }
+  label { font-weight:700; display:block; margin:16px 0 6px; color:#2b3a4a; font-size:13px; }
 
   input, select, textarea {
-    width: 100%;
-    padding: 12px;
-    border-radius: 12px;
-    border: 1px solid #cfd8e3;
-    font-size: 14px;
-    background: #fff;
-    color: #1b2430;
-    box-sizing: border-box;
+    width:100%; padding:12px; border-radius:12px; border:1px solid #cfd8e3;
+    font-size:14px; background:#fff; color:#1b2430; box-sizing:border-box;
   }
 
   input:focus, select:focus, textarea:focus {
-    border-color: #005bab;
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(0,91,171,0.12);
+    border-color:#005bab; outline:none; box-shadow:0 0 0 3px rgba(0,91,171,0.12);
   }
 
-  textarea { min-height: 92px; resize: vertical; }
+  textarea { min-height:92px; resize:vertical; }
 
-  .row {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    flex-wrap: wrap;
+  .row { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+  .row > * { flex:1; min-width:220px; }
+
+  .helper { margin-top:8px; color:#5d6b7a; font-weight:600; font-size:12px; line-height:1.4; }
+  .error { display:none; margin-top:8px; color:#b42318; font-weight:800; font-size:12px; }
+
+  /* Ratings */
+  .rating-row { margin-top:14px; }
+  .rating-head { display:flex; align-items:baseline; justify-content:space-between; gap:12px; }
+  .rating-selected { font-size:12px; font-weight:800; color:#5d6b7a; }
+  .rating-selected strong { color:#0b2b4a; }
+
+  .rating-buttons { display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+
+  .rating-buttons button {
+    width:46px; height:46px; border-radius:999px;
+    border:2px solid #c7d2e0; background:#f7f9fc; color:#1b2430;
+    font-weight:800; cursor:pointer;
+    display:inline-flex; align-items:center; justify-content:center;
+    transition:.15s ease;
+    user-select:none;
   }
-  .row > * { flex: 1; min-width: 220px; }
-
-  .helper {
-    margin-top: 8px;
-    color: #5d6b7a;
-    font-weight: 600;
-    font-size: 12px;
-    line-height: 1.4;
-  }
-
-  .error {
-    display: none;
-    margin-top: 8px;
-    color: #b42318;
-    font-weight: 800;
-    font-size: 12px;
-  }
-
-  /* Ratings UI */
-  .rating-row { margin-top: 14px; }
-
-  .rating-buttons{
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-    margin-top: 10px;
-  }
-
-  /* IMPORTANT: pointer-events + z-index ensures click always works */
-  .rating-buttons button{
-    width:46px;
-    height:46px;
-    border-radius:999px;
-    border: 2px solid #c7d2e0;
-    background:#f7f9fc;
-    color:#1b2430;
-    font-weight:800;
-    cursor:pointer;
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    transition: .15s ease;
-    pointer-events: auto;
-    position: relative;
-    z-index: 2;
-    user-select: none;
-  }
-
-  .rating-buttons button:hover{
-    border-color:#005bab;
-    box-shadow: 0 10px 20px rgba(0,0,0,.10);
-    transform: translateY(-1px);
-  }
-
-  .rating-buttons button.selected{
-    background:#005bab;
-    border-color:#005bab;
-    color:#fff;
-  }
+  .rating-buttons button:hover { border-color:#005bab; box-shadow:0 10px 20px rgba(0,0,0,.10); transform:translateY(-1px); }
+  .rating-buttons button.selected { background:#005bab; border-color:#005bab; color:#fff; }
 
   .submit-btn {
-    margin-top: 30px;
-    width: 100%;
-    padding: 16px;
-    font-size: 17px;
-    border-radius: 14px;
-    border: none;
-    background: #005bab;
-    color: white;
-    font-weight: 800;
-    cursor: pointer;
-    transition: .15s ease;
+    margin-top:30px; width:100%; padding:16px; font-size:17px;
+    border-radius:14px; border:none; background:#005bab; color:#fff;
+    font-weight:800; cursor:pointer; transition:.15s ease;
   }
+  .submit-btn:disabled { background:#9bbad1; cursor:not-allowed; }
 
-  .submit-btn:disabled { background: #9bbad1; cursor: not-allowed; }
-
-  .success {
-    margin-top: 18px;
-    background: #e8f7ee;
-    color: #0a6b38;
-    padding: 14px;
-    border-radius: 12px;
-    font-weight: 800;
-    display: none;
-    text-align: center;
-  }
-
-  .footer-note {
-    margin-top: 14px;
-    text-align: center;
-    color: #7b8796;
-    font-size: 12px;
-    font-weight: 600;
-  }
+  .success { margin-top:18px; background:#e8f7ee; color:#0a6b38; padding:14px; border-radius:12px; font-weight:800; display:none; text-align:center; }
+  .footer-note { margin-top:14px; text-align:center; color:#7b8796; font-size:12px; font-weight:600; }
 
   /* Flatpickr brand touch */
-  .flatpickr-day.selected,
-  .flatpickr-day.startRange,
-  .flatpickr-day.endRange {
-    background: #005bab;
-    border-color: #005bab;
+  .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange {
+    background:#005bab; border-color:#005bab;
   }
 </style>
 </head>
 
 <body>
-
 <div class="container">
+
   <div class="header">
     <img src="hgs-logo.png" alt="HGS Logo">
     <h2>Training Feedback Form</h2>
     <p>Please share your honest feedback to help us improve learning experiences.</p>
   </div>
 
-  <!-- SESSION DETAILS -->
+  <!-- Session Details -->
   <div class="section">
     <h3>Session Details</h3>
 
@@ -217,10 +94,9 @@
     <input id="trainingTopic" placeholder="e.g., Email Skills, Power Query, POSH">
 
     <label>Training Date *</label>
-    <!-- Flatpickr uses type=text -->
-    <input type="text" id="trainingDate" placeholder="Select training date">
+    <input type="text" id="trainingDate" placeholder="Select training date" readonly>
     <div class="helper">Allowed range: last 60 days only (no future dates).</div>
-    <div id="dateError" class="error">Please select a date within the last 60 days.</div>
+    <div id="dateError" class="error">Please select a valid training date (within the last 60 days).</div>
 
     <label>Location *</label>
     <select id="location">
@@ -248,67 +124,73 @@
     <input id="department" placeholder="e.g., Payroll Operations">
   </div>
 
-  <!-- RATINGS -->
+  <!-- Ratings -->
   <div class="section">
     <h3>Session Ratings (1 = Poor, 5 = Excellent)</h3>
 
+    <!-- Each block has: data-field + selected indicator span -->
     <div class="rating-row">
-      <label>Overall Session Rating *</label>
+      <div class="rating-head">
+        <label style="margin:0;">Overall Session Rating *</label>
+        <div class="rating-selected" data-selected-for="overallRating">Selected: <strong>—</strong>/5</div>
+      </div>
       <div class="rating-buttons" data-field="overallRating">
-        <button type="button" data-value="1">1</button>
-        <button type="button" data-value="2">2</button>
-        <button type="button" data-value="3">3</button>
-        <button type="button" data-value="4">4</button>
+        <button type="button" data-value="1">1</button><button type="button" data-value="2">2</button>
+        <button type="button" data-value="3">3</button><button type="button" data-value="4">4</button>
         <button type="button" data-value="5">5</button>
       </div>
     </div>
 
     <div class="rating-row">
-      <label>Content relevance to your work *</label>
+      <div class="rating-head">
+        <label style="margin:0;">Content relevance to your work *</label>
+        <div class="rating-selected" data-selected-for="contentRelevanceRating">Selected: <strong>—</strong>/5</div>
+      </div>
       <div class="rating-buttons" data-field="contentRelevanceRating">
-        <button type="button" data-value="1">1</button>
-        <button type="button" data-value="2">2</button>
-        <button type="button" data-value="3">3</button>
-        <button type="button" data-value="4">4</button>
+        <button type="button" data-value="1">1</button><button type="button" data-value="2">2</button>
+        <button type="button" data-value="3">3</button><button type="button" data-value="4">4</button>
         <button type="button" data-value="5">5</button>
       </div>
     </div>
 
     <div class="rating-row">
-      <label>Trainer clarity & delivery *</label>
+      <div class="rating-head">
+        <label style="margin:0;">Trainer clarity & delivery *</label>
+        <div class="rating-selected" data-selected-for="trainerDeliveryRating">Selected: <strong>—</strong>/5</div>
+      </div>
       <div class="rating-buttons" data-field="trainerDeliveryRating">
-        <button type="button" data-value="1">1</button>
-        <button type="button" data-value="2">2</button>
-        <button type="button" data-value="3">3</button>
-        <button type="button" data-value="4">4</button>
+        <button type="button" data-value="1">1</button><button type="button" data-value="2">2</button>
+        <button type="button" data-value="3">3</button><button type="button" data-value="4">4</button>
         <button type="button" data-value="5">5</button>
       </div>
     </div>
 
     <div class="rating-row">
-      <label>Session pace *</label>
+      <div class="rating-head">
+        <label style="margin:0;">Session pace *</label>
+        <div class="rating-selected" data-selected-for="sessionPaceRating">Selected: <strong>—</strong>/5</div>
+      </div>
       <div class="rating-buttons" data-field="sessionPaceRating">
-        <button type="button" data-value="1">1</button>
-        <button type="button" data-value="2">2</button>
-        <button type="button" data-value="3">3</button>
-        <button type="button" data-value="4">4</button>
+        <button type="button" data-value="1">1</button><button type="button" data-value="2">2</button>
+        <button type="button" data-value="3">3</button><button type="button" data-value="4">4</button>
         <button type="button" data-value="5">5</button>
       </div>
     </div>
 
     <div class="rating-row">
-      <label>Usefulness for your current role *</label>
+      <div class="rating-head">
+        <label style="margin:0;">Usefulness for your current role *</label>
+        <div class="rating-selected" data-selected-for="usefulnessRating">Selected: <strong>—</strong>/5</div>
+      </div>
       <div class="rating-buttons" data-field="usefulnessRating">
-        <button type="button" data-value="1">1</button>
-        <button type="button" data-value="2">2</button>
-        <button type="button" data-value="3">3</button>
-        <button type="button" data-value="4">4</button>
+        <button type="button" data-value="1">1</button><button type="button" data-value="2">2</button>
+        <button type="button" data-value="3">3</button><button type="button" data-value="4">4</button>
         <button type="button" data-value="5">5</button>
       </div>
     </div>
   </div>
 
-  <!-- FEEDBACK -->
+  <!-- Feedback -->
   <div class="section">
     <h3>Feedback & Suggestions</h3>
 
@@ -332,12 +214,14 @@
   <button class="submit-btn" id="submitBtn" disabled>Submit Feedback</button>
   <div class="success" id="successMsg">Thank you! Your feedback has been recorded.</div>
   <div class="footer-note">© 2025 HGS | L&D Feedback Platform</div>
+
 </div>
 
 <script>
   // ✅ Replace with your Apps Script Web App URL (ends with /exec)
-  const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxfaK3udVG9WBAUz-L4HqgLAj_QRnkhyeicqg688iUAH5xMq58pvtjuJryYtNzSEaE5xQ/exec';
+  const WEB_APP_URL = 'PASTE_YOUR_APPS_SCRIPT_URL_HERE';
 
+  // Rating state (this is what gets submitted)
   const ratings = {
     overallRating: null,
     contentRelevanceRating: null,
@@ -346,25 +230,23 @@
     usefulnessRating: null
   };
 
+  // Elements
   const trainingTopic = document.getElementById('trainingTopic');
-  const trainingDate = document.getElementById('trainingDate');
-  const dateError = document.getElementById('dateError');
+  const trainingDate  = document.getElementById('trainingDate');
+  const dateError     = document.getElementById('dateError');
+  const location      = document.getElementById('location');
+  const empPrefix     = document.getElementById('empPrefix');
+  const employeeCode  = document.getElementById('employeeCode');
+  const department    = document.getElementById('department');
+  const npsScore      = document.getElementById('npsScore');
+  const likedMost     = document.getElementById('likedMost');
+  const toImprove     = document.getElementById('toImprove');
+  const suggestions   = document.getElementById('suggestions');
+  const submitBtn     = document.getElementById('submitBtn');
+  const successMsg    = document.getElementById('successMsg');
 
-  const location = document.getElementById('location');
-  const empPrefix = document.getElementById('empPrefix');
-  const employeeCode = document.getElementById('employeeCode');
-  const department = document.getElementById('department');
-
-  const npsScore = document.getElementById('npsScore');
-  const likedMost = document.getElementById('likedMost');
-  const toImprove = document.getElementById('toImprove');
-  const suggestions = document.getElementById('suggestions');
-
-  const submitBtn = document.getElementById('submitBtn');
-  const successMsg = document.getElementById('successMsg');
-
-  // ---------------- Flatpickr (STRICT: last 60 days only) ----------------
-  const fp = flatpickr("#trainingDate", {
+  // ---------------- Calendar: last 60 days only, no future ----------------
+  flatpickr("#trainingDate", {
     dateFormat: "Y-m-d",
     maxDate: "today",
     minDate: new Date().fp_incr(-60),
@@ -376,21 +258,31 @@
     }
   });
 
-  // ---------------- Rating button click binding ----------------
-  document.querySelectorAll('.rating-buttons').forEach(group => {
-    const field = group.dataset.field;
-    group.querySelectorAll('button').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.preventDefault(); // extra safety
-        const val = Number(btn.dataset.value);
-        ratings[field] = val;
+  // ---------------- Ratings: Reliable event delegation ----------------
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.rating-buttons button');
+    if (!btn) return;
 
-        group.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
-        btn.classList.add('selected');
+    e.preventDefault();
 
-        validate();
-      });
-    });
+    const group = btn.closest('.rating-buttons');
+    const field = group?.dataset?.field;
+    const val = Number(btn.dataset.value);
+
+    if (!field || !(field in ratings) || ![1,2,3,4,5].includes(val)) return;
+
+    // Save selection
+    ratings[field] = val;
+
+    // Update UI selection
+    group.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+
+    // Update "Selected: X/5" indicator
+    const indicator = document.querySelector(`.rating-selected[data-selected-for="${field}"] strong`);
+    if (indicator) indicator.textContent = String(val);
+
+    validate();
   });
 
   function validate() {
@@ -413,17 +305,17 @@
     submitBtn.disabled = !requiredFilled;
   }
 
-  // Validate on any input
-  document.querySelectorAll('input, select, textarea').forEach(el =>
-    el.addEventListener('input', validate)
-  );
+  // Validate on input changes
+  document.querySelectorAll('input, select, textarea').forEach(el => {
+    el.addEventListener('input', validate);
+    el.addEventListener('change', validate);
+  });
 
-  // --------------- Submit ---------------
+  // ---------------- Submit ----------------
   submitBtn.addEventListener('click', async () => {
     submitBtn.textContent = 'Submitting...';
     submitBtn.disabled = true;
 
-    // Extra guard: ensure date exists and is within last 60 days
     if (!trainingDate.value) {
       dateError.style.display = "block";
       submitBtn.textContent = 'Submit Feedback';
@@ -464,7 +356,7 @@
 
       successMsg.style.display = 'block';
       submitBtn.textContent = 'Submitted';
-    } catch (e) {
+    } catch (err) {
       alert('Submission failed. Please try again. If it persists, contact HR.');
       submitBtn.textContent = 'Submit Feedback';
       submitBtn.disabled = false;
@@ -477,4 +369,3 @@
 
 </body>
 </html>
-

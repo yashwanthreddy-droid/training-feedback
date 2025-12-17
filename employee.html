@@ -260,7 +260,12 @@ $('submitBtn').addEventListener('click', async () => {
     }
 
     $('success').style.display = 'block';
-    $('submitBtn').textContent = 'Submitted';
+$('submitBtn').textContent = 'Submitted';
+
+// Auto refresh after 5 seconds for next employee
+setTimeout(() => {
+  window.location.reload();
+}, 5000);
   } catch (err) {
     console.error(err);
     $('errorBox').textContent = err.message || 'Submission failed. Please try again.';
@@ -276,3 +281,4 @@ validate();
 
 </body>
 </html>
+

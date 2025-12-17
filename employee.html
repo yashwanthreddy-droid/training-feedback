@@ -11,11 +11,7 @@
 
 <style>
 body { background:#f4f6f9; font-family:Inter,sans-serif; margin:0; }
-.container {
-  max-width:820px; margin:40px auto; background:#fff;
-  padding:36px; border-radius:16px;
-  box-shadow:0 8px 30px rgba(0,0,0,.08);
-}
+.container { max-width:820px; margin:40px auto; background:#fff; padding:36px; border-radius:16px; box-shadow:0 8px 30px rgba(0,0,0,.08); }
 .logo { display:flex; justify-content:center; margin-bottom:14px; }
 .logo img { height:46px; }
 
@@ -23,42 +19,20 @@ h2 { text-align:center; color:#003a63; margin-bottom:6px; }
 p.sub { text-align:center; color:#6b7280; font-size:13px; }
 
 label { display:block; margin-top:18px; font-weight:700; font-size:13px; }
-input, select, textarea {
-  width:100%; padding:12px; border-radius:10px;
-  border:1px solid #cfd8e3; margin-top:6px;
-  box-sizing:border-box;
-}
-textarea { min-height:90px; }
+input, select, textarea { width:100%; padding:12px; border-radius:10px; border:1px solid #cfd8e3; margin-top:6px; box-sizing:border-box; }
+textarea { min-height:90px; resize:vertical; }
 
 .rating-block { margin-top:22px; }
 .rating-title { display:flex; justify-content:space-between; font-weight:700; }
 .rating-buttons { display:flex; gap:10px; margin-top:10px; flex-wrap:wrap; }
-.rating-buttons button {
-  width:44px; height:44px; border-radius:50%;
-  border:2px solid #cfd8e3; background:#f7f9fc;
-  font-weight:800; cursor:pointer;
-}
-.rating-buttons button.selected {
-  background:#005bab; color:#fff; border-color:#005bab;
-}
+.rating-buttons button { width:44px; height:44px; border-radius:50%; border:2px solid #cfd8e3; background:#f7f9fc; font-weight:800; cursor:pointer; }
+.rating-buttons button.selected { background:#005bab; color:#fff; border-color:#005bab; }
 
-.submit-btn {
-  margin-top:32px; width:100%; padding:16px;
-  border-radius:14px; background:#005bab; color:#fff;
-  font-size:16px; font-weight:800; border:none; cursor:pointer;
-}
+.submit-btn { margin-top:32px; width:100%; padding:16px; border-radius:14px; background:#005bab; color:#fff; font-size:16px; font-weight:800; border:none; cursor:pointer; }
 .submit-btn:disabled { background:#9bbad1; cursor:not-allowed; }
 
-.success {
-  display:none; margin-top:18px; background:#e8f7ee;
-  color:#0a6b38; padding:14px; border-radius:12px;
-  font-weight:800; text-align:center;
-}
-.errorBox {
-  display:none; margin-top:12px; background:#fdecec;
-  color:#b42318; padding:12px; border-radius:12px;
-  font-weight:800; font-size:13px;
-}
+.success { display:none; margin-top:18px; background:#e8f7ee; color:#0a6b38; padding:14px; border-radius:12px; font-weight:800; text-align:center; }
+.errorBox { display:none; margin-top:12px; background:#fdecec; color:#b42318; padding:12px; border-radius:12px; font-weight:800; font-size:13px; }
 .small { font-size:12px; color:#6b7280; margin-top:6px; }
 </style>
 </head>
@@ -66,10 +40,7 @@ textarea { min-height:90px; }
 <body>
 <div class="container">
 
-<div class="logo">
-  <img src="hgs-logo.png" alt="HGS Logo">
-</div>
-
+<div class="logo"><img src="hgs-logo.png" alt="HGS Logo"></div>
 <h2>Training Feedback Form</h2>
 <p class="sub">Please share your honest feedback to help us improve learning experiences.</p>
 
@@ -104,9 +75,9 @@ textarea { min-height:90px; }
 <label>Department *</label>
 <input id="department">
 
-<!-- SESSION RATINGS (5) -->
-<div class="rating-block" data-field="overall">
-  <div class="rating-title">Overall Session Rating <span id="overallVal">—</span></div>
+<!-- Ratings -->
+<div class="rating-block" data-field="overallRating">
+  <div class="rating-title">Overall Session Rating <span id="overallRatingVal">—</span></div>
   <div class="rating-buttons">
     <button type="button" data-v="1">1</button><button type="button" data-v="2">2</button>
     <button type="button" data-v="3">3</button><button type="button" data-v="4">4</button>
@@ -114,8 +85,8 @@ textarea { min-height:90px; }
   </div>
 </div>
 
-<div class="rating-block" data-field="content">
-  <div class="rating-title">Content relevance to your work <span id="contentVal">—</span></div>
+<div class="rating-block" data-field="contentRelevanceRating">
+  <div class="rating-title">Content relevance to your work <span id="contentRelevanceRatingVal">—</span></div>
   <div class="rating-buttons">
     <button type="button" data-v="1">1</button><button type="button" data-v="2">2</button>
     <button type="button" data-v="3">3</button><button type="button" data-v="4">4</button>
@@ -123,8 +94,8 @@ textarea { min-height:90px; }
   </div>
 </div>
 
-<div class="rating-block" data-field="trainer">
-  <div class="rating-title">Trainer clarity & delivery <span id="trainerVal">—</span></div>
+<div class="rating-block" data-field="trainerDeliveryRating">
+  <div class="rating-title">Trainer clarity & delivery <span id="trainerDeliveryRatingVal">—</span></div>
   <div class="rating-buttons">
     <button type="button" data-v="1">1</button><button type="button" data-v="2">2</button>
     <button type="button" data-v="3">3</button><button type="button" data-v="4">4</button>
@@ -132,8 +103,8 @@ textarea { min-height:90px; }
   </div>
 </div>
 
-<div class="rating-block" data-field="pace">
-  <div class="rating-title">Session pace <span id="paceVal">—</span></div>
+<div class="rating-block" data-field="sessionPaceRating">
+  <div class="rating-title">Session pace <span id="sessionPaceRatingVal">—</span></div>
   <div class="rating-buttons">
     <button type="button" data-v="1">1</button><button type="button" data-v="2">2</button>
     <button type="button" data-v="3">3</button><button type="button" data-v="4">4</button>
@@ -141,8 +112,8 @@ textarea { min-height:90px; }
   </div>
 </div>
 
-<div class="rating-block" data-field="useful">
-  <div class="rating-title">Usefulness for your current role <span id="usefulVal">—</span></div>
+<div class="rating-block" data-field="usefulnessRating">
+  <div class="rating-title">Usefulness for your current role <span id="usefulnessRatingVal">—</span></div>
   <div class="rating-buttons">
     <button type="button" data-v="1">1</button><button type="button" data-v="2">2</button>
     <button type="button" data-v="3">3</button><button type="button" data-v="4">4</button>
@@ -150,14 +121,18 @@ textarea { min-height:90px; }
   </div>
 </div>
 
-<label>NPS (0–10) *</label>
-<input type="number" id="nps" min="0" max="10">
+<label>Recommendation Score (NPS) (0–10) *</label>
+<input type="number" id="npsScore" min="0" max="10">
 
-<label>What did you like most? *</label>
-<textarea id="liked"></textarea>
+<label>What did you like most about the session? *</label>
+<textarea id="likedMost"></textarea>
 
 <label>What could be improved? *</label>
-<textarea id="improve"></textarea>
+<textarea id="toImprove"></textarea>
+
+<!-- ✅ Suggestions question added -->
+<label>Any other suggestions or topics you’d like us to cover next?</label>
+<textarea id="suggestions" placeholder="Optional"></textarea>
 
 <button class="submit-btn" id="submitBtn" disabled>Submit Feedback</button>
 <div class="errorBox" id="errorBox"></div>
@@ -166,10 +141,15 @@ textarea { min-height:90px; }
 </div>
 
 <script>
-/* ✅ Use YOUR real deployed Apps Script URL here */
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxfaK3udVG9WBAUz-L4HqgLAj_QRnkhyeicqg688iUAH5xMq58pvtjuJryYtNzSEaE5xQ/exec';
+const WEB_APP_URL = 'PASTE_YOUR_APPS_SCRIPT_URL_HERE'; // keep your /exec URL
 
-const ratings = { overall:null, content:null, trainer:null, pace:null, useful:null };
+const ratings = {
+  overallRating: null,
+  contentRelevanceRating: null,
+  trainerDeliveryRating: null,
+  sessionPaceRating: null,
+  usefulnessRating: null
+};
 
 const $ = (id) => document.getElementById(id);
 
@@ -179,12 +159,12 @@ flatpickr("#trainingDate", {
   allowInput: false
 });
 
-// Ratings click binding
+// rating clicks
 document.querySelectorAll('.rating-block').forEach(block => {
   const field = block.dataset.field;
   block.querySelectorAll('button').forEach(btn => {
     btn.addEventListener('click', () => {
-      ratings[field] = btn.dataset.v;
+      ratings[field] = Number(btn.dataset.v);
 
       block.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
       btn.classList.add('selected');
@@ -197,7 +177,7 @@ document.querySelectorAll('.rating-block').forEach(block => {
   });
 });
 
-function validate() {
+function validate(){
   const ok =
     $('trainingTopic').value.trim() &&
     $('trainingDate').value.trim() &&
@@ -205,17 +185,17 @@ function validate() {
     $('empPrefix').value.trim() &&
     $('employeeCode').value.trim() &&
     $('department').value.trim() &&
-    Object.values(ratings).every(v => v) &&
-    $('nps').value !== '' &&
-    Number($('nps').value) >= 0 &&
-    Number($('nps').value) <= 10 &&
-    $('liked').value.trim() &&
-    $('improve').value.trim();
+    Object.values(ratings).every(v => v !== null) &&
+    $('npsScore').value !== '' &&
+    Number($('npsScore').value) >= 0 &&
+    Number($('npsScore').value) <= 10 &&
+    $('likedMost').value.trim() &&
+    $('toImprove').value.trim();
 
   $('submitBtn').disabled = !ok;
 }
 
-document.querySelectorAll('input,select,textarea').forEach(el => {
+document.querySelectorAll('input,select,textarea').forEach(el=>{
   el.addEventListener('input', validate);
   el.addEventListener('change', validate);
 });
@@ -228,19 +208,25 @@ $('submitBtn').addEventListener('click', async () => {
   const oldText = $('submitBtn').textContent;
   $('submitBtn').textContent = 'Submitting...';
 
+  // ✅ FLAT payload keys (matches your sheet columns)
   const payload = {
     trainingTopic: $('trainingTopic').value.trim(),
     trainingDate: $('trainingDate').value.trim(),
     location: $('location').value.trim(),
     employeeCode: `${$('empPrefix').value.trim()}-${$('employeeCode').value.trim()}`,
     department: $('department').value.trim(),
-    ratings: { ...ratings },
-    nps: Number($('nps').value),
-    liked: $('liked').value.trim(),
-    improve: $('improve').value.trim()
-  };
 
-  console.log('Submitting payload:', payload);
+    overallRating: ratings.overallRating,
+    contentRelevanceRating: ratings.contentRelevanceRating,
+    trainerDeliveryRating: ratings.trainerDeliveryRating,
+    sessionPaceRating: ratings.sessionPaceRating,
+    usefulnessRating: ratings.usefulnessRating,
+
+    npsScore: Number($('npsScore').value),
+    likedMost: $('likedMost').value.trim(),
+    toImprove: $('toImprove').value.trim(),
+    suggestions: $('suggestions').value.trim()
+  };
 
   try {
     const res = await fetch(WEB_APP_URL, {
@@ -250,27 +236,20 @@ $('submitBtn').addEventListener('click', async () => {
     });
 
     const text = await res.text();
-    console.log('Raw response:', text);
+    let data = {};
+    try { data = JSON.parse(text); } catch { data = { status:'unknown', raw:text }; }
 
-    let data;
-    try { data = JSON.parse(text); } catch { data = { status: 'unknown', raw: text }; }
-
-    if (!res.ok || data.status !== 'ok') {
-      throw new Error(data.message || `Submit failed (HTTP ${res.status}). Response: ${text}`);
-    }
+    if (!res.ok || data.status !== 'ok') throw new Error(data.message || `Submit failed (HTTP ${res.status})`);
 
     $('success').style.display = 'block';
-$('submitBtn').textContent = 'Submitted';
+    $('submitBtn').textContent = 'Submitted';
 
-// Auto refresh after 5 seconds for next employee
-setTimeout(() => {
-  window.location.reload();
-}, 5000);
+    // ✅ refresh after 5 seconds
+    setTimeout(() => window.location.reload(), 5000);
+
   } catch (err) {
-    console.error(err);
     $('errorBox').textContent = err.message || 'Submission failed. Please try again.';
     $('errorBox').style.display = 'block';
-
     $('submitBtn').disabled = false;
     $('submitBtn').textContent = oldText;
   }
@@ -281,4 +260,3 @@ validate();
 
 </body>
 </html>
-

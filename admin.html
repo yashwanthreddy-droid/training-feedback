@@ -10,189 +10,85 @@
 
 <style>
   :root{
-    --bg:#f4f6f9;
-    --card:#ffffff;
-    --text:#0f172a;
-    --muted:#64748b;
-    --line:#e2e8f0;
-    --brand:#005bab;
-    --brand2:#003a63;
-    --good:#16a34a;
-    --warn:#f59e0b;
-    --bad:#ef4444;
-    --shadow: 0 10px 30px rgba(2,6,23,0.08);
-    --radius: 16px;
+    --bg:#f4f6f9; --card:#ffffff; --text:#0f172a; --muted:#64748b; --line:#e2e8f0;
+    --brand:#005bab; --brand2:#003a63; --good:#16a34a; --warn:#f59e0b; --bad:#ef4444;
+    --shadow: 0 10px 30px rgba(2,6,23,0.08); --radius: 16px;
   }
   body.dark{
-    --bg:#0b1220;
-    --card:#0f1a2e;
-    --text:#e5e7eb;
-    --muted:#9aa4b2;
-    --line:#1f2a44;
+    --bg:#0b1220; --card:#0f1a2e; --text:#e5e7eb; --muted:#9aa4b2; --line:#1f2a44;
     --shadow: 0 12px 30px rgba(0,0,0,0.45);
   }
-
   *{box-sizing:border-box}
-  body{
-    margin:0;
-    font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;
-    background:var(--bg);
-    color:var(--text);
-  }
+  body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);}
   .wrap{max-width:1200px;margin:28px auto;padding:0 18px 40px;}
-  .topbar{
-    display:flex;align-items:center;justify-content:space-between;gap:14px;
-    margin-bottom:16px;
-  }
-  .brand{
-    display:flex;align-items:center;gap:12px;
-  }
-  .brand img{height:40px;display:block}
-  .brand h1{
-    margin:0;font-size:18px;font-weight:800;color:var(--brand2);
-    letter-spacing:.2px;
-  }
-  body.dark .brand h1{color:#cfe7ff;}
-  .brand p{margin:3px 0 0;color:var(--muted);font-weight:600;font-size:12px}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:16px;}
+  .title h1{margin:0;font-size:18px;font-weight:900;color:var(--brand2);letter-spacing:.2px;}
+  body.dark .title h1{color:#cfe7ff;}
+  .title p{margin:5px 0 0;color:var(--muted);font-weight:700;font-size:12px}
 
-  .actions{
-    display:flex;gap:10px;align-items:center;flex-wrap:wrap;
-  }
-  .btn{
-    border:1px solid var(--line);
-    background:var(--card);
-    color:var(--text);
-    border-radius:12px;
-    padding:10px 12px;
-    font-weight:800;
-    cursor:pointer;
-    box-shadow:none;
-    transition:.15s ease;
-  }
+  .actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+  .btn{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:12px;padding:10px 12px;font-weight:900;cursor:pointer;transition:.15s ease;}
   .btn:hover{transform:translateY(-1px); box-shadow:var(--shadow);}
   .btn.primary{background:var(--brand);border-color:var(--brand);color:#fff;}
   .btn.small{padding:8px 10px;font-size:12px}
-  .pill{
-    padding:8px 10px;border:1px solid var(--line);border-radius:999px;
-    background:var(--card); color:var(--muted); font-weight:800; font-size:12px;
-  }
+  .pill{padding:8px 10px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--muted);font-weight:900;font-size:12px;}
 
   .grid{display:grid;gap:14px}
-  .kpis{grid-template-columns:repeat(4,1fr); margin-top:10px;}
-  .card{
-    background:var(--card);
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    box-shadow:var(--shadow);
-    padding:14px;
-  }
-  .kpi-title{color:var(--muted);font-weight:800;font-size:12px}
-  .kpi-value{font-size:26px;font-weight:900;margin-top:6px;letter-spacing:-0.4px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px;}
+  .kpis{grid-template-columns:repeat(6,1fr); margin-top:10px;}
+  .kpi-title{color:var(--muted);font-weight:900;font-size:12px}
+  .kpi-value{font-size:22px;font-weight:900;margin-top:6px;letter-spacing:-0.3px}
   .kpi-sub{margin-top:6px;color:var(--muted);font-weight:700;font-size:12px}
-  .kpi-badge{
-    display:inline-flex;align-items:center;gap:6px;
-    margin-top:10px;
-    padding:6px 10px;border-radius:999px;font-weight:900;font-size:12px;
-    border:1px solid var(--line); color:var(--text); background:transparent;
-  }
-  .kpi-badge.good{border-color:rgba(22,163,74,.35); color:var(--good)}
-  .kpi-badge.warn{border-color:rgba(245,158,11,.35); color:var(--warn)}
-  .kpi-badge.bad{border-color:rgba(239,68,68,.35); color:var(--bad)}
+  .badge{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:6px 10px;border-radius:999px;font-weight:900;font-size:12px;border:1px solid var(--line);}
+  .badge.good{border-color:rgba(22,163,74,.35); color:var(--good)}
+  .badge.warn{border-color:rgba(245,158,11,.35); color:var(--warn)}
+  .badge.bad{border-color:rgba(239,68,68,.35); color:var(--bad)}
 
   .filters{grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr; margin-top:14px;}
-  .filters .card{padding:12px}
   label{display:block;font-size:12px;font-weight:900;color:var(--muted);margin-bottom:6px}
-  input,select{
-    width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--line);
-    background:transparent;color:var(--text);font-weight:700;outline:none;
-  }
+  input,select{width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:transparent;color:var(--text);font-weight:800;outline:none;}
   input:focus,select:focus{border-color:rgba(0,91,171,.6); box-shadow:0 0 0 4px rgba(0,91,171,.12);}
 
-  .main{grid-template-columns: 1.4fr .6fr; margin-top:14px;}
+  .main{grid-template-columns: 1.35fr .65fr; margin-top:14px;}
   .charts{display:grid;grid-template-columns:1fr 1fr; gap:14px;}
-  .chart-card{padding:14px}
-  .chart-title{
-    display:flex;justify-content:space-between;align-items:flex-end;gap:10px;
-    margin-bottom:8px;
-  }
+  .chart-title{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;margin-bottom:8px;}
   .chart-title h3{margin:0;font-size:14px;font-weight:900}
-  .chart-title span{color:var(--muted);font-size:12px;font-weight:800}
+  .chart-title span{color:var(--muted);font-size:12px;font-weight:900}
 
   .table-card{padding:0; overflow:hidden}
-  .table-head{
-    padding:14px 14px 10px;
-    border-bottom:1px solid var(--line);
-    display:flex;align-items:flex-end;justify-content:space-between;gap:10px;
-  }
+  .table-head{padding:14px 14px 10px;border-bottom:1px solid var(--line);display:flex;align-items:flex-end;justify-content:space-between;gap:10px;}
   .table-head h3{margin:0;font-size:14px;font-weight:900}
+  .note{margin-top:8px;color:var(--muted);font-weight:800;font-size:12px;line-height:1.5}
   .table-wrap{overflow:auto; max-height:420px;}
   table{width:100%;border-collapse:collapse}
-  th,td{
-    padding:12px 14px;
-    border-bottom:1px solid var(--line);
-    font-size:12px;
-    text-align:left;
-    vertical-align:top;
-  }
+  th,td{padding:12px 14px;border-bottom:1px solid var(--line);font-size:12px;text-align:left;vertical-align:top;}
   th{position:sticky; top:0; background:var(--card); z-index:1; font-weight:900; color:var(--muted);}
   .mono{font-variant-numeric: tabular-nums;}
-  .badge{
-    display:inline-flex;align-items:center;gap:6px;
-    padding:6px 10px;border-radius:999px;font-weight:900;font-size:12px;
-    border:1px solid var(--line);
-  }
-  .badge.ok{color:var(--good);border-color:rgba(22,163,74,.35)}
-  .badge.attn{color:var(--bad);border-color:rgba(239,68,68,.35)}
-  .trend.up{color:var(--good);font-weight:900}
-  .trend.down{color:var(--bad);font-weight:900}
-  .trend.flat{color:var(--muted);font-weight:900}
+
+  .status-ok{color:var(--good);font-weight:900}
+  .status-attn{color:var(--bad);font-weight:900}
 
   .side{display:grid;gap:14px;}
-  .verbatim{padding:14px}
   .verbatim h3{margin:0 0 10px;font-size:14px;font-weight:900}
   .vb-item{border-top:1px solid var(--line); padding-top:10px; margin-top:10px}
-  .vb-item:first-of-type{border-top:none;padding-top:0;margin-top:0}
   .vb-meta{color:var(--muted);font-weight:900;font-size:12px;margin-bottom:6px}
-  .vb-text{font-weight:700;font-size:12px;line-height:1.45; color:var(--text); white-space:pre-wrap}
+  .vb-text{font-weight:700;font-size:12px;line-height:1.45;white-space:pre-wrap}
 
-  .note{margin-top:10px;color:var(--muted);font-weight:700;font-size:12px}
+  .loading{display:flex;align-items:center;justify-content:center;padding:18px;color:var(--muted);font-weight:900;}
+  .error{margin-top:12px;background:rgba(239,68,68,.10);border:1px solid rgba(239,68,68,.25);color:var(--bad);padding:12px;border-radius:14px;font-weight:900;font-size:13px;}
 
-  .loading{
-    display:flex;align-items:center;justify-content:center;
-    padding:18px;color:var(--muted);font-weight:900;
-  }
-  .error{
-    margin-top:12px;
-    background:rgba(239,68,68,.10);
-    border:1px solid rgba(239,68,68,.25);
-    color:var(--bad);
-    padding:12px;border-radius:14px;font-weight:900;font-size:13px;
-  }
-
-  /* Responsive */
-  @media (max-width: 1020px){
-    .kpis{grid-template-columns:repeat(2,1fr)}
+  @media (max-width: 1120px){
+    .kpis{grid-template-columns:repeat(3,1fr)}
     .filters{grid-template-columns:repeat(2,1fr)}
     .main{grid-template-columns:1fr}
     .charts{grid-template-columns:1fr}
   }
 
-  /* Password overlay */
-  .gate{
-    position:fixed; inset:0; background:rgba(2,6,23,.65);
-    display:none; align-items:center; justify-content:center; padding:16px;
-    z-index:9999;
-  }
-  .gate .panel{
-    width:100%; max-width:420px;
-    background:var(--card); color:var(--text);
-    border:1px solid var(--line);
-    border-radius:18px; box-shadow:var(--shadow);
-    padding:18px;
-  }
+  .gate{position:fixed; inset:0; background:rgba(2,6,23,.65); display:none; align-items:center; justify-content:center; padding:16px; z-index:9999;}
+  .gate .panel{width:100%; max-width:420px;background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:18px;}
   .gate h2{margin:0 0 6px; font-size:16px; font-weight:900; color:var(--brand2);}
   body.dark .gate h2{color:#cfe7ff;}
-  .gate p{margin:0 0 12px; color:var(--muted); font-weight:700; font-size:12px; line-height:1.4}
+  .gate p{margin:0 0 12px; color:var(--muted); font-weight:800; font-size:12px; line-height:1.4}
 </style>
 </head>
 
@@ -208,18 +104,16 @@
       <button class="btn" id="gateDark">Toggle dark mode</button>
     </div>
     <div class="error" id="gateErr" style="display:none;margin-top:12px;"></div>
-    <div class="note">Tip: You can disable the passcode gate in the script section.</div>
+    <div class="note">Note: passcode is client-side. API key protects data fetch.</div>
   </div>
 </div>
 
 <div class="wrap">
 
   <div class="topbar">
-    <div class="brand">
-      <div>
-        <h1>Training Feedback — Admin Dashboard</h1>
-        <p>Quick view by training & month. Downward trends are highlighted.</p>
-      </div>
+    <div class="title">
+      <h1>Training Feedback — Admin Dashboard</h1>
+      <p>ISO-ready view: effectiveness, evidence (quiz), and continuous improvement trends.</p>
     </div>
 
     <div class="actions">
@@ -229,31 +123,48 @@
     </div>
   </div>
 
-  <!-- KPI Cards -->
+  <!-- KPIs -->
   <div class="grid kpis">
     <div class="card">
-      <div class="kpi-title">Total feedback responses</div>
-      <div class="kpi-value mono" id="kpiTotal">—</div>
-      <div class="kpi-sub">Across all trainings and months</div>
-      <div class="kpi-badge" id="kpiTotalBadge">● Data status: —</div>
+      <div class="kpi-title">Total responses</div>
+      <div class="kpi-value mono" id="k_total">—</div>
+      <div class="kpi-sub">All filters applied</div>
+      <div class="badge" id="b_total">—</div>
     </div>
+
     <div class="card">
-      <div class="kpi-title">Average rating (1–5)</div>
-      <div class="kpi-value mono" id="kpiAvgRating">—</div>
-      <div class="kpi-sub">Avg of 5 rating dimensions</div>
-      <div class="kpi-badge" id="kpiRatingBadge">—</div>
+      <div class="kpi-title">Avg Session Rating (1–5)</div>
+      <div class="kpi-value mono" id="k_session">—</div>
+      <div class="kpi-sub">Avg of 5 session dimensions</div>
+      <div class="badge" id="b_session">—</div>
     </div>
+
     <div class="card">
-      <div class="kpi-title">Average NPS (0–10)</div>
-      <div class="kpi-value mono" id="kpiAvgNps">—</div>
-      <div class="kpi-sub">Recommendation score average</div>
-      <div class="kpi-badge" id="kpiNpsBadge">—</div>
+      <div class="kpi-title">Avg Trainer Score (1–5)</div>
+      <div class="kpi-value mono" id="k_trainer">—</div>
+      <div class="kpi-sub">Delivery + trainer capability</div>
+      <div class="badge" id="b_trainer">—</div>
     </div>
+
     <div class="card">
-      <div class="kpi-title">Needs attention</div>
-      <div class="kpi-value mono" id="kpiAttn">—</div>
-      <div class="kpi-sub">% with rating &lt; 3.5 or NPS &lt; 7</div>
-      <div class="kpi-badge" id="kpiAttnBadge">—</div>
+      <div class="kpi-title">Avg ISO Score (1–5)</div>
+      <div class="kpi-value mono" id="k_iso">—</div>
+      <div class="kpi-sub">Effectiveness & environment</div>
+      <div class="badge" id="b_iso">—</div>
+    </div>
+
+    <div class="card">
+      <div class="kpi-title">Quiz completion</div>
+      <div class="kpi-value mono" id="k_quiz">—</div>
+      <div class="kpi-sub">% marked “Yes”</div>
+      <div class="badge" id="b_quiz">—</div>
+    </div>
+
+    <div class="card">
+      <div class="kpi-title">Avg NPS (0–10)</div>
+      <div class="kpi-value mono" id="k_nps">—</div>
+      <div class="kpi-sub">Recommendation average</div>
+      <div class="badge" id="b_nps">—</div>
     </div>
   </div>
 
@@ -290,42 +201,47 @@
 
   <div id="errorBox" class="error" style="display:none;"></div>
 
-  <!-- Main -->
   <div class="grid main">
     <div class="grid">
-      <!-- Charts -->
       <div class="grid charts">
-        <div class="card chart-card">
+        <div class="card">
           <div class="chart-title">
-            <h3>Avg rating by training</h3>
+            <h3>Avg Session Rating by Training</h3>
             <span>Filtered view</span>
           </div>
-          <canvas id="chartBar"></canvas>
+          <canvas id="c_session_bar"></canvas>
         </div>
 
-        <div class="card chart-card">
+        <div class="card">
           <div class="chart-title">
-            <h3>Trend over time</h3>
-            <span>Avg rating (monthly)</span>
+            <h3>ISO Score Trend (Monthly)</h3>
+            <span>Effectiveness trend</span>
           </div>
-          <canvas id="chartLine"></canvas>
+          <canvas id="c_iso_line"></canvas>
         </div>
 
-        <div class="card chart-card" style="grid-column:1 / -1;">
+        <div class="card">
           <div class="chart-title">
-            <h3>NPS categories</h3>
-            <span>Detractors (0–6), Passives (7–8), Promoters (9–10)</span>
+            <h3>CAPA: Improvement Area</h3>
+            <span>Distribution</span>
           </div>
-          <canvas id="chartDonut"></canvas>
+          <canvas id="c_improve_donut"></canvas>
+        </div>
+
+        <div class="card">
+          <div class="chart-title">
+            <h3>NPS Categories</h3>
+            <span>Detractors / Passives / Promoters</span>
+          </div>
+          <canvas id="c_nps_donut"></canvas>
         </div>
       </div>
 
-      <!-- Table -->
       <div class="card table-card">
         <div class="table-head">
           <div>
             <h3>Training performance (by month)</h3>
-            <div class="note">Trend compares current month vs previous month (same training). Threshold: ±0.30.</div>
+            <div class="note">Includes ISO average, quiz completion %, and action flag.</div>
           </div>
           <span class="pill" id="rowsCount">Rows: —</span>
         </div>
@@ -335,37 +251,36 @@
               <tr>
                 <th>Training</th>
                 <th>Month</th>
-                <th class="mono">Avg Rating</th>
-                <th class="mono">Avg NPS</th>
-                <th>Trend</th>
+                <th class="mono">Session Avg</th>
+                <th class="mono">Trainer Avg</th>
+                <th class="mono">ISO Avg</th>
+                <th class="mono">Quiz %</th>
+                <th class="mono">NPS</th>
                 <th>Status</th>
               </tr>
             </thead>
             <tbody id="perfBody">
-              <tr><td colspan="6" class="loading">Loading…</td></tr>
+              <tr><td colspan="8" class="loading">Loading…</td></tr>
             </tbody>
           </table>
         </div>
       </div>
+
     </div>
 
-    <!-- Side panel -->
     <div class="side">
       <div class="card verbatim">
-        <h3>Verbatim feedback</h3>
-        <div class="note">Shows latest items for current filters.</div>
+        <h3>Latest verbatim feedback</h3>
+        <div class="note">Shows latest records for current filters.</div>
         <div id="verbatimList" class="loading">Loading…</div>
       </div>
+
       <div class="card">
-        <div class="kpi-title">How “Needs attention” is flagged</div>
-        <div class="note" style="margin-top:10px; line-height:1.5;">
-          A response is flagged if:
-          <ul style="margin:8px 0 0 18px; color:var(--muted); font-weight:800;">
-            <li>Avg rating (across 5 dimensions) &lt; <span class="mono">3.5</span>, OR</li>
-            <li>NPS &lt; <span class="mono">7</span></li>
-          </ul>
+        <div class="kpi-title">ISO coverage summary</div>
+        <div class="note">
+          ISO section is mandatory and captures: objectives clarity, role alignment, competence gain,
+          materials quality, learning environment, quiz completion, post understanding, improvement area, and corrective suggestion.
         </div>
-        <div class="note">You can change thresholds in the script section.</div>
       </div>
     </div>
   </div>
@@ -373,65 +288,49 @@
 </div>
 
 <script>
-/* =========================================================
-   CONFIG — SET THESE
-========================================================= */
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxfaK3udVG9WBAUz-L4HqgLAj_QRnkhyeicqg688iUAH5xMq58pvtjuJryYtNzSEaE5xQ/exec"; // must end with /exec
+/* ===========================
+   CONFIG
+=========================== */
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxfaK3udVG9WBAUz-L4HqgLAj_QRnkhyeicqg688iUAH5xMq58pvtjuJryYtNzSEaE5xQ/exec'; // keep your /exec URL;
 
-// Optional Admin Passcode Gate (client-side only)
 const ENABLE_PASSCODE_GATE = true;
-const ADMIN_PASSCODE = "HGS@123"; // change this
+const ADMIN_PASSCODE = "HGS@123";
 
-// Thresholds
-const THRESH_AVG_RATING_ALERT = 3.5;
+const THRESH_SESSION_ALERT = 3.5;
+const THRESH_ISO_ALERT = 3.5;
 const THRESH_NPS_ALERT = 7;
-const TREND_DELTA = 0.30;
 
-/* =========================================================
+/* ===========================
    STATE
-========================================================= */
+=========================== */
 let allRows = [];
 let filteredRows = [];
-
-let chartBar, chartLine, chartDonut;
+let chSessionBar, chIsoLine, chImproveDonut, chNpsDonut;
 
 const $ = (id) => document.getElementById(id);
 
-/* =========================================================
+/* ===========================
    PASSCODE GATE
-========================================================= */
-function openGate() {
+=========================== */
+function openGate(){ if (ENABLE_PASSCODE_GATE) $("gate").style.display="flex"; }
+function closeGate(){ $("gate").style.display="none"; }
+function initGate(){
   if (!ENABLE_PASSCODE_GATE) return;
-  $("gate").style.display = "flex";
-}
-function closeGate() {
-  $("gate").style.display = "none";
-}
-function initGate() {
-  if (!ENABLE_PASSCODE_GATE) return;
-
   openGate();
-  $("gateBtn").addEventListener("click", () => {
+  $("gateBtn").addEventListener("click", ()=>{
     const val = $("gatePass").value || "";
-    if (val === ADMIN_PASSCODE) {
-      closeGate();
-      loadAll();
-    } else {
-      $("gateErr").style.display = "block";
-      $("gateErr").textContent = "Incorrect passcode. Please try again.";
-    }
+    if (val === ADMIN_PASSCODE){ closeGate(); loadAll(); }
+    else { $("gateErr").style.display="block"; $("gateErr").textContent="Incorrect passcode. Please try again."; }
   });
-
-  $("gateDark").addEventListener("click", () => toggleTheme(true));
+  $("gateDark").addEventListener("click", ()=>toggleTheme(true));
 }
 
-/* =========================================================
+/* ===========================
    THEME
-========================================================= */
+=========================== */
 function toggleTheme(skipSave=false){
   document.body.classList.toggle("dark");
   if (!skipSave) localStorage.setItem("admin_theme", document.body.classList.contains("dark") ? "dark" : "light");
-  // re-render charts to match theme
   renderAll();
 }
 (function restoreTheme(){
@@ -439,97 +338,93 @@ function toggleTheme(skipSave=false){
   if (t === "dark") document.body.classList.add("dark");
 })();
 
-/* =========================================================
-   DATA FETCH
-========================================================= */
+/* ===========================
+   FETCH
+=========================== */
 async function fetchData(){
-  $("errorBox").style.display = "none";
-
+  $("errorBox").style.display="none";
   const url = WEB_APP_URL + (WEB_APP_URL.includes("?") ? "&" : "?") + "t=" + Date.now();
-  const res = await fetch(url, { method:"GET" });
+  const res = await fetch(url);
   const text = await res.text();
 
   let data;
   try { data = JSON.parse(text); }
-  catch {
-    throw new Error("Admin fetch failed: response was not valid JSON. Check your Apps Script doGet().");
-  }
+  catch { throw new Error("Admin fetch failed: response was not valid JSON. Check doGet()."); }
 
-  if (!Array.isArray(data)) {
-    // support {status:"ok", rows:[...]} shape if you used it
-    if (data && Array.isArray(data.rows)) return data.rows;
-    throw new Error("Admin fetch failed: expected an array of row objects.");
-  }
-  return data;
+  if (Array.isArray(data)) return data;
+  if (data && data.status === "error") throw new Error(data.message || "Admin fetch error.");
+  if (data && Array.isArray(data.rows)) return data.rows;
+
+  throw new Error("Admin fetch failed: expected an array of rows.");
 }
 
-/* =========================================================
-   NORMALIZE + HELPERS
-========================================================= */
-function toMonth(dateStr){
-  // expects YYYY-MM-DD
-  if (!dateStr) return "";
-  return String(dateStr).slice(0,7);
+/* ===========================
+   HELPERS
+=========================== */
+function toMonth(dateStr){ return dateStr ? String(dateStr).slice(0,7) : ""; }
+function num(x){ const n = Number(x); return Number.isFinite(n) ? n : null; }
+function avg(arr){ const v = arr.filter(x=>x!==null); return v.length ? v.reduce((a,b)=>a+b,0)/v.length : null; }
+function format1(x){ return (x===null||x===undefined) ? "—" : Number(x).toFixed(1); }
+function escapeHtml(str){
+  return String(str ?? "").replace(/[&<>"']/g, (m)=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[m]));
 }
-function num(x){
-  const n = Number(x);
-  return Number.isFinite(n) ? n : null;
-}
-function avgRating(r){
-  const vals = [
+function uniqSorted(arr){ return [...new Set(arr.filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b))); }
+
+function sessionAvg(r){
+  return avg([
     num(r.overallRating),
     num(r.contentRelevanceRating),
     num(r.trainerDeliveryRating),
     num(r.sessionPaceRating),
-    num(r.usefulnessRating),
-  ].filter(v => v !== null);
-
-  if (!vals.length) return null;
-  return vals.reduce((a,b)=>a+b,0) / vals.length;
+    num(r.usefulnessRating)
+  ]);
+}
+function trainerAvg(r){
+  return avg([
+    num(r.trainerDeliveryRating),
+    num(r.trainerKnowledgeRating),
+    num(r.trainerEngagementRating),
+    num(r.trainerResponsivenessRating),
+    num(r.trainerExamplesRating)
+  ]);
+}
+function isoAvg(r){
+  return avg([
+    num(r.iso_objectives_clarity),
+    num(r.iso_role_alignment),
+    num(r.iso_competence_gain),
+    num(r.iso_material_quality),
+    num(r.iso_learning_environment),
+    num(r.iso_post_understanding)
+  ]);
+}
+function quizYes(r){
+  return String(r.iso_assessment_completed || "").toLowerCase() === "yes";
 }
 function npsCategory(nps){
   const n = num(nps);
-  if (n === null) return "Unknown";
-  if (n >= 9) return "Promoter";
-  if (n >= 7) return "Passive";
+  if (n===null) return "Unknown";
+  if (n>=9) return "Promoter";
+  if (n>=7) return "Passive";
   return "Detractor";
 }
-function needsAttention(r){
-  const a = avgRating(r);
-  const n = num(r.npsScore);
-  return (a !== null && a < THRESH_AVG_RATING_ALERT) || (n !== null && n < THRESH_NPS_ALERT);
-}
-function uniqSorted(arr){
-  return [...new Set(arr.filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b)));
-}
-function format1(x){
-  return (x === null || x === undefined) ? "—" : Number(x).toFixed(1);
-}
-function formatPct(x){
-  if (!Number.isFinite(x)) return "—";
-  return Math.round(x*100) + "%";
-}
 
-/* =========================================================
+/* ===========================
    FILTERS
-========================================================= */
-function buildFilters(rows){
-  const trainings = uniqSorted(rows.map(r => r.trainingTopic));
-  const months = uniqSorted(rows.map(r => toMonth(r.trainingDate)));
-  const locs = uniqSorted(rows.map(r => r.location));
-  const depts = uniqSorted(rows.map(r => r.department));
-
-  fillSelect("fTraining", trainings);
-  fillSelect("fMonth", months);
-  fillSelect("fLocation", locs);
-  fillSelect("fDept", depts);
-}
+=========================== */
 function fillSelect(id, items){
   const sel = $(id);
   const current = sel.value;
   sel.innerHTML = `<option value="">All</option>` + items.map(v=>`<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join("");
-  // try to keep selection
   if (items.includes(current)) sel.value = current;
+}
+function buildFilters(rows){
+  fillSelect("fTraining", uniqSorted(rows.map(r=>r.trainingTopic)));
+  fillSelect("fMonth", uniqSorted(rows.map(r=>toMonth(r.trainingDate))));
+  fillSelect("fLocation", uniqSorted(rows.map(r=>r.location)));
+  fillSelect("fDept", uniqSorted(rows.map(r=>r.department)));
 }
 function applyFilters(){
   const t = $("fTraining").value.trim();
@@ -538,193 +433,170 @@ function applyFilters(){
   const d = $("fDept").value.trim();
   const q = $("fSearch").value.trim().toLowerCase();
 
-  filteredRows = allRows.filter(r => {
-    const okT = !t || (r.trainingTopic === t);
-    const okM = !m || (toMonth(r.trainingDate) === m);
-    const okL = !l || (r.location === l);
-    const okD = !d || (r.department === d);
-    const okQ = !q || (
-      String(r.employeeCode||"").toLowerCase().includes(q) ||
-      String(r.trainingTopic||"").toLowerCase().includes(q)
-    );
+  filteredRows = allRows.filter(r=>{
+    const okT = !t || r.trainingTopic === t;
+    const okM = !m || toMonth(r.trainingDate) === m;
+    const okL = !l || r.location === l;
+    const okD = !d || r.department === d;
+    const okQ = !q || String(r.employeeCode||"").toLowerCase().includes(q) || String(r.trainingTopic||"").toLowerCase().includes(q);
     return okT && okM && okL && okD && okQ;
   });
 
   renderAll();
 }
 function clearFilters(){
-  $("fTraining").value = "";
-  $("fMonth").value = "";
-  $("fLocation").value = "";
-  $("fDept").value = "";
-  $("fSearch").value = "";
+  $("fTraining").value=""; $("fMonth").value=""; $("fLocation").value=""; $("fDept").value=""; $("fSearch").value="";
   filteredRows = [...allRows];
   renderAll();
 }
 
-/* =========================================================
-   KPI + AGGREGATIONS
-========================================================= */
-function computeKPIs(rows){
+/* ===========================
+   KPIs
+=========================== */
+function setBadge(el, type, text){
+  el.className = "badge " + type;
+  el.textContent = text;
+}
+function renderKPIs(rows){
   const total = rows.length;
 
-  const avgs = rows.map(avgRating).filter(v => v !== null);
-  const avgAll = avgs.length ? (avgs.reduce((a,b)=>a+b,0)/avgs.length) : null;
+  const sess = avg(rows.map(sessionAvg));
+  const trn = avg(rows.map(trainerAvg));
+  const iso = avg(rows.map(isoAvg));
+  const nps = avg(rows.map(r=>num(r.npsScore)));
 
-  const npsVals = rows.map(r => num(r.npsScore)).filter(v => v !== null);
-  const avgNps = npsVals.length ? (npsVals.reduce((a,b)=>a+b,0)/npsVals.length) : null;
+  const quizTotal = rows.filter(r=>String(r.iso_assessment_completed||"").trim()).length;
+  const quizYesCount = rows.filter(quizYes).length;
+  const quizPct = quizTotal ? (quizYesCount/quizTotal) : null;
 
-  const attnCount = rows.filter(needsAttention).length;
-  const attnPct = total ? (attnCount/total) : NaN;
+  $("k_total").textContent = total.toString();
+  $("k_session").textContent = format1(sess);
+  $("k_trainer").textContent = format1(trn);
+  $("k_iso").textContent = format1(iso);
+  $("k_quiz").textContent = (quizPct===null) ? "—" : Math.round(quizPct*100) + "%";
+  $("k_nps").textContent = format1(nps);
 
-  return { total, avgAll, avgNps, attnCount, attnPct };
+  setBadge($("b_total"), total ? "good" : "warn", total ? "Live data" : "No data");
+
+  if (sess===null) setBadge($("b_session"), "warn", "—");
+  else setBadge($("b_session"), sess>=4 ? "good" : (sess>=THRESH_SESSION_ALERT ? "warn" : "bad"),
+    sess>=4 ? "Strong" : (sess>=THRESH_SESSION_ALERT ? "Watchlist" : "Needs action"));
+
+  if (trn===null) setBadge($("b_trainer"), "warn", "—");
+  else setBadge($("b_trainer"), trn>=4 ? "good" : (trn>=3.5 ? "warn" : "bad"),
+    trn>=4 ? "High quality" : (trn>=3.5 ? "Monitor" : "Coaching needed"));
+
+  if (iso===null) setBadge($("b_iso"), "warn", "—");
+  else setBadge($("b_iso"), iso>=4 ? "good" : (iso>=THRESH_ISO_ALERT ? "warn" : "bad"),
+    iso>=4 ? "ISO strong" : (iso>=THRESH_ISO_ALERT ? "ISO watch" : "ISO action"));
+
+  if (quizPct===null) setBadge($("b_quiz"), "warn", "—");
+  else setBadge($("b_quiz"), quizPct>=0.9 ? "good" : (quizPct>=0.75 ? "warn" : "bad"),
+    quizPct>=0.9 ? "Excellent" : (quizPct>=0.75 ? "Improve follow-up" : "Low compliance"));
+
+  if (nps===null) setBadge($("b_nps"), "warn", "—");
+  else setBadge($("b_nps"), nps>=9 ? "good" : (nps>=THRESH_NPS_ALERT ? "warn" : "bad"),
+    nps>=9 ? "High advocacy" : (nps>=THRESH_NPS_ALERT ? "Moderate" : "Low advocacy"));
 }
 
+/* ===========================
+   TABLE (training x month)
+=========================== */
 function groupTrainingMonth(rows){
-  // returns array of {training, month, avgRating, avgNps, count}
   const map = new Map();
   for (const r of rows){
     const training = r.trainingTopic || "Unknown";
     const month = toMonth(r.trainingDate) || "Unknown";
     const key = training + "||" + month;
-    if (!map.has(key)){
-      map.set(key, { training, month, ratings:[], nps:[], count:0 });
+    if (!map.has(key)) map.set(key, {training, month, sess:[], trn:[], iso:[], nps:[], quizYes:0, quizCount:0, count:0});
+    const e = map.get(key);
+    const s = sessionAvg(r), t = trainerAvg(r), i = isoAvg(r), n = num(r.npsScore);
+    if (s!==null) e.sess.push(s);
+    if (t!==null) e.trn.push(t);
+    if (i!==null) e.iso.push(i);
+    if (n!==null) e.nps.push(n);
+    if (String(r.iso_assessment_completed||"").trim()){
+      e.quizCount += 1;
+      if (quizYes(r)) e.quizYes += 1;
     }
-    const entry = map.get(key);
-    const ar = avgRating(r);
-    const nps = num(r.npsScore);
-    if (ar !== null) entry.ratings.push(ar);
-    if (nps !== null) entry.nps.push(nps);
-    entry.count += 1;
+    e.count += 1;
   }
 
   const out = [];
   for (const v of map.values()){
-    const avgR = v.ratings.length ? v.ratings.reduce((a,b)=>a+b,0)/v.ratings.length : null;
-    const avgN = v.nps.length ? v.nps.reduce((a,b)=>a+b,0)/v.nps.length : null;
-    out.push({ training:v.training, month:v.month, avgRating:avgR, avgNps:avgN, count:v.count });
+    out.push({
+      training: v.training,
+      month: v.month,
+      sessionAvg: v.sess.length ? v.sess.reduce((a,b)=>a+b,0)/v.sess.length : null,
+      trainerAvg: v.trn.length ? v.trn.reduce((a,b)=>a+b,0)/v.trn.length : null,
+      isoAvg: v.iso.length ? v.iso.reduce((a,b)=>a+b,0)/v.iso.length : null,
+      npsAvg: v.nps.length ? v.nps.reduce((a,b)=>a+b,0)/v.nps.length : null,
+      quizPct: v.quizCount ? (v.quizYes / v.quizCount) : null,
+      count: v.count
+    });
   }
 
-  // sort by month desc then training
   out.sort((a,b)=>{
-    if (a.month === b.month) return a.training.localeCompare(b.training);
+    if (a.month===b.month) return a.training.localeCompare(b.training);
     return b.month.localeCompare(a.month);
   });
   return out;
-}
-
-function computeTrend(rowsGrouped){
-  // trend compares training/month avgRating against previous month for same training
-  const byTraining = new Map();
-  for (const r of rowsGrouped){
-    if (!byTraining.has(r.training)) byTraining.set(r.training, []);
-    byTraining.get(r.training).push(r);
-  }
-
-  // within each training, sort by month asc
-  for (const [k, arr] of byTraining.entries()){
-    arr.sort((a,b)=>a.month.localeCompare(b.month));
-    // compute trend for each row
-    for (let i=0;i<arr.length;i++){
-      const cur = arr[i];
-      const prev = i>0 ? arr[i-1] : null;
-      cur.trendDelta = (prev && cur.avgRating!==null && prev.avgRating!==null) ? (cur.avgRating - prev.avgRating) : null;
-      cur.trendLabel =
-        cur.trendDelta === null ? "—" :
-        cur.trendDelta >= TREND_DELTA ? "up" :
-        cur.trendDelta <= -TREND_DELTA ? "down" : "flat";
-    }
-  }
-
-  // flatten back
-  const out = [];
-  for (const arr of byTraining.values()){
-    for (const r of arr) out.push(r);
-  }
-  // keep consistent display order (month desc)
-  out.sort((a,b)=>{
-    if (a.month === b.month) return a.training.localeCompare(b.training);
-    return b.month.localeCompare(a.month);
-  });
-  return out;
-}
-
-/* =========================================================
-   RENDER
-========================================================= */
-function renderKPIs(rows){
-  const k = computeKPIs(rows);
-  $("kpiTotal").textContent = k.total.toString();
-  $("kpiAvgRating").textContent = format1(k.avgAll);
-  $("kpiAvgNps").textContent = format1(k.avgNps);
-  $("kpiAttn").textContent = k.total ? `${k.attnCount} (${formatPct(k.attnPct)})` : "—";
-
-  // badges
-  const totalBadge = $("kpiTotalBadge");
-  totalBadge.textContent = `● Data status: ${k.total ? "Live" : "No data"}`;
-  totalBadge.className = "kpi-badge " + (k.total ? "good" : "warn");
-
-  const ratingBadge = $("kpiRatingBadge");
-  ratingBadge.className = "kpi-badge " + (k.avgAll === null ? "warn" : (k.avgAll >= 4 ? "good" : (k.avgAll >= 3.5 ? "warn" : "bad")));
-  ratingBadge.textContent = (k.avgAll === null) ? "—" : (k.avgAll >= 4 ? "Strong overall" : (k.avgAll >= 3.5 ? "Watchlist" : "Needs action"));
-
-  const npsBadge = $("kpiNpsBadge");
-  npsBadge.className = "kpi-badge " + (k.avgNps === null ? "warn" : (k.avgNps >= 9 ? "good" : (k.avgNps >= 7 ? "warn" : "bad")));
-  npsBadge.textContent = (k.avgNps === null) ? "—" : (k.avgNps >= 9 ? "High advocacy" : (k.avgNps >= 7 ? "Moderate" : "Low advocacy"));
-
-  const attnBadge = $("kpiAttnBadge");
-  attnBadge.className = "kpi-badge " + (Number.isFinite(k.attnPct) ? (k.attnPct <= 0.15 ? "good" : (k.attnPct <= 0.30 ? "warn" : "bad")) : "warn");
-  attnBadge.textContent = Number.isFinite(k.attnPct) ? (k.attnPct <= 0.15 ? "Healthy" : (k.attnPct <= 0.30 ? "Monitor" : "High risk")) : "—";
 }
 
 function renderTable(rows){
-  const grouped = computeTrend(groupTrainingMonth(rows));
-  $("rowsCount").textContent = `Rows: ${grouped.length}`;
+  const grouped = groupTrainingMonth(rows);
+  $("rowsCount").textContent = "Rows: " + grouped.length;
 
   const tbody = $("perfBody");
   if (!grouped.length){
-    tbody.innerHTML = `<tr><td colspan="6" class="loading">No records for current filters.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="8" class="loading">No records for current filters.</td></tr>`;
     return;
   }
 
   tbody.innerHTML = grouped.map(r=>{
-    const status = ((r.avgRating!==null && r.avgRating < THRESH_AVG_RATING_ALERT) || (r.avgNps!==null && r.avgNps < THRESH_NPS_ALERT)) ? "attn" : "ok";
-    const statusText = status === "attn" ? "Needs attention" : "OK";
-
-    const trendClass = r.trendLabel ? r.trendLabel : "flat";
-    const trendSymbol = r.trendLabel === "up" ? "↑" : (r.trendLabel === "down" ? "↓" : "→");
-    const trendText = r.trendDelta === null ? "—" : `${trendSymbol} ${format1(r.trendDelta)}`;
+    const status = (
+      (r.sessionAvg!==null && r.sessionAvg < THRESH_SESSION_ALERT) ||
+      (r.isoAvg!==null && r.isoAvg < THRESH_ISO_ALERT) ||
+      (r.npsAvg!==null && r.npsAvg < THRESH_NPS_ALERT)
+    ) ? "ATTN" : "OK";
 
     return `
       <tr>
         <td><strong>${escapeHtml(r.training)}</strong><div class="note">n=${r.count}</div></td>
         <td class="mono">${escapeHtml(r.month)}</td>
-        <td class="mono"><strong>${format1(r.avgRating)}</strong></td>
-        <td class="mono">${format1(r.avgNps)}</td>
-        <td class="mono"><span class="trend ${trendClass}">${trendText}</span></td>
-        <td><span class="badge ${status}">${status === "attn" ? "⚠" : "✅"} ${statusText}</span></td>
+        <td class="mono"><strong>${format1(r.sessionAvg)}</strong></td>
+        <td class="mono">${format1(r.trainerAvg)}</td>
+        <td class="mono">${format1(r.isoAvg)}</td>
+        <td class="mono">${r.quizPct===null ? "—" : Math.round(r.quizPct*100)+"%"}</td>
+        <td class="mono">${format1(r.npsAvg)}</td>
+        <td class="${status==="OK" ? "status-ok" : "status-attn"}">${status==="OK" ? "✅ OK" : "⚠ Needs attention"}</td>
       </tr>
     `;
   }).join("");
 }
 
+/* ===========================
+   VERBATIMS
+=========================== */
 function renderVerbatim(rows){
   const box = $("verbatimList");
   if (!rows.length){
-    box.className = "loading";
-    box.textContent = "No feedback for current filters.";
+    box.className="loading";
+    box.textContent="No feedback for current filters.";
     return;
   }
 
-  // latest 8
   const latest = [...rows].sort((a,b)=>String(b.createdAt||"").localeCompare(String(a.createdAt||""))).slice(0,8);
+  box.className="";
 
-  box.className = "";
   box.innerHTML = latest.map(r=>{
-    const meta = `${toMonth(r.trainingDate)} • ${r.trainingTopic || "Unknown"} • ${r.location || "—"} • ${r.department || "—"}`;
-    const liked = (r.likedMost || "").trim();
-    const improve = (r.toImprove || "").trim();
-    const sugg = (r.suggestions || "").trim();
+    const meta = `${toMonth(r.trainingDate)} • ${r.trainingTopic||"Unknown"} • ${r.location||"—"} • ${r.department||"—"}`;
+    const liked = (r.likedMost||"").trim();
+    const improve = (r.toImprove||"").trim();
+    const sugg = (r.suggestions||"").trim();
+    const isoCapa = (r.iso_corrective_suggestion||"").trim();
+    const tGood = (r.trainerStrengths||"").trim();
+    const tImp = (r.trainerImprovements||"").trim();
 
     return `
       <div class="vb-item">
@@ -732,182 +604,155 @@ function renderVerbatim(rows){
         ${liked ? `<div class="vb-text"><strong>Liked:</strong> ${escapeHtml(liked)}</div>` : ""}
         ${improve ? `<div class="vb-text"><strong>Improve:</strong> ${escapeHtml(improve)}</div>` : ""}
         ${sugg ? `<div class="vb-text"><strong>Suggestions:</strong> ${escapeHtml(sugg)}</div>` : ""}
-        ${(!liked && !improve && !sugg) ? `<div class="vb-text">—</div>` : ""}
+        ${tGood ? `<div class="vb-text"><strong>Trainer did well:</strong> ${escapeHtml(tGood)}</div>` : ""}
+        ${tImp ? `<div class="vb-text"><strong>Trainer improve:</strong> ${escapeHtml(tImp)}</div>` : ""}
+        ${isoCapa ? `<div class="vb-text"><strong>ISO corrective:</strong> ${escapeHtml(isoCapa)}</div>` : ""}
       </div>
     `;
   }).join("");
 }
 
+/* ===========================
+   CHARTS
+=========================== */
 function renderCharts(rows){
-  // Bar: avg rating by training
-  const byTraining = new Map();
-  for (const r of rows){
-    const t = r.trainingTopic || "Unknown";
-    if (!byTraining.has(t)) byTraining.set(t, []);
-    const a = avgRating(r);
-    if (a !== null) byTraining.get(t).push(a);
-  }
-  const barLabels = [...byTraining.keys()].sort((a,b)=>a.localeCompare(b));
-  const barData = barLabels.map(t=>{
-    const vals = byTraining.get(t);
-    return vals.length ? vals.reduce((a,b)=>a+b,0)/vals.length : null;
-  });
-
-  // Line: monthly average rating (filtered view)
-  const byMonth = new Map();
-  for (const r of rows){
-    const m = toMonth(r.trainingDate) || "Unknown";
-    if (!byMonth.has(m)) byMonth.set(m, []);
-    const a = avgRating(r);
-    if (a !== null) byMonth.get(m).push(a);
-  }
-  const lineLabels = [...byMonth.keys()].filter(m=>m!=="Unknown").sort((a,b)=>a.localeCompare(b));
-  const lineData = lineLabels.map(m=>{
-    const vals = byMonth.get(m);
-    return vals.length ? vals.reduce((a,b)=>a+b,0)/vals.length : null;
-  });
-
-  // Donut: NPS categories
-  let detr=0, pass=0, prom=0;
-  for (const r of rows){
-    const cat = npsCategory(r.npsScore);
-    if (cat === "Detractor") detr++;
-    else if (cat === "Passive") pass++;
-    else if (cat === "Promoter") prom++;
-  }
-
-  // Theme-aware grid/ticks
   const isDark = document.body.classList.contains("dark");
   const tickColor = isDark ? "#cbd5e1" : "#334155";
   const gridColor = isDark ? "rgba(148,163,184,.18)" : "rgba(148,163,184,.25)";
 
-  // Destroy existing charts
-  if (chartBar) chartBar.destroy();
-  if (chartLine) chartLine.destroy();
-  if (chartDonut) chartDonut.destroy();
+  // Session bar by training
+  const byTraining = new Map();
+  for (const r of rows){
+    const t = r.trainingTopic || "Unknown";
+    if (!byTraining.has(t)) byTraining.set(t, []);
+    const s = sessionAvg(r);
+    if (s!==null) byTraining.get(t).push(s);
+  }
+  const labelsT = [...byTraining.keys()].sort((a,b)=>a.localeCompare(b));
+  const dataT = labelsT.map(t=>{
+    const v = byTraining.get(t);
+    return v.length ? v.reduce((a,b)=>a+b,0)/v.length : null;
+  });
 
-  chartBar = new Chart($("chartBar"),{
+  // ISO line by month
+  const byMonth = new Map();
+  for (const r of rows){
+    const m = toMonth(r.trainingDate);
+    if (!m) continue;
+    if (!byMonth.has(m)) byMonth.set(m, []);
+    const i = isoAvg(r);
+    if (i!==null) byMonth.get(m).push(i);
+  }
+  const labelsM = [...byMonth.keys()].sort((a,b)=>a.localeCompare(b));
+  const dataM = labelsM.map(m=>{
+    const v = byMonth.get(m);
+    return v.length ? v.reduce((a,b)=>a+b,0)/v.length : null;
+  });
+
+  // Improvement donut
+  const improveMap = new Map();
+  for (const r of rows){
+    const a = String(r.iso_improvement_area||"").trim();
+    if (!a) continue;
+    improveMap.set(a, (improveMap.get(a)||0)+1);
+  }
+  const labelsI = [...improveMap.keys()].sort((a,b)=>a.localeCompare(b));
+  const dataI = labelsI.map(k=>improveMap.get(k));
+
+  // NPS donut
+  let detr=0, pass=0, prom=0;
+  for (const r of rows){
+    const c = npsCategory(r.npsScore);
+    if (c==="Detractor") detr++;
+    else if (c==="Passive") pass++;
+    else if (c==="Promoter") prom++;
+  }
+
+  if (chSessionBar) chSessionBar.destroy();
+  if (chIsoLine) chIsoLine.destroy();
+  if (chImproveDonut) chImproveDonut.destroy();
+  if (chNpsDonut) chNpsDonut.destroy();
+
+  chSessionBar = new Chart($("c_session_bar"),{
     type:"bar",
-    data:{
-      labels: barLabels,
-      datasets:[{
-        label:"Avg Rating",
-        data: barData
-      }]
-    },
+    data:{ labels: labelsT, datasets:[{ label:"Avg Session Rating", data: dataT }] },
     options:{
       responsive:true,
-      plugins:{
-        legend:{display:false},
-        tooltip:{
-          callbacks:{
-            label:(ctx)=>`Avg Rating: ${format1(ctx.raw)}`
-          }
-        }
-      },
+      plugins:{ legend:{display:false} },
       scales:{
-        x:{ ticks:{ color:tickColor }, grid:{ color:gridColor } },
-        y:{ suggestedMin:1, suggestedMax:5, ticks:{ color:tickColor }, grid:{ color:gridColor } }
+        x:{ ticks:{color:tickColor}, grid:{color:gridColor} },
+        y:{ suggestedMin:1, suggestedMax:5, ticks:{color:tickColor}, grid:{color:gridColor} }
       }
     }
   });
 
-  chartLine = new Chart($("chartLine"),{
+  chIsoLine = new Chart($("c_iso_line"),{
     type:"line",
-    data:{
-      labels: lineLabels,
-      datasets:[{
-        label:"Avg Rating",
-        data: lineData,
-        tension:0.25,
-        fill:false
-      }]
-    },
+    data:{ labels: labelsM, datasets:[{ label:"Avg ISO Score", data: dataM, tension:0.25 }] },
     options:{
       responsive:true,
-      plugins:{
-        legend:{display:false},
-        tooltip:{ callbacks:{ label:(ctx)=>`Avg Rating: ${format1(ctx.raw)}` } }
-      },
+      plugins:{ legend:{display:false} },
       scales:{
-        x:{ ticks:{ color:tickColor }, grid:{ color:gridColor } },
-        y:{ suggestedMin:1, suggestedMax:5, ticks:{ color:tickColor }, grid:{ color:gridColor } }
+        x:{ ticks:{color:tickColor}, grid:{color:gridColor} },
+        y:{ suggestedMin:1, suggestedMax:5, ticks:{color:tickColor}, grid:{color:gridColor} }
       }
     }
   });
 
-  chartDonut = new Chart($("chartDonut"),{
+  chImproveDonut = new Chart($("c_improve_donut"),{
     type:"doughnut",
-    data:{
-      labels:["Detractors (0–6)","Passives (7–8)","Promoters (9–10)"],
-      datasets:[{ data:[detr, pass, prom] }]
-    },
-    options:{
-      responsive:true,
-      plugins:{
-        legend:{ position:"bottom", labels:{ color:tickColor, font:{ weight:"800" } } }
-      }
-    }
+    data:{ labels: labelsI, datasets:[{ data: dataI }] },
+    options:{ responsive:true, plugins:{ legend:{ position:"bottom", labels:{color:tickColor, font:{weight:"800"}} } } }
+  });
+
+  chNpsDonut = new Chart($("c_nps_donut"),{
+    type:"doughnut",
+    data:{ labels:["Detractors (0–6)","Passives (7–8)","Promoters (9–10)"], datasets:[{ data:[detr,pass,prom] }] },
+    options:{ responsive:true, plugins:{ legend:{ position:"bottom", labels:{color:tickColor, font:{weight:"800"}} } } }
   });
 }
 
+/* ===========================
+   RENDER + LOAD
+=========================== */
 function renderAll(){
   renderKPIs(filteredRows);
-  renderTable(filteredRows);
   renderCharts(filteredRows);
+  renderTable(filteredRows);
   renderVerbatim(filteredRows);
 }
 
-/* =========================================================
-   LOAD
-========================================================= */
 async function loadAll(){
   try{
-    $("perfBody").innerHTML = `<tr><td colspan="6" class="loading">Loading…</td></tr>`;
-    $("verbatimList").className = "loading";
-    $("verbatimList").textContent = "Loading…";
+    $("errorBox").style.display="none";
+    $("perfBody").innerHTML = `<tr><td colspan="8" class="loading">Loading…</td></tr>`;
+    $("verbatimList").className="loading";
+    $("verbatimList").textContent="Loading…";
 
     allRows = await fetchData();
-
-    // normalize month fields not required; keep raw
     buildFilters(allRows);
-
     filteredRows = [...allRows];
     renderAll();
 
     $("lastUpdated").textContent = "Last updated: " + new Date().toLocaleString();
   }catch(err){
-    $("errorBox").style.display = "block";
+    $("errorBox").style.display="block";
     $("errorBox").textContent = err.message || String(err);
-    $("perfBody").innerHTML = `<tr><td colspan="6" class="loading">Failed to load data.</td></tr>`;
-    $("verbatimList").className = "loading";
-    $("verbatimList").textContent = "Failed to load data.";
+    $("perfBody").innerHTML = `<tr><td colspan="8" class="loading">Failed to load data.</td></tr>`;
+    $("verbatimList").className="loading";
+    $("verbatimList").textContent="Failed to load data.";
   }
 }
 
-/* =========================================================
-   EVENTS
-========================================================= */
+/* ===========================
+   EVENTS + INIT
+=========================== */
 $("refreshBtn").addEventListener("click", loadAll);
-$("toggleTheme").addEventListener("click", () => toggleTheme());
-
+$("toggleTheme").addEventListener("click", ()=>toggleTheme());
 $("applyBtn").addEventListener("click", applyFilters);
 $("clearBtn").addEventListener("click", clearFilters);
+$("fSearch").addEventListener("keydown",(e)=>{ if(e.key==="Enter") applyFilters(); });
 
-// Apply on enter in search
-$("fSearch").addEventListener("keydown", (e)=>{
-  if (e.key === "Enter") applyFilters();
-});
-
-function escapeHtml(str){
-  return String(str ?? "").replace(/[&<>"']/g, (m)=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-  }[m]));
-}
-
-/* =========================================================
-   INIT
-========================================================= */
 (function init(){
   if (ENABLE_PASSCODE_GATE) initGate();
   else loadAll();
@@ -916,5 +761,3 @@ function escapeHtml(str){
 
 </body>
 </html>
-
-

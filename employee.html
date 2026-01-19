@@ -7,21 +7,21 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-<!-- Flatpickr Calendar -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<!-- Flatpickr (correct CDN paths) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js" defer></script>
 
 <style>
   body { margin:0; background:#f4f6f9; font-family:Inter, sans-serif; color:#1b2430; }
-  .container { max-width:860px; margin:40px auto; background:#fff; padding:36px; border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,0.08); }
-  .header { text-align:center; margin-bottom:30px; }
-  .header h2 { margin:0; color:#003a63; font-weight:800; }
+  .container { max-width:900px; margin:40px auto; background:#fff; padding:36px; border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,0.08); }
+  .header { text-align:center; margin-bottom:26px; }
+  .header h2 { margin:0; color:#003a63; font-weight:900; }
   .header p { margin:10px 0 0; color:#5d6b7a; font-weight:600; font-size:13px; line-height:1.45; }
 
   .section { margin-top:28px; }
-  .section h3 { margin:0 0 10px; color:#0b2b4a; font-size:16px; font-weight:800; }
+  .section h3 { margin:0 0 10px; color:#0b2b4a; font-size:16px; font-weight:900; }
 
-  label { font-weight:700; display:block; margin:16px 0 6px; color:#2b3a4a; font-size:13px; }
+  label { font-weight:800; display:block; margin:16px 0 6px; color:#2b3a4a; font-size:13px; }
 
   input, select, textarea {
     width:100%; padding:12px; border-radius:12px; border:1px solid #cfd8e3;
@@ -38,19 +38,19 @@
   .row > * { flex:1; min-width:220px; }
 
   .helper { margin-top:8px; color:#5d6b7a; font-weight:600; font-size:12px; line-height:1.4; }
-  .error { display:none; margin-top:8px; color:#b42318; font-weight:800; font-size:12px; }
+  .error { display:none; margin-top:8px; color:#b42318; font-weight:900; font-size:12px; }
 
   /* Ratings */
   .rating-row { margin-top:14px; }
   .rating-head { display:flex; align-items:baseline; justify-content:space-between; gap:12px; }
-  .rating-selected { font-size:12px; font-weight:800; color:#5d6b7a; }
+  .rating-selected { font-size:12px; font-weight:900; color:#5d6b7a; }
   .rating-selected strong { color:#0b2b4a; }
 
   .rating-buttons { display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
   .rating-buttons button {
     width:46px; height:46px; border-radius:999px;
     border:2px solid #c7d2e0; background:#f7f9fc; color:#1b2430;
-    font-weight:800; cursor:pointer;
+    font-weight:900; cursor:pointer;
     display:inline-flex; align-items:center; justify-content:center;
     transition:.15s ease;
     user-select:none;
@@ -58,17 +58,24 @@
   .rating-buttons button:hover { border-color:#005bab; box-shadow:0 10px 20px rgba(0,0,0,.10); transform:translateY(-1px); }
   .rating-buttons button.selected { background:#005bab; border-color:#005bab; color:#fff; }
 
+  .yn-buttons { display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+  .yn-buttons button{
+    padding:10px 14px; border-radius:999px; border:2px solid #c7d2e0;
+    background:#f7f9fc; font-weight:900; cursor:pointer; transition:.15s ease;
+  }
+  .yn-buttons button.selected{ background:#005bab; border-color:#005bab; color:#fff; }
+
   .submit-btn {
     margin-top:30px; width:100%; padding:16px; font-size:17px;
     border-radius:14px; border:none; background:#005bab; color:#fff;
-    font-weight:800; cursor:pointer; transition:.15s ease;
+    font-weight:900; cursor:pointer; transition:.15s ease;
   }
   .submit-btn:disabled { background:#9bbad1; cursor:not-allowed; }
 
-  .success { margin-top:18px; background:#e8f7ee; color:#0a6b38; padding:14px; border-radius:12px; font-weight:800; display:none; text-align:center; }
+  .success { margin-top:18px; background:#e8f7ee; color:#0a6b38; padding:14px; border-radius:12px; font-weight:900; display:none; text-align:center; }
   .footer-note { margin-top:14px; text-align:center; color:#7b8796; font-size:12px; font-weight:600; }
 
-  /* Flatpickr brand touch */
+  /* Flatpickr highlight */
   .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange {
     background:#005bab; border-color:#005bab;
   }
@@ -80,7 +87,7 @@
 
   <div class="header">
     <h2>Training Feedback Form</h2>
-    <p>Please share your honest feedback to help us improve learning experiences.</p>
+    <p>Please share your honest feedback to help us improve learning experiences. Fields marked * are mandatory.</p>
   </div>
 
   <!-- Session Details -->
@@ -91,7 +98,7 @@
     <input id="trainingTopic" placeholder="e.g., Email Skills, Power Query, POSH">
 
     <label>Training Date *</label>
-    <input type="text" id="trainingDate" placeholder="Select training date" readonly>
+    <input type="text" id="trainingDate" placeholder="Select training date">
     <div class="helper">Allowed range: last 60 days only (no future dates).</div>
     <div id="dateError" class="error">Please select a valid training date (within the last 60 days).</div>
 
@@ -147,12 +154,13 @@
 
   <!-- Session Ratings -->
   <div class="section">
-    <h3>Session Ratings (1 = Poor, 5 = Excellent)</h3>
+    <h3>Session Ratings (1 = Poor, 5 = Excellent) *</h3>
 
+    <!-- Session rating blocks -->
     <div class="rating-row">
       <div class="rating-head">
         <label style="margin:0;">Overall Session Rating *</label>
-        <div class="rating-selected" data-selected-for="overallRating">Selected: <strong>—</strong>/5</div>
+        <div class="rating-selected">Selected: <strong id="sel_overallRating">—</strong>/5</div>
       </div>
       <div class="rating-buttons" data-field="overallRating">
         <button type="button" data-value="1">1</button><button type="button" data-value="2">2</button>
@@ -164,7 +172,7 @@
     <div class="rating-row">
       <div class="rating-head">
         <label style="margin:0;">Content relevance to your work *</label>
-        <div class="rating-selected" data-selected-for="contentRelevanceRating">Selected: <strong>—</strong>/5</div>
+        <div class="rating-selected">Selected: <strong id="sel_contentRelevanceRating">—</strong>/5</div>
       </div>
       <div class="rating-buttons" data-field="contentRelevanceRating">
         <button type="button" data-value="1">1</button><button type="button" data-value="2">2</button>
@@ -176,7 +184,7 @@
     <div class="rating-row">
       <div class="rating-head">
         <label style="margin:0;">Trainer clarity & delivery *</label>
-        <div class="rating-selected" data-selected-for="trainerDeliveryRating">Selected: <strong>—</strong>/5</div>
+        <div class="rating-selected">Selected: <strong id="sel_trainerDeliveryRating">—</strong>/5</div>
       </div>
       <div class="rating-buttons" data-field="trainerDeliveryRating">
         <button type="button" data-value="1">1</button><button type="button" data-value="2">2</button>
@@ -188,7 +196,7 @@
     <div class="rating-row">
       <div class="rating-head">
         <label style="margin:0;">Session pace *</label>
-        <div class="rating-selected" data-selected-for="sessionPaceRating">Selected: <strong>—</strong>/5</div>
+        <div class="rating-selected">Selected: <strong id="sel_sessionPaceRating">—</strong>/5</div>
       </div>
       <div class="rating-buttons" data-field="sessionPaceRating">
         <button type="button" data-value="1">1</button><button type="button" data-value="2">2</button>
@@ -200,7 +208,7 @@
     <div class="rating-row">
       <div class="rating-head">
         <label style="margin:0;">Usefulness for your current role *</label>
-        <div class="rating-selected" data-selected-for="usefulnessRating">Selected: <strong>—</strong>/5</div>
+        <div class="rating-selected">Selected: <strong id="sel_usefulnessRating">—</strong>/5</div>
       </div>
       <div class="rating-buttons" data-field="usefulnessRating">
         <button type="button" data-value="1">1</button><button type="button" data-value="2">2</button>
@@ -212,12 +220,12 @@
 
   <!-- Trainer Feedback -->
   <div class="section">
-    <h3>Trainer Feedback (1 = Poor, 5 = Excellent)</h3>
+    <h3>Trainer Feedback (1 = Poor, 5 = Excellent) *</h3>
 
     <div class="rating-row">
       <div class="rating-head">
         <label style="margin:0;">Trainer subject knowledge *</label>
-        <div class="rating-selected" data-selected-for="trainerKnowledgeRating">Selected: <strong>—</strong>/5</div>
+        <div class="rating-selected">Selected: <strong id="sel_trainerKnowledgeRating">—</strong>/5</div>
       </div>
       <div class="rating-buttons" data-field="trainerKnowledgeRating">
         <button type="button" data-value="1">1</button><button type="button" data-value="2">2</button>
@@ -229,7 +237,7 @@
     <div class="rating-row">
       <div class="rating-head">
         <label style="margin:0;">Trainer engagement & interaction *</label>
-        <div class="rating-selected" data-selected-for="trainerEngagementRating">Selected: <strong>—</strong>/5</div>
+        <div class="rating-selected">Selected: <strong id="sel_trainerEngagementRating">—</strong>/5</div>
       </div>
       <div class="rating-buttons" data-field="trainerEngagementRating">
         <button type="button" data-value="1">1</button><button type="button" data-value="2">2</button>
@@ -241,7 +249,7 @@
     <div class="rating-row">
       <div class="rating-head">
         <label style="margin:0;">Trainer responsiveness to questions *</label>
-        <div class="rating-selected" data-selected-for="trainerResponsivenessRating">Selected: <strong>—</strong>/5</div>
+        <div class="rating-selected">Selected: <strong id="sel_trainerResponsivenessRating">—</strong>/5</div>
       </div>
       <div class="rating-buttons" data-field="trainerResponsivenessRating">
         <button type="button" data-value="1">1</button><button type="button" data-value="2">2</button>
@@ -253,7 +261,7 @@
     <div class="rating-row">
       <div class="rating-head">
         <label style="margin:0;">Use of examples / practical applicability *</label>
-        <div class="rating-selected" data-selected-for="trainerExamplesRating">Selected: <strong>—</strong>/5</div>
+        <div class="rating-selected">Selected: <strong id="sel_trainerExamplesRating">—</strong>/5</div>
       </div>
       <div class="rating-buttons" data-field="trainerExamplesRating">
         <button type="button" data-value="1">1</button><button type="button" data-value="2">2</button>
@@ -262,24 +270,22 @@
       </div>
     </div>
 
-    <label>What did the trainer do well? (Optional)</label>
+    <label>What did the trainer do well?</label>
     <textarea id="trainerStrengths" placeholder="Optional…"></textarea>
 
-    <label>What can the trainer improve? (Optional)</label>
+    <label>What can the trainer improve?</label>
     <textarea id="trainerImprovements" placeholder="Optional…"></textarea>
   </div>
 
-  <!-- ISO Mandatory Section -->
+  <!-- ISO -> renamed -->
   <div class="section">
-    <h3>ISO Training Effectiveness & Compliance (Mandatory)</h3>
-    <div class="helper" style="margin-top:0;">
-      Please answer all questions below. These are required for training effectiveness evaluation and ISO tracking.
-    </div>
+    <h3>Training Effectiveness & Compliance (Mandatory)</h3>
+    <div class="helper">This section supports audit-ready training evaluation and continuous improvement.</div>
 
     <div class="rating-row">
       <div class="rating-head">
         <label style="margin:0;">Learning objectives were clearly communicated *</label>
-        <div class="rating-selected" data-selected-for="iso_objectives_clarity">Selected: <strong>—</strong>/5</div>
+        <div class="rating-selected">Selected: <strong id="sel_iso_objectives_clarity">—</strong>/5</div>
       </div>
       <div class="rating-buttons" data-field="iso_objectives_clarity">
         <button type="button" data-value="1">1</button><button type="button" data-value="2">2</button>
@@ -291,7 +297,7 @@
     <div class="rating-row">
       <div class="rating-head">
         <label style="margin:0;">Session content aligned with my role requirements *</label>
-        <div class="rating-selected" data-selected-for="iso_role_alignment">Selected: <strong>—</strong>/5</div>
+        <div class="rating-selected">Selected: <strong id="sel_iso_role_alignment">—</strong>/5</div>
       </div>
       <div class="rating-buttons" data-field="iso_role_alignment">
         <button type="button" data-value="1">1</button><button type="button" data-value="2">2</button>
@@ -303,7 +309,7 @@
     <div class="rating-row">
       <div class="rating-head">
         <label style="margin:0;">The session improved my competence/confidence *</label>
-        <div class="rating-selected" data-selected-for="iso_competence_gain">Selected: <strong>—</strong>/5</div>
+        <div class="rating-selected">Selected: <strong id="sel_iso_competence_gain">—</strong>/5</div>
       </div>
       <div class="rating-buttons" data-field="iso_competence_gain">
         <button type="button" data-value="1">1</button><button type="button" data-value="2">2</button>
@@ -315,7 +321,7 @@
     <div class="rating-row">
       <div class="rating-head">
         <label style="margin:0;">Training materials / job aids were useful *</label>
-        <div class="rating-selected" data-selected-for="iso_material_quality">Selected: <strong>—</strong>/5</div>
+        <div class="rating-selected">Selected: <strong id="sel_iso_material_quality">—</strong>/5</div>
       </div>
       <div class="rating-buttons" data-field="iso_material_quality">
         <button type="button" data-value="1">1</button><button type="button" data-value="2">2</button>
@@ -327,7 +333,7 @@
     <div class="rating-row">
       <div class="rating-head">
         <label style="margin:0;">Training environment supported learning (room/virtual setup) *</label>
-        <div class="rating-selected" data-selected-for="iso_learning_environment">Selected: <strong>—</strong>/5</div>
+        <div class="rating-selected">Selected: <strong id="sel_iso_learning_environment">—</strong>/5</div>
       </div>
       <div class="rating-buttons" data-field="iso_learning_environment">
         <button type="button" data-value="1">1</button><button type="button" data-value="2">2</button>
@@ -337,38 +343,11 @@
     </div>
 
     <label>Did you complete the post-training quiz/assessment? *</label>
-    <select id="iso_assessment_completed">
-      <option value="">Select</option>
-      <option value="Yes">Yes</option>
-      <option value="No">No</option>
-    </select>
-
-    <div class="rating-row">
-      <div class="rating-head">
-        <label style="margin:0;">Self-assessed understanding after the session *</label>
-        <div class="rating-selected" data-selected-for="iso_post_understanding">Selected: <strong>—</strong>/5</div>
-      </div>
-      <div class="rating-buttons" data-field="iso_post_understanding">
-        <button type="button" data-value="1">1</button><button type="button" data-value="2">2</button>
-        <button type="button" data-value="3">3</button><button type="button" data-value="4">4</button>
-        <button type="button" data-value="5">5</button>
-      </div>
+    <div class="yn-buttons" data-yn-field="iso_assessment_completed">
+      <button type="button" data-value="Yes">Yes</button>
+      <button type="button" data-value="No">No</button>
     </div>
-
-    <label>Primary area for improvement *</label>
-    <select id="iso_improvement_area">
-      <option value="">Select</option>
-      <option>Content depth</option>
-      <option>Session pace / time management</option>
-      <option>Practical examples / hands-on practice</option>
-      <option>Training materials / job aids</option>
-      <option>Q&A / interaction time</option>
-      <option>Environment / technology setup</option>
-      <option>Other</option>
-    </select>
-
-    <label>Corrective / preventive suggestion (details) *</label>
-    <textarea id="iso_corrective_suggestion" placeholder="Write a clear action suggestion…"></textarea>
+    <div class="helper">Select Yes/No (mandatory for training evidence).</div>
   </div>
 
   <!-- Feedback -->
@@ -388,104 +367,123 @@
     <label>What could be improved? *</label>
     <textarea id="toImprove" placeholder="Share suggestions to improve…"></textarea>
 
-    <label>Any other suggestions or topics you’d like us to cover next? *</label>
-    <textarea id="suggestions" placeholder="Mandatory…"></textarea>
+    <label>Any other suggestions or topics you’d like us to cover next?</label>
+    <textarea id="suggestions" placeholder="Optional…"></textarea>
   </div>
 
   <button class="submit-btn" id="submitBtn" disabled>Submit Feedback</button>
-  <div class="success" id="successMsg">Thank you! Your feedback has been recorded.</div>
+  <div class="success" id="successMsg">Thank you! Your feedback has been recorded. This page will refresh in 5 seconds.</div>
   <div class="footer-note">© 2026 | Training Feedback Platform</div>
 
 </div>
 
 <script>
-  // ✅ Replace with your Apps Script Web App URL (ends with /exec)
-  const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxfaK3udVG9WBAUz-L4HqgLAj_QRnkhyeicqg688iUAH5xMq58pvtjuJryYtNzSEaE5xQ/exec'; // keep your /exec URL;
+  // IMPORTANT: put your /exec URL here
+  const WEB_APP_URL = "'https://script.google.com/macros/s/AKfycbxfaK3udVG9WBAUz-L4HqgLAj_QRnkhyeicqg688iUAH5xMq58pvtjuJryYtNzSEaE5xQ/exec'; // keep your /exec URL";
 
-  // Rating state (submitted)
+  // Rating state
   const ratings = {
-    // session ratings
+    // Session ratings
     overallRating: null,
     contentRelevanceRating: null,
     trainerDeliveryRating: null,
     sessionPaceRating: null,
     usefulnessRating: null,
 
-    // trainer ratings
+    // Trainer ratings
     trainerKnowledgeRating: null,
     trainerEngagementRating: null,
     trainerResponsivenessRating: null,
     trainerExamplesRating: null,
 
-    // ISO ratings (mandatory)
+    // Effectiveness & compliance ratings (still keep ISO field IDs for backend/admin consistency)
     iso_objectives_clarity: null,
     iso_role_alignment: null,
     iso_competence_gain: null,
     iso_material_quality: null,
-    iso_learning_environment: null,
-    iso_post_understanding: null
+    iso_learning_environment: null
   };
 
+  let iso_assessment_completed = null;
+
   // Elements
-  const trainingTopic = document.getElementById('trainingTopic');
-  const trainingDate  = document.getElementById('trainingDate');
-  const dateError     = document.getElementById('dateError');
-  const location      = document.getElementById('location');
-  const empPrefix     = document.getElementById('empPrefix');
-  const employeeCode  = document.getElementById('employeeCode');
-  const department    = document.getElementById('department');
+  const trainingTopic = document.getElementById("trainingTopic");
+  const trainingDate = document.getElementById("trainingDate");
+  const dateError = document.getElementById("dateError");
+  const location = document.getElementById("location");
+  const empPrefix = document.getElementById("empPrefix");
+  const employeeCode = document.getElementById("employeeCode");
+  const department = document.getElementById("department");
 
-  const trainerStrengths = document.getElementById('trainerStrengths');
-  const trainerImprovements = document.getElementById('trainerImprovements');
+  const trainerStrengths = document.getElementById("trainerStrengths");
+  const trainerImprovements = document.getElementById("trainerImprovements");
 
-  const iso_assessment_completed = document.getElementById('iso_assessment_completed');
-  const iso_improvement_area = document.getElementById('iso_improvement_area');
-  const iso_corrective_suggestion = document.getElementById('iso_corrective_suggestion');
+  const npsScore = document.getElementById("npsScore");
+  const likedMost = document.getElementById("likedMost");
+  const toImprove = document.getElementById("toImprove");
+  const suggestions = document.getElementById("suggestions");
 
-  const npsScore      = document.getElementById('npsScore');
-  const likedMost     = document.getElementById('likedMost');
-  const toImprove     = document.getElementById('toImprove');
-  const suggestions   = document.getElementById('suggestions');
+  const submitBtn = document.getElementById("submitBtn");
+  const successMsg = document.getElementById("successMsg");
 
-  const submitBtn     = document.getElementById('submitBtn');
-  const successMsg    = document.getElementById('successMsg');
-
-  // ---------------- Calendar: last 60 days only, no future ----------------
-  flatpickr("#trainingDate", {
-    dateFormat: "Y-m-d",
-    maxDate: "today",
-    minDate: new Date().fp_incr(-60),
-    disableMobile: true,
-    allowInput: false,
-    onChange: function() {
-      dateError.style.display = "none";
-      validate();
+  // Ensure Flatpickr + click handlers only run after DOM is ready
+  window.addEventListener("DOMContentLoaded", () => {
+    // Flatpickr init (past 60 days only, no future)
+    if (window.flatpickr) {
+      flatpickr("#trainingDate", {
+        dateFormat: "Y-m-d",
+        maxDate: "today",
+        minDate: new Date(new Date().setDate(new Date().getDate() - 60)),
+        disableMobile: true,
+        allowInput: false,
+        onChange: () => { dateError.style.display = "none"; validate(); }
+      });
     }
-  });
 
-  // ---------------- Ratings: event delegation ----------------
-  document.addEventListener('click', (e) => {
-    const btn = e.target.closest('.rating-buttons button');
-    if (!btn) return;
+    // Attach rating handlers per group (most reliable)
+    document.querySelectorAll(".rating-buttons").forEach(group => {
+      const field = group.getAttribute("data-field");
+      group.querySelectorAll("button").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const val = Number(btn.getAttribute("data-value"));
+          ratings[field] = val;
 
-    e.preventDefault();
+          group.querySelectorAll("button").forEach(b => b.classList.remove("selected"));
+          btn.classList.add("selected");
 
-    const group = btn.closest('.rating-buttons');
-    const field = group?.dataset?.field;
-    const val = Number(btn.dataset.value);
+          const indicator = document.getElementById("sel_" + field);
+          if (indicator) indicator.textContent = String(val);
 
-    if (!field || !(field in ratings) || ![1,2,3,4,5].includes(val)) return;
+          validate();
+        });
+      });
+    });
 
-    // Save
-    ratings[field] = val;
+    // Yes/No handler
+    document.querySelectorAll(".yn-buttons").forEach(group => {
+      const f = group.getAttribute("data-yn-field");
+      group.querySelectorAll("button").forEach(btn => {
+        btn.addEventListener("click", () => {
+          if (f !== "iso_assessment_completed") return;
+          iso_assessment_completed = btn.getAttribute("data-value");
 
-    // Update UI
-    group.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
-    btn.classList.add('selected');
+          group.querySelectorAll("button").forEach(b => b.classList.remove("selected"));
+          btn.classList.add("selected");
 
-    // Update Selected indicator
-    const indicator = document.querySelector(`.rating-selected[data-selected-for="${field}"] strong`);
-    if (indicator) indicator.textContent = String(val);
+          validate();
+        });
+      });
+    });
+
+    // Validate on changes
+    [
+      trainingTopic, trainingDate, location, empPrefix, employeeCode, department,
+      trainerStrengths, trainerImprovements,
+      npsScore, likedMost, toImprove, suggestions
+    ].forEach(el => {
+      el.addEventListener("input", validate);
+      el.addEventListener("change", validate);
+    });
 
     validate();
   });
@@ -494,53 +492,32 @@
     const dateOk = !!trainingDate.value;
 
     const npsVal = npsScore.value;
-    const npsOk = npsVal !== '' && Number(npsVal) >= 0 && Number(npsVal) <= 10;
+    const npsOk = npsVal !== "" && Number(npsVal) >= 0 && Number(npsVal) <= 10;
 
-    const requiredFilled =
+    const baseOk =
       trainingTopic.value.trim() &&
       dateOk &&
       location.value &&
       empPrefix.value && employeeCode.value.trim() &&
       department.value &&
       npsOk &&
-
-      // All ratings (session + trainer + ISO)
-      Object.values(ratings).every(v => v !== null) &&
-
-      // ISO mandatory non-rating
-      iso_assessment_completed.value &&
-      iso_improvement_area.value &&
-      iso_corrective_suggestion.value.trim() &&
-
-      // mandatory open text
       likedMost.value.trim() &&
-      toImprove.value.trim() &&
-      suggestions.value.trim();
+      toImprove.value.trim();
 
-    submitBtn.disabled = !requiredFilled;
+    const ratingsOk = Object.values(ratings).every(v => v !== null);
+    const complianceOk = iso_assessment_completed !== null;
+
+    submitBtn.disabled = !(baseOk && ratingsOk && complianceOk);
   }
 
-  // Validate on input changes (not rating buttons)
-  [
-    'trainingTopic','trainingDate','location','empPrefix','employeeCode','department',
-    'trainerStrengths','trainerImprovements',
-    'iso_assessment_completed','iso_improvement_area','iso_corrective_suggestion',
-    'npsScore','likedMost','toImprove','suggestions'
-  ].forEach(id => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.addEventListener('input', validate);
-    el.addEventListener('change', validate);
-  });
-
-  // ---------------- Submit ----------------
-  submitBtn.addEventListener('click', async () => {
-    submitBtn.textContent = 'Submitting...';
+  // Submit
+  submitBtn.addEventListener("click", async () => {
+    submitBtn.textContent = "Submitting...";
     submitBtn.disabled = true;
 
     if (!trainingDate.value) {
       dateError.style.display = "block";
-      submitBtn.textContent = 'Submit Feedback';
+      submitBtn.textContent = "Submit Feedback";
       submitBtn.disabled = false;
       return;
     }
@@ -552,14 +529,14 @@
       employeeCode: `${empPrefix.value}-${employeeCode.value.trim()}`,
       department: department.value,
 
-      // session ratings
+      // Session ratings
       overallRating: ratings.overallRating,
       contentRelevanceRating: ratings.contentRelevanceRating,
       trainerDeliveryRating: ratings.trainerDeliveryRating,
       sessionPaceRating: ratings.sessionPaceRating,
       usefulnessRating: ratings.usefulnessRating,
 
-      // trainer ratings
+      // Trainer ratings + comments
       trainerKnowledgeRating: ratings.trainerKnowledgeRating,
       trainerEngagementRating: ratings.trainerEngagementRating,
       trainerResponsivenessRating: ratings.trainerResponsivenessRating,
@@ -567,18 +544,15 @@
       trainerStrengths: trainerStrengths.value.trim(),
       trainerImprovements: trainerImprovements.value.trim(),
 
-      // ISO
+      // Effectiveness & compliance (kept as iso_* IDs for backend consistency)
       iso_objectives_clarity: ratings.iso_objectives_clarity,
       iso_role_alignment: ratings.iso_role_alignment,
       iso_competence_gain: ratings.iso_competence_gain,
       iso_material_quality: ratings.iso_material_quality,
       iso_learning_environment: ratings.iso_learning_environment,
-      iso_assessment_completed: iso_assessment_completed.value,
-      iso_post_understanding: ratings.iso_post_understanding,
-      iso_improvement_area: iso_improvement_area.value,
-      iso_corrective_suggestion: iso_corrective_suggestion.value.trim(),
+      iso_assessment_completed: iso_assessment_completed,
 
-      // feedback
+      // NPS + feedback
       npsScore: Number(npsScore.value),
       likedMost: likedMost.value.trim(),
       toImprove: toImprove.value.trim(),
@@ -587,33 +561,28 @@
 
     try {
       const res = await fetch(WEB_APP_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
         body: JSON.stringify(payload)
       });
 
       const out = await res.json().catch(() => ({}));
-      if (!res.ok || out.status !== 'ok') {
+      if (!res.ok || out.status !== "ok") {
         throw new Error(out.message || `HTTP ${res.status}`);
       }
 
-      successMsg.style.display = 'block';
-      submitBtn.textContent = 'Submitted';
+      successMsg.style.display = "block";
+      submitBtn.textContent = "Submitted";
 
-      // ✅ Auto refresh after 5 seconds
       setTimeout(() => window.location.reload(), 5000);
 
     } catch (err) {
-      alert('Submission failed. Please try again. If it persists, contact HR.');
-      submitBtn.textContent = 'Submit Feedback';
+      alert("Submission failed. Please try again. If it persists, contact HR/L&D.");
+      submitBtn.textContent = "Submit Feedback";
       submitBtn.disabled = false;
     }
   });
-
-  // initial
-  validate();
 </script>
 
 </body>
 </html>
-

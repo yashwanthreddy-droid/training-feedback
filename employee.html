@@ -7,7 +7,7 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
 
-<!-- Flatpickr CSS (optional enhancement; page still works without it) -->
+<!-- Flatpickr (optional enhancement; form still works without it) -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css">
 
 <style>
@@ -96,6 +96,7 @@
     <p>Please share your honest feedback to help us improve learning experiences. Fields marked * are mandatory.</p>
   </div>
 
+  <!-- Session Details -->
   <div class="section">
     <h3>Session Details</h3>
 
@@ -103,7 +104,7 @@
     <input id="trainingTopic" placeholder="e.g., Email Skills, Power Query, POSH">
 
     <label>Training Date *</label>
-    <!-- Native date picker fallback ALWAYS works -->
+    <!-- Native date picker always works. Flatpickr enhances it if CDN loads. -->
     <input type="date" id="trainingDate">
     <div class="helper">Allowed range: last 60 days only (no future dates).</div>
     <div id="dateError" class="error">Please select a valid training date (within the last 60 days).</div>
@@ -158,6 +159,7 @@
     </select>
   </div>
 
+  <!-- Session Ratings -->
   <div class="section">
     <h3>Session Ratings (1 = Poor, 5 = Excellent) *</h3>
 
@@ -222,6 +224,7 @@
     </div>
   </div>
 
+  <!-- Trainer Feedback -->
   <div class="section">
     <h3>Trainer Feedback (1 = Poor, 5 = Excellent) *</h3>
 
@@ -273,16 +276,16 @@
       </div>
     </div>
 
-    <label>What did the trainer do well?</label>
+    <label>What did the trainer do well? (Optional)</label>
     <textarea id="trainerStrengths" placeholder="Optional…"></textarea>
 
-    <label>What can the trainer improve?</label>
+    <label>What can the trainer improve? (Optional)</label>
     <textarea id="trainerImprovements" placeholder="Optional…"></textarea>
   </div>
 
+  <!-- Training Effectiveness & Compliance (Mandatory) -->
   <div class="section">
     <h3>Training Effectiveness & Compliance (Mandatory)</h3>
-    <div class="helper">This section supports audit-ready training evaluation and compliance evidence.</div>
 
     <div class="rating-row">
       <div class="rating-head">
@@ -349,8 +352,10 @@
       <button type="button" data-value="Yes">Yes</button>
       <button type="button" data-value="No">No</button>
     </div>
+    <div class="helper">This helps demonstrate assessment evidence for training effectiveness.</div>
   </div>
 
+  <!-- Feedback -->
   <div class="section">
     <h3>Feedback & Suggestions</h3>
 
@@ -377,12 +382,13 @@
 
 </div>
 
-<!-- Flatpickr JS (optional enhancement; if blocked, form still works via native date picker) -->
+<!-- Flatpickr JS (optional enhancement) -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js"></script>
 
 <script>
-  // ======= CONFIG =======
+  // ======= BACKEND URL (your deployed Apps Script /exec) =======
   const WEB_APP_URL = "https://script.google.com/macros/s/AKfycby4qy0LBzj21Fb_sOU3VaaimYy7uGEY7Q5D9v4LeMCgculx6_tMpKP5MtekPsTd2_i5jg/exec";
+
   const $ = (id) => document.getElementById(id);
 
   const el = {
@@ -406,6 +412,7 @@
     successMsg: $("successMsg")
   };
 
+  // Ratings store
   const ratings = {
     overallRating: null,
     contentRelevanceRating: null,
@@ -425,13 +432,13 @@
     iso_learning_environment: null
   };
 
+  // Yes/No state
   let iso_assessment_completed = null;
 
   document.addEventListener("DOMContentLoaded", () => {
-    // Enforce 60-day window even on native date picker
     setDateConstraints();
 
-    // Upgrade to Flatpickr if available (but NEVER break if not)
+    // Enhance with Flatpickr if available; never crash if CDN is blocked
     try {
       if (typeof flatpickr !== "undefined") {
         flatpickr(el.trainingDate, {
@@ -444,10 +451,10 @@
         });
       }
     } catch (e) {
-      // Do nothing - native date picker will still work
+      // Native date picker still works
     }
 
-    // Ratings binding (direct, reliable)
+    // Rating buttons binding
     document.querySelectorAll(".rating-buttons").forEach(group => {
       const field = group.dataset.field;
       group.querySelectorAll("button").forEach(btn => {
@@ -482,7 +489,7 @@
       });
     });
 
-    // Validate on changes
+    // Validate on input changes
     document.querySelectorAll("input, select, textarea").forEach(x => {
       x.addEventListener("input", validate);
       x.addEventListener("change", validate);
@@ -502,7 +509,6 @@
     const max = new Date();
     const min = dateMinusDays(60);
 
-    // format YYYY-MM-DD
     const fmt = (d) => {
       const y = d.getFullYear();
       const m = String(d.getMonth()+1).padStart(2,"0");
@@ -611,5 +617,3 @@
 
 </body>
 </html>
-
-

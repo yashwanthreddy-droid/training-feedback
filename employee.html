@@ -7,20 +7,14 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
 
-<!-- Flatpickr (stable pinned version) -->
+<!-- Flatpickr CSS (optional enhancement; page still works without it) -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css">
 
 <style>
   :root{
-    --bg:#f4f6f9;
-    --card:#ffffff;
-    --text:#1b2430;
-    --muted:#5d6b7a;
-    --brand:#005bab;
-    --border:#cfd8e3;
-    --danger:#b42318;
-    --successBg:#e8f7ee;
-    --successText:#0a6b38;
+    --bg:#f4f6f9; --card:#fff; --text:#1b2430; --muted:#5d6b7a;
+    --brand:#005bab; --border:#cfd8e3; --danger:#b42318;
+    --successBg:#e8f7ee; --successText:#0a6b38;
   }
   *{ box-sizing:border-box; }
   body{ margin:0; background:var(--bg); font-family:Inter, sans-serif; color:var(--text); }
@@ -52,7 +46,6 @@
   .helper{ margin-top:8px; color:var(--muted); font-weight:600; font-size:12px; line-height:1.4; }
   .error{ display:none; margin-top:8px; color:var(--danger); font-weight:900; font-size:12px; }
 
-  /* Rating */
   .rating-row{ margin-top:14px; }
   .rating-head{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; }
   .rating-selected{ font-size:12px; font-weight:900; color:var(--muted); }
@@ -62,29 +55,18 @@
   .rating-buttons button{
     width:46px; height:46px; border-radius:999px;
     border:2px solid #c7d2e0; background:#f7f9fc; color:var(--text);
-    font-weight:900; cursor:pointer;
-    display:inline-flex; align-items:center; justify-content:center;
-    transition:.15s ease;
-    user-select:none;
+    font-weight:900; cursor:pointer; display:inline-flex; align-items:center; justify-content:center;
+    transition:.15s ease; user-select:none;
   }
-  .rating-buttons button:hover{
-    border-color:var(--brand);
-    box-shadow:0 10px 20px rgba(0,0,0,.10);
-    transform:translateY(-1px);
-  }
+  .rating-buttons button:hover{ border-color:var(--brand); box-shadow:0 10px 20px rgba(0,0,0,.10); transform:translateY(-1px); }
   .rating-buttons button.selected{ background:var(--brand); border-color:var(--brand); color:#fff; }
 
-  /* Yes/No */
   .yn-buttons{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
   .yn-buttons button{
     padding:10px 14px; border-radius:999px; border:2px solid #c7d2e0;
     background:#f7f9fc; font-weight:900; cursor:pointer; transition:.15s ease;
   }
-  .yn-buttons button:hover{
-    border-color:var(--brand);
-    box-shadow:0 10px 20px rgba(0,0,0,.08);
-    transform:translateY(-1px);
-  }
+  .yn-buttons button:hover{ border-color:var(--brand); box-shadow:0 10px 20px rgba(0,0,0,.08); transform:translateY(-1px); }
   .yn-buttons button.selected{ background:var(--brand); border-color:var(--brand); color:#fff; }
 
   .submit-btn{
@@ -100,7 +82,6 @@
   }
   .footer-note{ margin-top:14px; text-align:center; color:#7b8796; font-size:12px; font-weight:600; }
 
-  /* Flatpickr highlight */
   .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange{
     background:var(--brand); border-color:var(--brand);
   }
@@ -115,7 +96,6 @@
     <p>Please share your honest feedback to help us improve learning experiences. Fields marked * are mandatory.</p>
   </div>
 
-  <!-- Session Details -->
   <div class="section">
     <h3>Session Details</h3>
 
@@ -123,7 +103,8 @@
     <input id="trainingTopic" placeholder="e.g., Email Skills, Power Query, POSH">
 
     <label>Training Date *</label>
-    <input type="text" id="trainingDate" placeholder="Select training date" inputmode="none">
+    <!-- Native date picker fallback ALWAYS works -->
+    <input type="date" id="trainingDate">
     <div class="helper">Allowed range: last 60 days only (no future dates).</div>
     <div id="dateError" class="error">Please select a valid training date (within the last 60 days).</div>
 
@@ -177,7 +158,6 @@
     </select>
   </div>
 
-  <!-- Session Ratings -->
   <div class="section">
     <h3>Session Ratings (1 = Poor, 5 = Excellent) *</h3>
 
@@ -242,7 +222,6 @@
     </div>
   </div>
 
-  <!-- Trainer Feedback -->
   <div class="section">
     <h3>Trainer Feedback (1 = Poor, 5 = Excellent) *</h3>
 
@@ -301,7 +280,6 @@
     <textarea id="trainerImprovements" placeholder="Optional…"></textarea>
   </div>
 
-  <!-- Training Effectiveness & Compliance -->
   <div class="section">
     <h3>Training Effectiveness & Compliance (Mandatory)</h3>
     <div class="helper">This section supports audit-ready training evaluation and compliance evidence.</div>
@@ -373,7 +351,6 @@
     </div>
   </div>
 
-  <!-- Feedback -->
   <div class="section">
     <h3>Feedback & Suggestions</h3>
 
@@ -400,39 +377,13 @@
 
 </div>
 
-<!-- Flatpickr JS (placed at end so it ALWAYS loads before init) -->
+<!-- Flatpickr JS (optional enhancement; if blocked, form still works via native date picker) -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js"></script>
 
 <script>
   // ======= CONFIG =======
-  const WEB_APP_URL = https://script.google.com/macros/s/AKfycbxfaK3udVG9WBAUz-L4HqgLAj_QRnkhyeicqg688iUAH5xMq58pvtjuJryYtNzSEaE5xQ/exec; // must end with /exec
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxfaK3udVG9WBAUz-L4HqgLAj_QRnkhyeicqg688iUAH5xMq58pvtjuJryYtNzSEaE5xQ/exec"; // must end with /exec
 
-  // ======= STATE =======
-  const ratings = {
-    // Session
-    overallRating: null,
-    contentRelevanceRating: null,
-    trainerDeliveryRating: null,
-    sessionPaceRating: null,
-    usefulnessRating: null,
-
-    // Trainer
-    trainerKnowledgeRating: null,
-    trainerEngagementRating: null,
-    trainerResponsivenessRating: null,
-    trainerExamplesRating: null,
-
-    // Effectiveness & Compliance (field IDs kept for backend/admin)
-    iso_objectives_clarity: null,
-    iso_role_alignment: null,
-    iso_competence_gain: null,
-    iso_material_quality: null,
-    iso_learning_environment: null
-  };
-
-  let iso_assessment_completed = null;
-
-  // ======= HELPERS =======
   const $ = (id) => document.getElementById(id);
 
   const el = {
@@ -456,57 +407,83 @@
     successMsg: $("successMsg")
   };
 
-  // ======= INIT =======
-  document.addEventListener("DOMContentLoaded", function() {
-    // Flatpickr (past 60 days only, no future)
-    if (typeof flatpickr !== "undefined") {
-      flatpickr(el.trainingDate, {
-        dateFormat: "Y-m-d",
-        maxDate: "today",
-        minDate: new Date(new Date().setDate(new Date().getDate() - 60)),
-        disableMobile: true,
-        allowInput: false,
-        onOpen: () => { el.dateError.style.display = "none"; },
-        onChange: () => { el.dateError.style.display = "none"; validate(); }
-      });
+  const ratings = {
+    overallRating: null,
+    contentRelevanceRating: null,
+    trainerDeliveryRating: null,
+    sessionPaceRating: null,
+    usefulnessRating: null,
+
+    trainerKnowledgeRating: null,
+    trainerEngagementRating: null,
+    trainerResponsivenessRating: null,
+    trainerExamplesRating: null,
+
+    iso_objectives_clarity: null,
+    iso_role_alignment: null,
+    iso_competence_gain: null,
+    iso_material_quality: null,
+    iso_learning_environment: null
+  };
+
+  let iso_assessment_completed = null;
+
+  document.addEventListener("DOMContentLoaded", () => {
+    // Enforce 60-day window even on native date picker
+    setDateConstraints();
+
+    // Upgrade to Flatpickr if available (but NEVER break if not)
+    try {
+      if (typeof flatpickr !== "undefined") {
+        flatpickr(el.trainingDate, {
+          dateFormat: "Y-m-d",
+          maxDate: "today",
+          minDate: dateMinusDays(60),
+          disableMobile: true,
+          allowInput: false,
+          onChange: () => { el.dateError.style.display = "none"; validate(); }
+        });
+      }
+    } catch (e) {
+      // Do nothing - native date picker will still work
     }
 
-    // Ratings - direct onclick binding (most reliable)
+    // Ratings binding (direct, reliable)
     document.querySelectorAll(".rating-buttons").forEach(group => {
       const field = group.dataset.field;
       group.querySelectorAll("button").forEach(btn => {
-        btn.onclick = function() {
-          const val = Number(this.dataset.value);
+        btn.addEventListener("click", () => {
+          const val = Number(btn.dataset.value);
           ratings[field] = val;
 
           group.querySelectorAll("button").forEach(b => b.classList.remove("selected"));
-          this.classList.add("selected");
+          btn.classList.add("selected");
 
           const indicator = $("sel_" + field);
           if (indicator) indicator.textContent = String(val);
 
           validate();
-        };
+        });
       });
     });
 
-    // Yes/No (assessment completed)
+    // Yes/No binding
     document.querySelectorAll(".yn-buttons").forEach(group => {
       const f = group.dataset.ynField;
       group.querySelectorAll("button").forEach(btn => {
-        btn.onclick = function() {
+        btn.addEventListener("click", () => {
           if (f !== "iso_assessment_completed") return;
-          iso_assessment_completed = this.dataset.value;
+          iso_assessment_completed = btn.dataset.value;
 
           group.querySelectorAll("button").forEach(b => b.classList.remove("selected"));
-          this.classList.add("selected");
+          btn.classList.add("selected");
 
           validate();
-        };
+        });
       });
     });
 
-    // Validate on inputs
+    // Validate on changes
     document.querySelectorAll("input, select, textarea").forEach(x => {
       x.addEventListener("input", validate);
       x.addEventListener("change", validate);
@@ -515,8 +492,39 @@
     validate();
   });
 
-  function validate() {
-    const dateOk = !!el.trainingDate.value;
+  function dateMinusDays(days){
+    const d = new Date();
+    d.setDate(d.getDate() - days);
+    d.setHours(0,0,0,0);
+    return d;
+  }
+
+  function setDateConstraints(){
+    const max = new Date();
+    const min = dateMinusDays(60);
+
+    // format YYYY-MM-DD
+    const fmt = (d) => {
+      const y = d.getFullYear();
+      const m = String(d.getMonth()+1).padStart(2,"0");
+      const day = String(d.getDate()).padStart(2,"0");
+      return `${y}-${m}-${day}`;
+    };
+
+    el.trainingDate.max = fmt(max);
+    el.trainingDate.min = fmt(min);
+  }
+
+  function isDateWithinRange(yyyyMmDd){
+    if (!yyyyMmDd) return false;
+    const chosen = new Date(yyyyMmDd + "T00:00:00");
+    const max = new Date(); max.setHours(0,0,0,0);
+    const min = dateMinusDays(60);
+    return chosen >= min && chosen <= max;
+  }
+
+  function validate(){
+    const dateOk = isDateWithinRange(el.trainingDate.value);
 
     const npsVal = el.npsScore.value;
     const npsOk = npsVal !== "" && Number(npsVal) >= 0 && Number(npsVal) <= 10;
@@ -537,17 +545,14 @@
     el.submitBtn.disabled = !(baseOk && ratingsOk && complianceOk);
   }
 
-  // ======= SUBMIT =======
-  el.submitBtn.addEventListener("click", async function() {
-    el.submitBtn.textContent = "Submitting...";
-    el.submitBtn.disabled = true;
-
-    if (!el.trainingDate.value) {
+  el.submitBtn.addEventListener("click", async () => {
+    if (!isDateWithinRange(el.trainingDate.value)) {
       el.dateError.style.display = "block";
-      el.submitBtn.textContent = "Submit Feedback";
-      el.submitBtn.disabled = false;
       return;
     }
+
+    el.submitBtn.textContent = "Submitting...";
+    el.submitBtn.disabled = true;
 
     const payload = {
       trainingTopic: el.trainingTopic.value.trim(),
@@ -556,14 +561,12 @@
       employeeCode: `${el.empPrefix.value}-${el.employeeCode.value.trim()}`,
       department: el.department.value,
 
-      // Session ratings
       overallRating: ratings.overallRating,
       contentRelevanceRating: ratings.contentRelevanceRating,
       trainerDeliveryRating: ratings.trainerDeliveryRating,
       sessionPaceRating: ratings.sessionPaceRating,
       usefulnessRating: ratings.usefulnessRating,
 
-      // Trainer feedback
       trainerKnowledgeRating: ratings.trainerKnowledgeRating,
       trainerEngagementRating: ratings.trainerEngagementRating,
       trainerResponsivenessRating: ratings.trainerResponsivenessRating,
@@ -571,7 +574,6 @@
       trainerStrengths: el.trainerStrengths.value.trim(),
       trainerImprovements: el.trainerImprovements.value.trim(),
 
-      // Effectiveness & compliance (kept field IDs)
       iso_objectives_clarity: ratings.iso_objectives_clarity,
       iso_role_alignment: ratings.iso_role_alignment,
       iso_competence_gain: ratings.iso_competence_gain,
@@ -579,7 +581,6 @@
       iso_learning_environment: ratings.iso_learning_environment,
       iso_assessment_completed: iso_assessment_completed,
 
-      // NPS + text
       npsScore: Number(el.npsScore.value),
       likedMost: el.likedMost.value.trim(),
       toImprove: el.toImprove.value.trim(),
@@ -594,16 +595,14 @@
       });
 
       const out = await res.json().catch(() => ({}));
-      if (!res.ok || out.status !== "ok") {
-        throw new Error(out.message || `HTTP ${res.status}`);
-      }
+      if (!res.ok || out.status !== "ok") throw new Error(out.message || `HTTP ${res.status}`);
 
       el.successMsg.style.display = "block";
       el.submitBtn.textContent = "Submitted";
 
       setTimeout(() => window.location.reload(), 5000);
 
-    } catch (err) {
+    } catch (e) {
       alert("Submission failed. Please try again. If it persists, contact HR/L&D.");
       el.submitBtn.textContent = "Submit Feedback";
       el.submitBtn.disabled = false;

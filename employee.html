@@ -3,81 +3,106 @@
 <head>
 <meta charset="UTF-8" />
 <title>Training Feedback</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
 
-<!-- Flatpickr (correct CDN paths) -->
+<!-- Flatpickr (stable pinned version) -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css">
-<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js" defer></script>
 
 <style>
-  body { margin:0; background:#f4f6f9; font-family:Inter, sans-serif; color:#1b2430; }
-  .container { max-width:900px; margin:40px auto; background:#fff; padding:36px; border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,0.08); }
-  .header { text-align:center; margin-bottom:26px; }
-  .header h2 { margin:0; color:#003a63; font-weight:900; }
-  .header p { margin:10px 0 0; color:#5d6b7a; font-weight:600; font-size:13px; line-height:1.45; }
-
-  .section { margin-top:28px; }
-  .section h3 { margin:0 0 10px; color:#0b2b4a; font-size:16px; font-weight:900; }
-
-  label { font-weight:800; display:block; margin:16px 0 6px; color:#2b3a4a; font-size:13px; }
-
-  input, select, textarea {
-    width:100%; padding:12px; border-radius:12px; border:1px solid #cfd8e3;
-    font-size:14px; background:#fff; color:#1b2430; box-sizing:border-box;
+  :root{
+    --bg:#f4f6f9;
+    --card:#ffffff;
+    --text:#1b2430;
+    --muted:#5d6b7a;
+    --brand:#005bab;
+    --border:#cfd8e3;
+    --danger:#b42318;
+    --successBg:#e8f7ee;
+    --successText:#0a6b38;
   }
-
-  input:focus, select:focus, textarea:focus {
-    border-color:#005bab; outline:none; box-shadow:0 0 0 3px rgba(0,91,171,0.12);
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--bg); font-family:Inter, sans-serif; color:var(--text); }
+  .container{
+    max-width:920px; margin:40px auto; background:var(--card); padding:36px;
+    border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,0.08);
   }
+  .header{ text-align:center; margin-bottom:26px; }
+  .header h2{ margin:0; color:#003a63; font-weight:900; letter-spacing:.2px; }
+  .header p{ margin:10px 0 0; color:var(--muted); font-weight:600; font-size:13px; line-height:1.45; }
 
-  textarea { min-height:92px; resize:vertical; }
+  .section{ margin-top:28px; }
+  .section h3{ margin:0 0 10px; color:#0b2b4a; font-size:16px; font-weight:900; }
 
-  .row { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
-  .row > * { flex:1; min-width:220px; }
+  label{ font-weight:800; display:block; margin:16px 0 6px; color:#2b3a4a; font-size:13px; }
 
-  .helper { margin-top:8px; color:#5d6b7a; font-weight:600; font-size:12px; line-height:1.4; }
-  .error { display:none; margin-top:8px; color:#b42318; font-weight:900; font-size:12px; }
+  input, select, textarea{
+    width:100%; padding:12px; border-radius:12px; border:1px solid var(--border);
+    font-size:14px; background:#fff; color:var(--text);
+  }
+  input:focus, select:focus, textarea:focus{
+    border-color:var(--brand); outline:none; box-shadow:0 0 0 3px rgba(0,91,171,0.12);
+  }
+  textarea{ min-height:92px; resize:vertical; }
 
-  /* Ratings */
-  .rating-row { margin-top:14px; }
-  .rating-head { display:flex; align-items:baseline; justify-content:space-between; gap:12px; }
-  .rating-selected { font-size:12px; font-weight:900; color:#5d6b7a; }
-  .rating-selected strong { color:#0b2b4a; }
+  .row{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+  .row > *{ flex:1; min-width:220px; }
 
-  .rating-buttons { display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
-  .rating-buttons button {
+  .helper{ margin-top:8px; color:var(--muted); font-weight:600; font-size:12px; line-height:1.4; }
+  .error{ display:none; margin-top:8px; color:var(--danger); font-weight:900; font-size:12px; }
+
+  /* Rating */
+  .rating-row{ margin-top:14px; }
+  .rating-head{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; }
+  .rating-selected{ font-size:12px; font-weight:900; color:var(--muted); }
+  .rating-selected strong{ color:#0b2b4a; }
+
+  .rating-buttons{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+  .rating-buttons button{
     width:46px; height:46px; border-radius:999px;
-    border:2px solid #c7d2e0; background:#f7f9fc; color:#1b2430;
+    border:2px solid #c7d2e0; background:#f7f9fc; color:var(--text);
     font-weight:900; cursor:pointer;
     display:inline-flex; align-items:center; justify-content:center;
     transition:.15s ease;
     user-select:none;
   }
-  .rating-buttons button:hover { border-color:#005bab; box-shadow:0 10px 20px rgba(0,0,0,.10); transform:translateY(-1px); }
-  .rating-buttons button.selected { background:#005bab; border-color:#005bab; color:#fff; }
+  .rating-buttons button:hover{
+    border-color:var(--brand);
+    box-shadow:0 10px 20px rgba(0,0,0,.10);
+    transform:translateY(-1px);
+  }
+  .rating-buttons button.selected{ background:var(--brand); border-color:var(--brand); color:#fff; }
 
-  .yn-buttons { display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+  /* Yes/No */
+  .yn-buttons{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
   .yn-buttons button{
     padding:10px 14px; border-radius:999px; border:2px solid #c7d2e0;
     background:#f7f9fc; font-weight:900; cursor:pointer; transition:.15s ease;
   }
-  .yn-buttons button.selected{ background:#005bab; border-color:#005bab; color:#fff; }
+  .yn-buttons button:hover{
+    border-color:var(--brand);
+    box-shadow:0 10px 20px rgba(0,0,0,.08);
+    transform:translateY(-1px);
+  }
+  .yn-buttons button.selected{ background:var(--brand); border-color:var(--brand); color:#fff; }
 
-  .submit-btn {
+  .submit-btn{
     margin-top:30px; width:100%; padding:16px; font-size:17px;
-    border-radius:14px; border:none; background:#005bab; color:#fff;
+    border-radius:14px; border:none; background:var(--brand); color:#fff;
     font-weight:900; cursor:pointer; transition:.15s ease;
   }
-  .submit-btn:disabled { background:#9bbad1; cursor:not-allowed; }
+  .submit-btn:disabled{ background:#9bbad1; cursor:not-allowed; }
 
-  .success { margin-top:18px; background:#e8f7ee; color:#0a6b38; padding:14px; border-radius:12px; font-weight:900; display:none; text-align:center; }
-  .footer-note { margin-top:14px; text-align:center; color:#7b8796; font-size:12px; font-weight:600; }
+  .success{
+    margin-top:18px; background:var(--successBg); color:var(--successText);
+    padding:14px; border-radius:12px; font-weight:900; display:none; text-align:center;
+  }
+  .footer-note{ margin-top:14px; text-align:center; color:#7b8796; font-size:12px; font-weight:600; }
 
   /* Flatpickr highlight */
-  .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange {
-    background:#005bab; border-color:#005bab;
+  .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange{
+    background:var(--brand); border-color:var(--brand);
   }
 </style>
 </head>
@@ -98,7 +123,7 @@
     <input id="trainingTopic" placeholder="e.g., Email Skills, Power Query, POSH">
 
     <label>Training Date *</label>
-    <input type="text" id="trainingDate" placeholder="Select training date">
+    <input type="text" id="trainingDate" placeholder="Select training date" inputmode="none">
     <div class="helper">Allowed range: last 60 days only (no future dates).</div>
     <div id="dateError" class="error">Please select a valid training date (within the last 60 days).</div>
 
@@ -156,7 +181,6 @@
   <div class="section">
     <h3>Session Ratings (1 = Poor, 5 = Excellent) *</h3>
 
-    <!-- Session rating blocks -->
     <div class="rating-row">
       <div class="rating-head">
         <label style="margin:0;">Overall Session Rating *</label>
@@ -277,10 +301,10 @@
     <textarea id="trainerImprovements" placeholder="Optional…"></textarea>
   </div>
 
-  <!-- ISO -> renamed -->
+  <!-- Training Effectiveness & Compliance -->
   <div class="section">
     <h3>Training Effectiveness & Compliance (Mandatory)</h3>
-    <div class="helper">This section supports audit-ready training evaluation and continuous improvement.</div>
+    <div class="helper">This section supports audit-ready training evaluation and compliance evidence.</div>
 
     <div class="rating-row">
       <div class="rating-head">
@@ -347,7 +371,6 @@
       <button type="button" data-value="Yes">Yes</button>
       <button type="button" data-value="No">No</button>
     </div>
-    <div class="helper">Select Yes/No (mandatory for training evidence).</div>
   </div>
 
   <!-- Feedback -->
@@ -377,26 +400,29 @@
 
 </div>
 
-<script>
-  // IMPORTANT: put your /exec URL here
-  const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxfaK3udVG9WBAUz-L4HqgLAj_QRnkhyeicqg688iUAH5xMq58pvtjuJryYtNzSEaE5xQ/exec'; // keep your /exec URL;
+<!-- Flatpickr JS (placed at end so it ALWAYS loads before init) -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js"></script>
 
-  // Rating state
+<script>
+  // ======= CONFIG =======
+  const WEB_APP_URL = https://script.google.com/macros/s/AKfycbxfaK3udVG9WBAUz-L4HqgLAj_QRnkhyeicqg688iUAH5xMq58pvtjuJryYtNzSEaE5xQ/exec; // must end with /exec
+
+  // ======= STATE =======
   const ratings = {
-    // Session ratings
+    // Session
     overallRating: null,
     contentRelevanceRating: null,
     trainerDeliveryRating: null,
     sessionPaceRating: null,
     usefulnessRating: null,
 
-    // Trainer ratings
+    // Trainer
     trainerKnowledgeRating: null,
     trainerEngagementRating: null,
     trainerResponsivenessRating: null,
     trainerExamplesRating: null,
 
-    // Effectiveness & compliance ratings (still keep ISO field IDs for backend/admin consistency)
+    // Effectiveness & Compliance (field IDs kept for backend/admin)
     iso_objectives_clarity: null,
     iso_role_alignment: null,
     iso_competence_gain: null,
@@ -406,128 +432,129 @@
 
   let iso_assessment_completed = null;
 
-  // Elements
-  const trainingTopic = document.getElementById("trainingTopic");
-  const trainingDate = document.getElementById("trainingDate");
-  const dateError = document.getElementById("dateError");
-  const location = document.getElementById("location");
-  const empPrefix = document.getElementById("empPrefix");
-  const employeeCode = document.getElementById("employeeCode");
-  const department = document.getElementById("department");
+  // ======= HELPERS =======
+  const $ = (id) => document.getElementById(id);
 
-  const trainerStrengths = document.getElementById("trainerStrengths");
-  const trainerImprovements = document.getElementById("trainerImprovements");
+  const el = {
+    trainingTopic: $("trainingTopic"),
+    trainingDate: $("trainingDate"),
+    dateError: $("dateError"),
+    location: $("location"),
+    empPrefix: $("empPrefix"),
+    employeeCode: $("employeeCode"),
+    department: $("department"),
 
-  const npsScore = document.getElementById("npsScore");
-  const likedMost = document.getElementById("likedMost");
-  const toImprove = document.getElementById("toImprove");
-  const suggestions = document.getElementById("suggestions");
+    trainerStrengths: $("trainerStrengths"),
+    trainerImprovements: $("trainerImprovements"),
 
-  const submitBtn = document.getElementById("submitBtn");
-  const successMsg = document.getElementById("successMsg");
+    npsScore: $("npsScore"),
+    likedMost: $("likedMost"),
+    toImprove: $("toImprove"),
+    suggestions: $("suggestions"),
 
-  // Ensure Flatpickr + click handlers only run after DOM is ready
-  window.addEventListener("DOMContentLoaded", () => {
-    // Flatpickr init (past 60 days only, no future)
-    if (window.flatpickr) {
-      flatpickr("#trainingDate", {
+    submitBtn: $("submitBtn"),
+    successMsg: $("successMsg")
+  };
+
+  // ======= INIT =======
+  document.addEventListener("DOMContentLoaded", function() {
+    // Flatpickr (past 60 days only, no future)
+    if (typeof flatpickr !== "undefined") {
+      flatpickr(el.trainingDate, {
         dateFormat: "Y-m-d",
         maxDate: "today",
         minDate: new Date(new Date().setDate(new Date().getDate() - 60)),
         disableMobile: true,
         allowInput: false,
-        onChange: () => { dateError.style.display = "none"; validate(); }
+        onOpen: () => { el.dateError.style.display = "none"; },
+        onChange: () => { el.dateError.style.display = "none"; validate(); }
       });
     }
 
-    // Attach rating handlers per group (most reliable)
+    // Ratings - direct onclick binding (most reliable)
     document.querySelectorAll(".rating-buttons").forEach(group => {
-      const field = group.getAttribute("data-field");
+      const field = group.dataset.field;
       group.querySelectorAll("button").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const val = Number(btn.getAttribute("data-value"));
+        btn.onclick = function() {
+          const val = Number(this.dataset.value);
           ratings[field] = val;
 
           group.querySelectorAll("button").forEach(b => b.classList.remove("selected"));
-          btn.classList.add("selected");
+          this.classList.add("selected");
 
-          const indicator = document.getElementById("sel_" + field);
+          const indicator = $("sel_" + field);
           if (indicator) indicator.textContent = String(val);
 
           validate();
-        });
+        };
       });
     });
 
-    // Yes/No handler
+    // Yes/No (assessment completed)
     document.querySelectorAll(".yn-buttons").forEach(group => {
-      const f = group.getAttribute("data-yn-field");
+      const f = group.dataset.ynField;
       group.querySelectorAll("button").forEach(btn => {
-        btn.addEventListener("click", () => {
+        btn.onclick = function() {
           if (f !== "iso_assessment_completed") return;
-          iso_assessment_completed = btn.getAttribute("data-value");
+          iso_assessment_completed = this.dataset.value;
 
           group.querySelectorAll("button").forEach(b => b.classList.remove("selected"));
-          btn.classList.add("selected");
+          this.classList.add("selected");
 
           validate();
-        });
+        };
       });
     });
 
-    // Validate on changes
-    [
-      trainingTopic, trainingDate, location, empPrefix, employeeCode, department,
-      trainerStrengths, trainerImprovements,
-      npsScore, likedMost, toImprove, suggestions
-    ].forEach(el => {
-      el.addEventListener("input", validate);
-      el.addEventListener("change", validate);
+    // Validate on inputs
+    document.querySelectorAll("input, select, textarea").forEach(x => {
+      x.addEventListener("input", validate);
+      x.addEventListener("change", validate);
     });
 
     validate();
   });
 
   function validate() {
-    const dateOk = !!trainingDate.value;
+    const dateOk = !!el.trainingDate.value;
 
-    const npsVal = npsScore.value;
+    const npsVal = el.npsScore.value;
     const npsOk = npsVal !== "" && Number(npsVal) >= 0 && Number(npsVal) <= 10;
 
     const baseOk =
-      trainingTopic.value.trim() &&
+      el.trainingTopic.value.trim() &&
       dateOk &&
-      location.value &&
-      empPrefix.value && employeeCode.value.trim() &&
-      department.value &&
+      el.location.value &&
+      el.empPrefix.value && el.employeeCode.value.trim() &&
+      el.department.value &&
       npsOk &&
-      likedMost.value.trim() &&
-      toImprove.value.trim();
+      el.likedMost.value.trim() &&
+      el.toImprove.value.trim();
 
     const ratingsOk = Object.values(ratings).every(v => v !== null);
     const complianceOk = iso_assessment_completed !== null;
 
-    submitBtn.disabled = !(baseOk && ratingsOk && complianceOk);
+    el.submitBtn.disabled = !(baseOk && ratingsOk && complianceOk);
   }
 
-  // Submit
-  submitBtn.addEventListener("click", async () => {
-    submitBtn.textContent = "Submitting...";
-    submitBtn.disabled = true;
+  // ======= SUBMIT =======
+  el.submitBtn.addEventListener("click", async function() {
+    el.submitBtn.textContent = "Submitting...";
+    el.submitBtn.disabled = true;
 
-    if (!trainingDate.value) {
-      dateError.style.display = "block";
-      submitBtn.textContent = "Submit Feedback";
-      submitBtn.disabled = false;
+    if (!el.trainingDate.value) {
+      el.dateError.style.display = "block";
+      el.submitBtn.textContent = "Submit Feedback";
+      el.submitBtn.disabled = false;
       return;
     }
 
     const payload = {
-      trainingTopic: trainingTopic.value.trim(),
-      trainingDate: trainingDate.value,
-      location: location.value,
-      employeeCode: `${empPrefix.value}-${employeeCode.value.trim()}`,
-      department: department.value,
+      trainingTopic: el.trainingTopic.value.trim(),
+      trainingDate: el.trainingDate.value.trim(),
+      location: el.location.value,
+      employeeCode: `${el.empPrefix.value}-${el.employeeCode.value.trim()}`,
+      department: el.department.value,
 
       // Session ratings
       overallRating: ratings.overallRating,
@@ -536,15 +563,15 @@
       sessionPaceRating: ratings.sessionPaceRating,
       usefulnessRating: ratings.usefulnessRating,
 
-      // Trainer ratings + comments
+      // Trainer feedback
       trainerKnowledgeRating: ratings.trainerKnowledgeRating,
       trainerEngagementRating: ratings.trainerEngagementRating,
       trainerResponsivenessRating: ratings.trainerResponsivenessRating,
       trainerExamplesRating: ratings.trainerExamplesRating,
-      trainerStrengths: trainerStrengths.value.trim(),
-      trainerImprovements: trainerImprovements.value.trim(),
+      trainerStrengths: el.trainerStrengths.value.trim(),
+      trainerImprovements: el.trainerImprovements.value.trim(),
 
-      // Effectiveness & compliance (kept as iso_* IDs for backend consistency)
+      // Effectiveness & compliance (kept field IDs)
       iso_objectives_clarity: ratings.iso_objectives_clarity,
       iso_role_alignment: ratings.iso_role_alignment,
       iso_competence_gain: ratings.iso_competence_gain,
@@ -552,11 +579,11 @@
       iso_learning_environment: ratings.iso_learning_environment,
       iso_assessment_completed: iso_assessment_completed,
 
-      // NPS + feedback
-      npsScore: Number(npsScore.value),
-      likedMost: likedMost.value.trim(),
-      toImprove: toImprove.value.trim(),
-      suggestions: suggestions.value.trim()
+      // NPS + text
+      npsScore: Number(el.npsScore.value),
+      likedMost: el.likedMost.value.trim(),
+      toImprove: el.toImprove.value.trim(),
+      suggestions: el.suggestions.value.trim()
     };
 
     try {
@@ -571,15 +598,15 @@
         throw new Error(out.message || `HTTP ${res.status}`);
       }
 
-      successMsg.style.display = "block";
-      submitBtn.textContent = "Submitted";
+      el.successMsg.style.display = "block";
+      el.submitBtn.textContent = "Submitted";
 
       setTimeout(() => window.location.reload(), 5000);
 
     } catch (err) {
       alert("Submission failed. Please try again. If it persists, contact HR/L&D.");
-      submitBtn.textContent = "Submit Feedback";
-      submitBtn.disabled = false;
+      el.submitBtn.textContent = "Submit Feedback";
+      el.submitBtn.disabled = false;
     }
   });
 </script>

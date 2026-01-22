@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Training Assessment Form</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<style>
+  :root{
+    --bg:#f4f6f9; --card:#ffffff; --text:#0f172a; --muted:#64748b; --line:#e2e8f0;
+    --brand:#005bab; --brand2:#003a63;
+    --good:#16a34a; --bad:#ef4444;
+    --shadow: 0 10px 30px rgba(2,6,23,0.08);
+    --radius: 16px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);font-family:Inter,system-ui,Segoe UI,Roboto,Arial;color:var(--text)}
+  .wrap{max-width:1100px;margin:36px auto 60px;padding:0 16px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px}
+  .head{text-align:center;margin-bottom:18px}
+  .head h1{margin:0;font-size:22px;font-weight:900;color:var(--brand2)}
+  .head p{margin:10px 0 0;color:var(--muted);font-weight:800;font-size:13px;line-height:1.35}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+  @media (max-width:760px){.grid{grid-template-columns:1fr}}
+  label{display:block;font-size:12px;font-weight:900;color:var(--muted);margin-bottom:6px}
+  input{width:100%;padding:12px;border-radius:12px;border:1px solid var(--line);font-weight:800}
+  input:focus{border-color:var(--brand);outline:none;box-shadow:0 0 0 3px rgba(0,91,171,0.15)}
+  .helper{margin-top:8px;color:var(--muted);font-weight:800;font-size:12px}
+  .sectionTitle{margin:22px 0 10px;font-size:14px;font-weight:900}
+
+  .tableWrap{border:1px solid var(--line);border-radius:14px;overflow:auto}
+  table{width:100%;border-collapse:collapse;min-width:820px}
+  th,td{padding:10px;border-bottom:1px solid var(--line);font-size:12px;vertical-align:middle}
+  th{position:sticky;top:0;background:var(--card);z-index:1;color:var(--muted);font-weight:900;text-align:left}
+  td input{padding:10px;border-radius:10px;font-weight:900}
+  .score{max-width:120px}
+  .emp{min-width:180px}
+
+  .pill{display:inline-flex;align-items:center;justify-content:center;padding:6px 10px;border-radius:999px;
+        font-size:11px;font-weight:900;border:1px solid var(--line);min-width:72px}
+  .pill.good{color:var(--good);border-color:rgba(22,163,74,0.35);background:rgba(22,163,74,0.08)}
+  .pill.bad{color:var(--bad);border-color:rgba(239,68,68,0.35);background:rgba(239,68,68,0.08)}
+  .pill.neutral{color:var(--muted);background:rgba(100,116,139,0.06)}
+
+  .rowActions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .btn{border:none;background:var(--brand);color:#fff;font-weight:900;padding:10px 12px;border-radius:12px;cursor:pointer;transition:.12s ease;font-size:13px}
+  .btn:hover{transform:translateY(-1px)}
+  .btn.secondary{background:transparent;color:var(--text);border:1px solid var(--line)}
+  .btn.secondary:hover{background:rgba(0,0,0,0.03)}
+
+  .submit{margin-top:18px;width:100%;padding:14px;border-radius:14px;font-size:15px;font-weight:900}
+  .submit:disabled{background:#9bbad1;cursor:not-allowed;transform:none}
+
+  .success,.error{display:none;margin-top:14px;padding:12px;border-radius:14px;font-weight:900;font-size:12px;line-height:1.35;text-align:center}
+  .success{border:1px solid rgba(22,163,74,0.35);background:rgba(22,163,74,0.10);color:var(--good)}
+  .error{border:1px solid rgba(239,68,68,0.35);background:rgba(239,68,68,0.10);color:var(--bad)}
+  .foot{margin-top:12px;text-align:center;color:var(--muted);font-weight:800;font-size:12px}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+  <div class="card">
+    <div class="head">
+      <h1>Training Assessment Form</h1>
+      <p>Pre and Post: 10 questions each (1 mark each). Pass/Fail is auto-calculated based on 50% benchmark.</p>
+    </div>
+
+    <div class="grid">
+      <div>
+        <label>Training Topic *</label>
+        <input id="trainingTopic" placeholder="e.g., Payroll New Joiner Training">
+      </div>
+      <div>
+        <label>Training Date *</label>
+        <input id="trainingDate" type="text" placeholder="Select training date" readonly>
+        <div class="helper">Allowed range: last 60 days only (no future dates).</div>
+      </div>
+    </div>
+
+    <div class="sectionTitle">Employee Assessment Entries</div>
+    <div class="tableWrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:38px;">#</th>
+            <th>Employee ID *</th>
+            <th>Pre Score (0–10) *</th>
+            <th>Post Score (0–10) *</th>
+            <th>Result (Auto) *</th>
+            <th style="width:120px;">Action</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+
+    <div class="rowActions">
+      <button class="btn secondary" id="addRowBtn" type="button">+ Add Employee Row</button>
+      <button class="btn secondary" id="clearBtn" type="button">Clear All Rows</button>
+    </div>
+
+    <button class="btn submit" id="submitBtn" disabled>Submit Assessment Form</button>
+
+    <div class="success" id="successMsg">Submitted successfully. Page will refresh in 5 seconds for next entry.</div>
+    <div class="error" id="errorMsg"></div>
+
+    <div class="foot">© 2026 | Training Assessment Platform</div>
+  </div>
+</div>
+
+<script>
+  // ✅ Replace with your NEW Assessment Apps Script Web App URL (ends with /exec)
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxJytsKZG_1d4jNcW66Np2j0w7LZ8We2lfvLMYvo3YKuHRjoM7QC18Gj1js4pKIpQ/exec";
+
+  // Passing benchmark: 50% of 10 = 5
+  const PASS_MARK = 5;
+
+  const trainingTopic = document.getElementById("trainingTopic");
+  const trainingDate  = document.getElementById("trainingDate");
+  const tbody         = document.getElementById("tbody");
+
+  const addRowBtn  = document.getElementById("addRowBtn");
+  const clearBtn   = document.getElementById("clearBtn");
+  const submitBtn  = document.getElementById("submitBtn");
+
+  const successMsg = document.getElementById("successMsg");
+  const errorMsg   = document.getElementById("errorMsg");
+
+  flatpickr("#trainingDate", {
+    dateFormat: "Y-m-d",
+    maxDate: "today",
+    minDate: new Date().fp_incr(-60),
+    disableMobile: true,
+    allowInput: false,
+    onChange: validate
+  });
+
+  function makeRow(index){
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td style="color:#64748b;font-weight:900;">${index}</td>
+      <td><input class="emp" data-k="employeeId" placeholder="e.g., BS-12345 / HGSI-67890"></td>
+      <td><input class="score" data-k="preScore" type="number" min="0" max="10" placeholder="0–10"></td>
+      <td><input class="score" data-k="postScore" type="number" min="0" max="10" placeholder="0–10"></td>
+      <td><span class="pill neutral" data-k="result">—</span></td>
+      <td><button class="btn secondary" type="button" data-action="remove">Remove</button></td>
+    `;
+    return tr;
+  }
+
+  function renumber(){
+    [...tbody.querySelectorAll("tr")].forEach((tr, i) => tr.children[0].textContent = String(i + 1));
+  }
+
+  function addRow(){
+    const count = tbody.querySelectorAll("tr").length;
+    tbody.appendChild(makeRow(count + 1));
+    validate();
+  }
+
+  function clearRows(){
+    tbody.innerHTML = "";
+    addRow();
+    validate();
+  }
+
+  addRow();
+
+  function clampScore(input){
+    if (input.value === "") return;
+    let n = Number(input.value);
+    if (!Number.isFinite(n)) n = 0;
+    if (n < 0) n = 0;
+    if (n > 10) n = 10;
+    input.value = String(n);
+  }
+
+  function updateResult(tr){
+    const post = tr.querySelector('input[data-k="postScore"]');
+    const pill = tr.querySelector('span[data-k="result"]');
+
+    if (!post || post.value === "") {
+      pill.textContent = "—";
+      pill.className = "pill neutral";
+      return;
+    }
+
+    const postVal = Number(post.value);
+    if (!Number.isFinite(postVal)) {
+      pill.textContent = "—";
+      pill.className = "pill neutral";
+      return;
+    }
+
+    if (postVal >= PASS_MARK){
+      pill.textContent = "PASS";
+      pill.className = "pill good";
+    } else {
+      pill.textContent = "FAIL";
+      pill.className = "pill bad";
+    }
+  }
+
+  function rowIsValid(tr){
+    const emp  = tr.querySelector('input[data-k="employeeId"]').value.trim();
+    const pre  = tr.querySelector('input[data-k="preScore"]').value;
+    const post = tr.querySelector('input[data-k="postScore"]').value;
+
+    const preN = Number(pre);
+    const postN = Number(post);
+
+    if (!emp) return false;
+    if (pre === "" || post === "") return false;
+    if (!Number.isFinite(preN) || !Number.isFinite(postN)) return false;
+    if (preN < 0 || preN > 10) return false;
+    if (postN < 0 || postN > 10) return false;
+    return true;
+  }
+
+  function validate(){
+    const topicOk = trainingTopic.value.trim().length > 0;
+    const dateOk  = trainingDate.value.trim().length > 0;
+
+    const rows = [...tbody.querySelectorAll("tr")];
+    const validRowCount = rows.filter(rowIsValid).length;
+
+    submitBtn.disabled = !(topicOk && dateOk && validRowCount >= 1);
+  }
+
+  trainingTopic.addEventListener("input", validate);
+
+  addRowBtn.addEventListener("click", addRow);
+  clearBtn.addEventListener("click", clearRows);
+
+  tbody.addEventListener("input", (e) => {
+    const tr = e.target.closest("tr");
+    if (!tr) return;
+
+    if (e.target.matches('input[data-k="preScore"], input[data-k="postScore"]')){
+      clampScore(e.target);
+      updateResult(tr);
+    }
+    validate();
+  });
+
+  tbody.addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-action='remove']");
+    if (!btn) return;
+
+    btn.closest("tr").remove();
+    if (tbody.querySelectorAll("tr").length === 0) addRow();
+    renumber();
+    validate();
+  });
+
+  async function submit(){
+    errorMsg.style.display = "none";
+    successMsg.style.display = "none";
+
+    submitBtn.textContent = "Submitting…";
+    submitBtn.disabled = true;
+
+    const rows = [...tbody.querySelectorAll("tr")]
+      .filter(rowIsValid)
+      .map(tr => {
+        const employeeId = tr.querySelector('input[data-k="employeeId"]').value.trim();
+        const preScore   = Number(tr.querySelector('input[data-k="preScore"]').value);
+        const postScore  = Number(tr.querySelector('input[data-k="postScore"]').value);
+        const result     = (postScore >= PASS_MARK) ? "PASS" : "FAIL";
+        return { employeeId, preScore, postScore, result };
+      });
+
+    const payload = {
+      trainingTopic: trainingTopic.value.trim(),
+      trainingDate: trainingDate.value.trim(),
+      rows
+    };
+
+    try{
+      const res = await fetch(WEB_APP_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      });
+
+      const out = await res.json().catch(()=> ({}));
+      if (!res.ok || out.status !== "ok") {
+        throw new Error(out.message || `HTTP ${res.status}`);
+      }
+
+      successMsg.style.display = "block";
+      submitBtn.textContent = "Submitted";
+
+      setTimeout(() => location.reload(), 5000);
+
+    } catch(err) {
+      errorMsg.style.display = "block";
+      errorMsg.textContent = "Submission failed. Error: " + (err?.message || String(err));
+      submitBtn.textContent = "Submit Assessment Form";
+      submitBtn.disabled = false;
+    }
+  }
+
+  submitBtn.addEventListener("click", submit);
+  validate();
+</script>
+</body>
+</html>

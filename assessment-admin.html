@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Assessment Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+<style>
+  :root{
+    --bg:#f4f6f9; --card:#ffffff; --text:#0f172a; --muted:#64748b; --line:#e2e8f0;
+    --brand:#005bab; --brand2:#003a63;
+    --good:#16a34a; --bad:#ef4444; --warn:#f59e0b;
+    --shadow: 0 10px 30px rgba(2,6,23,0.08);
+    --radius: 16px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);font-family:Inter,system-ui,Segoe UI,Roboto,Arial;color:var(--text)}
+  .wrap{max-width:1200px;margin:34px auto 60px;padding:0 16px}
+  .top{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
+  h1{margin:0;font-size:20px;font-weight:900;color:var(--brand2)}
+  .sub{margin:10px 0 0;color:var(--muted);font-weight:800;font-size:12px}
+
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:12px}
+  @media(max-width:980px){.grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.grid{grid-template-columns:1fr}}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:14px}
+  .kpi .t{color:var(--muted);font-weight:900;font-size:11px}
+  .kpi .v{margin-top:8px;font-weight:900;font-size:22px}
+  .kpi .h{margin-top:6px;color:var(--muted);font-weight:800;font-size:11px}
+
+  .row{display:grid;grid-template-columns:1.3fr .7fr;gap:12px;margin-top:12px}
+  @media(max-width:980px){.row{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:14px}
+  .card h2{margin:0 0 10px;font-size:13px;font-weight:900}
+  .filters{display:flex;gap:10px;flex-wrap:wrap;align-items:end}
+  label{display:block;color:var(--muted);font-weight:900;font-size:11px;margin-bottom:6px}
+  input{padding:10px 10px;border-radius:12px;border:1px solid var(--line);font-weight:800}
+  .btn{border:none;background:var(--brand);color:#fff;font-weight:900;padding:10px 12px;border-radius:12px;cursor:pointer}
+  .err{margin-top:10px;color:var(--bad);font-weight:900;font-size:12px;display:none}
+  table{width:100%;border-collapse:collapse}
+  th,td{padding:10px;border-bottom:1px solid var(--line);font-size:12px;vertical-align:top}
+  th{color:var(--muted);font-weight:900;text-align:left}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+  <div class="top">
+    <h1>Assessment Dashboard</h1>
+    <div class="sub">Data source: Assessment Google Sheet via Apps Script. Review by training and month.</div>
+  </div>
+
+  <div class="grid">
+    <div class="kpi"><div class="t">Total Records</div><div class="v" id="k_total">—</div><div class="h">All submitted assessments</div></div>
+    <div class="kpi"><div class="t">Pass %</div><div class="v" id="k_pass">—</div><div class="h">Based on Post ≥ 5/10</div></div>
+    <div class="kpi"><div class="t">Avg Pre Score</div><div class="v" id="k_pre">—</div><div class="h">Out of 10</div></div>
+    <div class="kpi"><div class="t">Avg Post Score</div><div class="v" id="k_post">—</div><div class="h">Out of 10 (delta shown below)</div></div>
+  </div>
+
+  <div class="row">
+    <div class="card">
+      <h2>Trend (Monthly Avg Post Score)</h2>
+      <canvas id="trendChart" height="110"></canvas>
+    </div>
+    <div class="card">
+      <h2>Pass vs Fail</h2>
+      <canvas id="pfChart" height="110"></canvas>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px;">
+    <h2>Filters</h2>
+    <div class="filters">
+      <div>
+        <label>Training contains</label>
+        <input id="f_topic" placeholder="e.g., Payroll">
+      </div>
+      <div>
+        <label>Month (YYYY-MM)</label>
+        <input id="f_month" placeholder="2026-01">
+      </div>
+      <button class="btn" id="refreshBtn">Refresh</button>
+    </div>
+    <div class="err" id="errBox"></div>
+  </div>
+
+  <div class="card" style="margin-top:12px;">
+    <h2>Training-wise Summary</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Training Topic</th>
+          <th>Records</th>
+          <th>Pass %</th>
+          <th>Avg Pre</th>
+          <th>Avg Post</th>
+          <th>Avg Delta</th>
+        </tr>
+      </thead>
+      <tbody id="summaryBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  // ✅ Replace with your Assessment Apps Script Web App URL
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxJytsKZG_1d4jNcW66Np2j0w7LZ8We2lfvLMYvo3YKuHRjoM7QC18Gj1js4pKIpQ/exec";
+
+  const el = (id) => document.getElementById(id);
+
+  let trendChart, pfChart;
+
+  function toMonth(d){
+    // expects YYYY-MM-DD
+    if (!d || typeof d !== "string") return "";
+    return d.slice(0,7);
+  }
+
+  function num(v){
+    const n = Number(v);
+    return Number.isFinite(n) ? n : null;
+  }
+
+  function fmt(n, digits=1){
+    if (n === null || n === undefined) return "—";
+    return Number(n).toFixed(digits);
+  }
+
+  function pct(pass, total){
+    if (!total) return "—";
+    return Math.round((pass/total)*100) + "%";
+  }
+
+  function applyFilters(rows){
+    const topic = el("f_topic").value.trim().toLowerCase();
+    const month = el("f_month").value.trim();
+
+    return rows.filter(r => {
+      const t = String(r.trainingTopic || "").toLowerCase();
+      const m = toMonth(String(r.trainingDate || ""));
+      if (topic && !t.includes(topic)) return false;
+      if (month && m !== month) return false;
+      return true;
+    });
+  }
+
+  function groupByTopic(rows){
+    const map = new Map();
+    for (const r of rows){
+      const key = String(r.trainingTopic || "NA").trim() || "NA";
+      if (!map.has(key)) map.set(key, []);
+      map.get(key).push(r);
+    }
+    return map;
+  }
+
+  function calcStats(rows){
+    const total = rows.length;
+    let pass = 0, sumPre=0, sumPost=0, cntPre=0, cntPost=0;
+
+    for (const r of rows){
+      const pre = num(r.preScore);
+      const post = num(r.postScore);
+      const res = String(r.result || "").toUpperCase();
+
+      if (res === "PASS") pass++;
+
+      if (pre !== null){ sumPre += pre; cntPre++; }
+      if (post !== null){ sumPost += post; cntPost++; }
+    }
+
+    const avgPre = cntPre ? (sumPre/cntPre) : null;
+    const avgPost = cntPost ? (sumPost/cntPost) : null;
+    const delta = (avgPre !== null && avgPost !== null) ? (avgPost - avgPre) : null;
+
+    return { total, pass, avgPre, avgPost, delta };
+  }
+
+  function buildTrend(rows){
+    // monthly avg post score
+    const map = new Map(); // month -> {sum, cnt}
+    for (const r of rows){
+      const m = toMonth(String(r.trainingDate || ""));
+      const post = num(r.postScore);
+      if (!m || post === null) continue;
+      if (!map.has(m)) map.set(m, {sum:0, cnt:0});
+      const o = map.get(m);
+      o.sum += post; o.cnt += 1;
+    }
+    const months = [...map.keys()].sort();
+    const values = months.map(m => map.get(m).cnt ? map.get(m).sum/map.get(m).cnt : null);
+    return { months, values };
+  }
+
+  function renderSummary(rows){
+    const body = el("summaryBody");
+    body.innerHTML = "";
+
+    const map = groupByTopic(rows);
+    const topics = [...map.keys()].sort((a,b)=>a.localeCompare(b));
+
+    for (const t of topics){
+      const group = map.get(t);
+      const st = calcStats(group);
+      const avgDelta = st.delta;
+
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td><strong>${t}</strong></td>
+        <td>${st.total}</td>
+        <td>${pct(st.pass, st.total)}</td>
+        <td>${fmt(st.avgPre,1)}</td>
+        <td>${fmt(st.avgPost,1)}</td>
+        <td>${avgDelta === null ? "—" : (avgDelta >= 0 ? "+" : "") + fmt(avgDelta,1)}</td>
+      `;
+      body.appendChild(tr);
+    }
+
+    if (topics.length === 0){
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td colspan="6" style="color:#64748b;font-weight:800;">No records found for the selected filters.</td>`;
+      body.appendChild(tr);
+    }
+  }
+
+  function renderCharts(rows){
+    const st = calcStats(rows);
+
+    // Trend
+    const tr = buildTrend(rows);
+    if (trendChart) trendChart.destroy();
+    trendChart = new Chart(el("trendChart"), {
+      type: "line",
+      data: {
+        labels: tr.months,
+        datasets: [{ label: "Avg Post Score", data: tr.values }]
+      },
+      options: {
+        responsive:true,
+        plugins:{ legend:{ display:true } },
+        scales:{ y:{ beginAtZero:true, max:10 } }
+      }
+    });
+
+    // Pass/Fail
+    const fail = st.total - st.pass;
+    if (pfChart) pfChart.destroy();
+    pfChart = new Chart(el("pfChart"), {
+      type: "doughnut",
+      data: {
+        labels: ["Pass", "Fail"],
+        datasets: [{ data: [st.pass, fail] }]
+      },
+      options: { responsive:true, plugins:{ legend:{ display:true } } }
+    });
+  }
+
+  async function fetchData(){
+    el("errBox").style.display = "none";
+    el("errBox").textContent = "";
+
+    const res = await fetch(WEB_APP_URL, { method: "GET" });
+    const out = await res.json().catch(()=> ({}));
+    if (!res.ok || out.status !== "ok") {
+      throw new Error(out.message || `HTTP ${res.status}`);
+    }
+    return out.rows || [];
+  }
+
+  async function refresh(){
+    try{
+      const rowsAll = await fetchData();
+      const rows = applyFilters(rowsAll);
+
+      const st = calcStats(rows);
+      el("k_total").textContent = st.total;
+      el("k_pass").textContent = pct(st.pass, st.total);
+      el("k_pre").textContent = fmt(st.avgPre,1);
+      el("k_post").textContent = fmt(st.avgPost,1);
+
+      renderCharts(rows);
+      renderSummary(rows);
+
+    } catch(err){
+      el("errBox").style.display = "block";
+      el("errBox").textContent = "Error loading data: " + (err?.message || String(err));
+    }
+  }
+
+  el("refreshBtn").addEventListener("click", refresh);
+  refresh();
+</script>
+</body>
+</html>
